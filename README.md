@@ -24,6 +24,8 @@ works with a 100-product smartphone dataset and provides:
   keyword.
 - Rule-based domain relevance evaluation using the trusted e-commerce domain
   reference file.
+- Structured OpenRouter/Nano LLM keyword generation for processed products.
+- Testable Nano LLM relevance evaluation output for Selenium + NanoLLM.
 - Standardized JSON experiment output containing the product ID, keyword,
   method, runtime, estimated cost, and evaluated results.
 
@@ -38,7 +40,7 @@ yet:
 
 - Tavily
 - Agentic
-- Selenium + NanoLLM
+- Selenium + NanoLLM keyword relevance evaluation scaffold
 
 ## Project structure
 
@@ -53,6 +55,8 @@ first-task/
 |   `-- selenium_rule_based/         # Standardized example result JSON
 |-- src/
 |   |-- data_processor.py
+|   |-- keyword_generator.py
+|   |-- relevance_evaluator.py
 |   |-- quality_check.py
 |   |-- selenium_collector.py
 |   |-- rule_based_evaluator.py
@@ -105,3 +109,56 @@ The Selenium pipeline currently uses product `P001` and the keyword
 `iPhone 16 Pro Max 256 GB fiyat`. It records `runtime_seconds` and
 `estimated_cost_usd` in the output. The rule-based prototype does not call a
 paid API, so its estimated cost is currently `0.0` USD.
+
+## LLM keyword generation
+
+The selected Nano LLM provider is OpenRouter. The default model is configured
+through environment variables:
+
+```text
+OPENROUTER_API_KEY=
+NANO_LLM_MODEL=google/gemini-flash-1.5-8b
+```
+
+Copy `.env.example` to `.env` locally and add the real API key only in `.env`.
+Real API keys, tokens, and passwords must not be committed.
+
+Generate a zero-cost local sample for the first three products:
+
+```powershell
+.\.venv\Scripts\python.exe src\keyword_generator.py --provider fake --limit 3
+```
+
+Generate keywords with OpenRouter:
+
+```powershell
+.\.venv\Scripts\python.exe src\keyword_generator.py --provider openrouter --limit 3
+```
+
+The structured output is written to:
+
+```text
+data/processed/generated_keywords.json
+```
+
+Example output:
+
+```json
+[
+  {
+    "product_id": "P001",
+    "keyword": "Apple iPhone 16 Pro Max 256 GB fiyat"
+  }
+]
+```
+
+The relevance evaluator keeps the shared result format and adds
+`predicted_relevant` plus `relevance_score` fields for each result. Supported
+method names are `tavily_llm`, `agentic_search`, `selenium_nano_llm`, and
+`selenium_rule_based`.
+
+Run API-free tests:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests
+```
