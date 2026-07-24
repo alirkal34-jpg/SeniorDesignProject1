@@ -7,6 +7,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from keyword_generator import FakeKeywordClient, load_products, select_products, validate_keyword_output
+from keyword_loader import load_keywords
+from nano_llm_evaluator import FakeNanoLLMEvaluator, validate_evaluation_output
 from relevance_evaluator import SearchResult, make_result_payload
 
 
@@ -45,6 +47,44 @@ class KeywordGeneratorTests(unittest.TestCase):
         self.assertGreaterEqual(payload["results"][0]["relevance_score"], 0)
         self.assertLessEqual(payload["results"][0]["relevance_score"], 1)
         json.dumps(payload)
+
+    def test_keyword_loader_reads_generated_keywords(self):
+        records = load_keywords(ROOT / "data" / "processed" / "generated_keywords.json", limit=2)
+
+        self.assertEqual(len(records), 2)
+        self.assertEqual(records[0].product_id, "P001")
+        self.assertIn("fiyat", records[0].keyword.lower())
+
+    def test_nano_llm_evaluator_validates_three_rows(self):
+        raw = [
+            {"predicted_relevant": True, "relevance_score": 0.9},
+            {"predicted_relevant": False, "relevance_score": 0.2},
+            {"predicted_relevant": True, "relevance_score": 0.75},
+        ]
+
+        evaluations = validate_evaluation_output(raw, expected_count=3)
+
+        self.assertEqual(len(evaluations), 3)
+        self.assertTrue(evaluations[0].predicted_relevant)
+
+    def test_fake_nano_llm_evaluator_adds_required_fields(self):
+        evaluator = FakeNanoLLMEvaluator()
+
+        results = evaluator.evaluate_results(
+            keyword="Apple iPhone 16 Pro Max 256 GB fiyat",
+            results=[
+                {
+                    "domain": "trendyol.com",
+                    "url": "https://www.trendyol.com/",
+                    "title": "iPhone 16 Pro Max fiyat",
+                    "snippet": "Satın alma seçenekleri.",
+                }
+            ],
+        )
+
+        self.assertIn("predicted_relevant", results[0])
+        self.assertIn("relevance_score", results[0])
+        self.assertTrue(results[0]["predicted_relevant"])
 
 
 if __name__ == "__main__":

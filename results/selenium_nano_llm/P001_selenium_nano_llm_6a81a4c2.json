@@ -1,0 +1,49 @@
+{
+  "product_id": "P001",
+  "keyword": "Apple iPhone 16 Pro Max 256 GB fiyat",
+  "method": "selenium_nano_llm",
+  "runtime_seconds": 12.97,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/en-ucuz-iphone-16-pro-max-256-gb-siyah-titanyum-fiyati,760887262.html",
+      "title": "iPhone 16 Pro Max 256 GB Siyah Titanyum",
+      "snippet": "iPhone 16 Pro Max 256 GB Siyah Titanyum · 109.250 TL · 91.499 TL · 108.205 TL · 119.601 TL · 7 satıcı içinde kargo dahil en ucuz fiyat seçeneği · 24.906 TL'ye varan ...",
+      "predicted_relevant": true,
+      "relevance_score": 0.94
+    },
+    {
+      "domain": "mediamarkt.com.tr",
+      "url": "https://www.mediamarkt.com.tr/tr/product/_apple-iphone-16-pro-max-256-gb-akilli-telefon-siyah-147051791.html",
+      "title": "APPLE MYWV3TU/A iPhone 16 Pro Max 8 GB 256 ...",
+      "snippet": "APPLE MYWV3TU/A iPhone 16 Pro Max 8 GB 256 GB Akıllı Telefon Siyah Titanium ; Ekran boyutu cm / · 17.5 cm / 6.9 inç ; Bellek · GB ; İşletim ; İşlemci · A18 Pro.",
+      "predicted_relevant": true,
+      "relevance_score": 0.97
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-apple-iphone-16-pro-max-256gb-desert-titanyum-fiyatlari,2389291001",
+      "title": "Apple iPhone 16 Pro Max 256GB Çöl Titanyum - Cimri",
+      "snippet": "4 satıcı arasındaki en ucuz Apple iPhone 16 Pro Max 256GB Çöl Titanyum fiyatı, 24.07.2026 tarihinde 91.498,99 TL. Son 3 ay içindeki en ucuz fiyatı 89.099,01 TL.",
+      "predicted_relevant": true,
+      "relevance_score": 0.97
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/iphone-16-pro-max-cep-telefonu-x-c103498-a292-v10577513",
+      "title": "IPhone 16 Pro Max Cep Telefonu",
+      "snippet": "6 gün önce — Yenilenmiş iPhone 16 Pro Max 512 GB Siyah Titanyum (12 Ay Garantili) - A Grade · Sepette104.405 TL109.900 TL ; Yenilenmiş iPhone 16 Pro Max 256 GB ...",
+      "predicted_relevant": true,
+      "relevance_score": 0.94
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-apple-iphone-16-pro-max",
+      "title": "iPhone 16 Pro Max Modelleri ve Fiyatları - Cep Telefonu",
+      "snippet": "SIFIR KAPALI KUTU APPLE 16 PROMAX 256 GB -15 AY!!! 39.999 TL ; APPLE İPHONE 16 PRO MAX PİL%100 DEVİR:0 MAĞAZADAN 12 AY!! 36.999 TL ; APPLE TECH / iPhone 16 Pro ...",
+      "predicted_relevant": false,
+      "relevance_score": 0.4
+    }
+  ]
+}

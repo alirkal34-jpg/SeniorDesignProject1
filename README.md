@@ -49,17 +49,22 @@ first-task/
 |-- data/
 |   |-- raw/                         # Original candidate datasets
 |   |-- processed/                   # Cleaned data and validation report
+|   |-- labels/                      # Human ground-truth templates
 |   `-- reference/
 |       `-- trusted_ecommerce_domains.csv
 |-- results/
 |   `-- selenium_rule_based/         # Standardized example result JSON
 |-- src/
 |   |-- data_processor.py
+|   |-- keyword_loader.py
 |   |-- keyword_generator.py
+|   |-- nano_llm_evaluator.py
 |   |-- relevance_evaluator.py
 |   |-- quality_check.py
 |   |-- selenium_collector.py
 |   |-- rule_based_evaluator.py
+|   |-- run_rule_based_batch.py
+|   |-- run_selenium_nano_llm.py
 |   `-- run_selenium_rule_based.py
 |-- tests/
 |   `-- tests/
@@ -156,6 +161,38 @@ The relevance evaluator keeps the shared result format and adds
 `predicted_relevant` plus `relevance_score` fields for each result. Supported
 method names are `tavily_llm`, `agentic_search`, `selenium_nano_llm`, and
 `selenium_rule_based`.
+
+Validate generated keywords:
+
+```powershell
+.\.venv\Scripts\python.exe src\keyword_loader.py --limit 3
+```
+
+Run the CAPTCHA-safe Selenium + Rule-Based batch for only the first 2-3
+keywords:
+
+```powershell
+.\.venv\Scripts\python.exe src\run_rule_based_batch.py --limit 3 --max-results 5
+```
+
+Test the NanoLLM evaluator independently with three sample search results:
+
+```powershell
+.\.venv\Scripts\python.exe src\nano_llm_evaluator.py --provider fake
+```
+
+Run Selenium + NanoLLM for one keyword while reusing `selenium_collector.py`:
+
+```powershell
+.\.venv\Scripts\python.exe src\run_selenium_nano_llm.py --provider fake --max-results 5
+```
+
+The human-labeling template for comparing predicted relevance with manual
+judgment is:
+
+```text
+data/labels/domain_ground_truth.csv
+```
 
 Run API-free tests:
 
