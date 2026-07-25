@@ -26,6 +26,8 @@ works with a 100-product smartphone dataset and provides:
   reference file.
 - Structured OpenRouter/Nano LLM keyword generation for processed products.
 - Testable Nano LLM relevance evaluation output for Selenium + NanoLLM.
+- Tavily + NanoLLM and agentic web-search runners with the same output format.
+- A LangGraph node/flow draft for the agentic method.
 - Standardized JSON experiment output containing the product ID, keyword,
   method, runtime, estimated cost, and evaluated results.
 
@@ -35,12 +37,8 @@ The completed prototype is **Selenium + Rule-Based** for one product/keyword.
 It collects up to five search results, assigns domain-based relevance scores,
 and writes a standardized JSON file under `results/selenium_rule_based/`.
 
-The other comparison methods are planned next steps and are not implemented
-yet:
-
-- Tavily
-- Agentic
-- Selenium + NanoLLM keyword relevance evaluation scaffold
+The comparison methods share the same JSON result contract. Each method returns
+at most five results and preserves the input `product_id` and `keyword`.
 
 ## Project structure
 
@@ -54,6 +52,8 @@ first-task/
 |       `-- trusted_ecommerce_domains.csv
 |-- results/
 |   `-- selenium_rule_based/         # Standardized example result JSON
+|   |-- tavily_llm/                  # Tavily + NanoLLM outputs
+|   `-- agentic_search/              # Agentic search outputs
 |-- src/
 |   |-- data_processor.py
 |   |-- keyword_loader.py
@@ -65,6 +65,11 @@ first-task/
 |   |-- rule_based_evaluator.py
 |   |-- run_rule_based_batch.py
 |   |-- run_selenium_nano_llm.py
+|   |-- tavily_client.py
+|   |-- run_tavily_llm.py
+|   |-- agentic_search.py
+|   |-- run_agentic_search.py
+|   |-- langgraph_flow.py
 |   `-- run_selenium_rule_based.py
 |-- tests/
 |   `-- tests/
@@ -123,6 +128,8 @@ through environment variables:
 ```text
 OPENROUTER_API_KEY=
 NANO_LLM_MODEL=google/gemini-flash-1.5-8b
+TAVILY_API_KEY=
+TAVILY_COST_PER_SEARCH_USD=0
 ```
 
 Copy `.env.example` to `.env` locally and add the real API key only in `.env`.
@@ -203,6 +210,28 @@ Run the real provider only after the 3-keyword call succeeds:
 ```powershell
 .\.venv\Scripts\python.exe src\run_selenium_nano_llm.py --provider openrouter --max-results 5
 ```
+
+Run Tavily + NanoLLM for one keyword:
+
+```powershell
+.\.venv\Scripts\python.exe src\run_tavily_llm.py --search-provider tavily --evaluator-provider openrouter --max-results 5
+```
+
+Run the API-free Tavily pipeline check:
+
+```powershell
+.\.venv\Scripts\python.exe src\run_tavily_llm.py --search-provider fake --evaluator-provider fake
+```
+
+Run the agentic search method. It plans a base query and a purchase/comparison
+query, deduplicates the results, and keeps at most five records:
+
+```powershell
+.\.venv\Scripts\python.exe src\run_agentic_search.py --search-provider tavily --evaluator-provider openrouter
+```
+
+The LangGraph implementation draft is in `src/langgraph_flow.py`; it defines
+plan, search, and evaluate nodes and requires the optional `langgraph` package.
 
 The human-labeling template for comparing predicted relevance with manual
 judgment is:

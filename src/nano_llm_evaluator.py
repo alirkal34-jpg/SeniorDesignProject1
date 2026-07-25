@@ -19,6 +19,7 @@ METHOD_TAVILY_LLM = "tavily_llm"
 METHOD_AGENTIC_SEARCH = "agentic_search"
 METHOD_SELENIUM_NANO_LLM = "selenium_nano_llm"
 METHOD_SELENIUM_RULE_BASED = "selenium_rule_based"
+NANO_LLM_PROMPT_VERSION = "relevance-v1"
 
 
 @dataclass(frozen=True)

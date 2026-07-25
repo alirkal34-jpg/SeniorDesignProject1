@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 from time import perf_counter
 
-from nano_llm_evaluator import METHOD_SELENIUM_NANO_LLM, make_nano_llm_evaluator
+from nano_llm_evaluator import METHOD_SELENIUM_NANO_LLM, NANO_LLM_PROMPT_VERSION, make_nano_llm_evaluator
 from selenium_collector import collect_search_results, create_browser
 
 
@@ -47,6 +47,8 @@ def run_selenium_nano_llm(
         "product_id": product_id,
         "keyword": keyword,
         "method": METHOD_SELENIUM_NANO_LLM,
+        "model": getattr(evaluator, "model", provider),
+        "prompt_version": NANO_LLM_PROMPT_VERSION,
         "runtime_seconds": round(runtime_seconds, 2),
         "estimated_cost_usd": round(estimated_cost_usd, 8),
         "results": evaluated_results,

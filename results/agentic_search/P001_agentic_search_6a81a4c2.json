@@ -1,0 +1,41 @@
+{
+  "product_id": "P001",
+  "keyword": "Apple iPhone 16 Pro Max 256 GB fiyat",
+  "method": "agentic_search",
+  "runtime_seconds": 0.0,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/Apple-iPhone-16-Pro-Max-256-GB-fiyat",
+      "title": "Apple iPhone 16 Pro Max 256 GB fiyat fiyat ve satın alma",
+      "snippet": "Apple iPhone 16 Pro Max 256 GB fiyat için mağaza fiyatları ve satın alma seçenekleri.",
+      "predicted_relevant": true,
+      "relevance_score": 0.97
+    },
+    {
+      "domain": "teknoseyir.com",
+      "url": "https://teknoseyir.com/Apple-iPhone-16-Pro-Max-256-GB-fiyat",
+      "title": "Apple iPhone 16 Pro Max 256 GB fiyat inceleme",
+      "snippet": "Ürün özellikleri ve kullanıcı değerlendirmeleri.",
+      "predicted_relevant": false,
+      "relevance_score": 0.4
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/Apple-iPhone-16-Pro-Max-256-GB-fiyat-satın-al-fiyat-karşılaştırma",
+      "title": "Apple iPhone 16 Pro Max 256 GB fiyat satın al fiyat karşılaştırma fiyat ve satın alma",
+      "snippet": "Apple iPhone 16 Pro Max 256 GB fiyat satın al fiyat karşılaştırma için mağaza fiyatları ve satın alma seçenekleri.",
+      "predicted_relevant": true,
+      "relevance_score": 0.97
+    },
+    {
+      "domain": "teknoseyir.com",
+      "url": "https://teknoseyir.com/Apple-iPhone-16-Pro-Max-256-GB-fiyat-satın-al-fiyat-karşılaştırma",
+      "title": "Apple iPhone 16 Pro Max 256 GB fiyat satın al fiyat karşılaştırma inceleme",
+      "snippet": "Ürün özellikleri ve kullanıcı değerlendirmeleri.",
+      "predicted_relevant": false,
+      "relevance_score": 0.4
+    }
+  ]
+}
