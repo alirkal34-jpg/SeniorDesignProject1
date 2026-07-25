@@ -19,7 +19,7 @@ from urllib import error, request
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT_PATH = ROOT_DIR / "data" / "processed" / "processed_products.json"
 DEFAULT_OUTPUT_PATH = ROOT_DIR / "data" / "processed" / "generated_keywords.json"
-DEFAULT_MODEL = "openrouter/free"
+DEFAULT_MODEL = "openai/gpt-oss-20b:free"
 OPENROUTER_BATCH_SIZE = 3
 
 
@@ -162,6 +162,7 @@ class OpenRouterKeywordClient:
         payload = {
             "model": self.model,
             "temperature": 0,
+            "max_tokens": 400,
             "messages": [
                 {
                     "role": "system",
@@ -225,7 +226,14 @@ class OpenRouterKeywordClient:
         response_data = self._post_json(payload)
         try:
             content = response_data["choices"][0]["message"]["content"]
+            if not isinstance(content, str) or not content.strip():
+                finish_reason = response_data.get("choices", [{}])[0].get("finish_reason")
+                raise KeywordGenerationError(
+                    f"OpenRouter returned empty structured content (finish_reason={finish_reason}, model={self.model})."
+                )
             parsed = json.loads(content)
+        except KeywordGenerationError:
+            raise
         except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
             raise KeywordGenerationError(f"Could not parse OpenRouter structured response: {exc}") from exc
         return validate_keyword_output(parsed, expected_ids)

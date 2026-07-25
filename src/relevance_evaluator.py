@@ -177,7 +177,7 @@ def make_result_payload(
 
         evaluator = OpenRouterRelevanceEvaluator(
             api_key=os.environ.get("OPENROUTER_API_KEY", ""),
-            model=os.environ.get("NANO_LLM_MODEL", "openrouter/free"),
+            model=os.environ.get("NANO_LLM_MODEL", "openai/gpt-oss-20b:free"),
         )
         evaluated = evaluator.evaluate(keyword, results)
     else:

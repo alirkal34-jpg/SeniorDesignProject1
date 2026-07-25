@@ -127,7 +127,7 @@ through environment variables:
 
 ```text
 OPENROUTER_API_KEY=
-NANO_LLM_MODEL=openrouter/free
+NANO_LLM_MODEL=openai/gpt-oss-20b:free
 TAVILY_API_KEY=
 TAVILY_COST_PER_SEARCH_USD=0
 ```
