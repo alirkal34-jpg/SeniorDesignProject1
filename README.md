@@ -1,6 +1,6 @@
 # SeniorDesignProject1
 
-## Current Progress(22-07-2026)
+## Current Progress (25-07-2026)
 
 - Created a candidate dataset containing 100 smartphone products.
 - Defined a stable 12-column product data schema.
@@ -9,6 +9,9 @@
 - Implemented non-null, duplicate, and numeric-range validation rules.
 - Generated processed CSV and JSON outputs.
 - Generated a separate validation issues report.
+- Added a product-specific HTTPS reference lookup URL for every dataset row.
+- Human-labeled every currently stored search result and enabled accuracy
+  calculation.
 
 ## Project overview
 
@@ -19,7 +22,7 @@ works with a 100-product smartphone dataset and provides:
 - `DataProcessor` functionality for schema validation, cleaning,
   standardization, and row-level validation.
 - A dataset-level quality check for row count, product ID coverage, duplicate
-  IDs, and duplicate product variants.
+  IDs, duplicate product variants, and complete HTTPS source references.
 - Selenium-based Google search-result collection for a single product and
   keyword.
 - Rule-based domain relevance evaluation using the trusted e-commerce domain
@@ -49,12 +52,15 @@ first-task/
 |-- data/
 |   |-- raw/                         # Original candidate datasets
 |   |-- processed/                   # Cleaned data and validation report
-|   |-- labels/                      # Human ground-truth templates
+|   |-- evaluation/                  # Fixed 10-product pilot subset
+|   |-- labels/                      # Human ground-truth labels
 |   `-- reference/
 |       `-- trusted_ecommerce_domains.csv
 |-- results/
+|   |-- selenium_nano_llm/           # Fake-provider example result JSON
 |   `-- selenium_rule_based/         # Standardized example result JSON
 |-- src/
+|   |-- evaluation/                  # Schema, labels, and metrics utilities
 |   |-- data_processor.py
 |   |-- keyword_loader.py
 |   |-- keyword_generator.py
@@ -97,6 +103,11 @@ Run the dataset-level quality check:
 ```powershell
 .\.venv\Scripts\python.exe src\quality_check.py
 ```
+
+Every current product row includes a product-specific GSMArena search URL in
+`source_url`. These URLs are reference locators for follow-up specification
+verification; they do not claim that every dataset value was originally
+copied from GSMArena.
 
 Run the rule-based evaluator with its local sample data:
 
@@ -210,8 +221,8 @@ preparing the final comparison:
   runtime/cost values, invalid URLs, non-boolean predictions, and relevance
   scores outside the `0-1` range.
 - `src/evaluation/metrics.py` calculates experiment count, result count,
-  average runtime, total/average estimated cost, and relevant-result ratio for
-  each method.
+  average runtime, total/average estimated cost, relevant-result ratio,
+  ground-truth coverage, confusion counts, and accuracy for each method.
 - `src/evaluation/ground_truth.py` loads human relevance labels and supports
   shared labels so that the same URL does not need to be labeled separately
   for every method.
@@ -236,10 +247,12 @@ Calculate current metrics:
 .\.venv\Scripts\python.exe src\evaluation\metrics.py
 ```
 
-Accuracy remains `null` until human labels are added to
-`data/labels/domain_ground_truth.csv`. The current Selenium + NanoLLM sample
-uses the fake provider, so its `0.0` estimated cost must not be interpreted as
-a measured real-provider API cost.
+The 15 shared human-label records cover all 20 currently stored search
+results. The current overall accuracy is `0.95`; Selenium + Rule-Based is
+`1.0`, and the fake-provider Selenium + NanoLLM sample is `0.8`. These values
+describe only the small committed sample, not the final 100-product
+experiment. The NanoLLM sample uses the fake provider, so its `0.0` estimated
+cost must not be interpreted as a measured real-provider API cost.
 
 ## Progress checklist
 
@@ -256,6 +269,8 @@ yet been verified with a real external provider.
 - [x] Produce `processed_products.csv`, `processed_products.json`, and
   `validation_issues.csv`.
 - [x] Implement and run the dataset-level `src/quality_check.py`.
+- [x] Add a unique product-specific HTTPS reference URL to all 100 dataset
+  rows and preserve it in the processed CSV/JSON outputs.
 - [x] Implement `src/selenium_collector.py` and complete the initial Selenium
   connection test.
 - [x] Add `data/reference/trusted_ecommerce_domains.csv`.
@@ -298,8 +313,8 @@ yet been verified with a real external provider.
   calculations.
 - [x] Add ground-truth loading and validation.
 - [x] Select a 10-product evaluation subset containing 10 different brands.
-- [ ] Add human relevance labels. The current ground-truth file contains only
-  its header, so accuracy is currently unavailable.
+- [x] Add 15 shared human relevance labels covering all 20 current result
+  rows and calculate the initial accuracy metrics.
 - [ ] Re-run a small live Rule-Based batch with two or three keywords if a
   fresh live-search verification is required.
 - [ ] Merge the reviewed feature work into `main`. The current work is pushed

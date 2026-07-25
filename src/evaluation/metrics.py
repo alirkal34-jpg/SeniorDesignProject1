@@ -89,6 +89,10 @@ def calculate_method_metrics(
         relevant_count = 0
         labeled_count = 0
         correct_count = 0
+        true_positive_count = 0
+        true_negative_count = 0
+        false_positive_count = 0
+        false_negative_count = 0
 
         for payload in method_payloads:
             for result in payload["results"]:
@@ -114,14 +118,33 @@ def calculate_method_metrics(
 
                 labeled_count += 1
 
-                if (
-                    result["predicted_relevant"]
-                    == human_label
-                ):
+                predicted_relevant = result[
+                    "predicted_relevant"
+                ]
+
+                if predicted_relevant == human_label:
                     correct_count += 1
+
+                if predicted_relevant and human_label:
+                    true_positive_count += 1
+                elif (
+                    not predicted_relevant
+                    and not human_label
+                ):
+                    true_negative_count += 1
+                elif predicted_relevant:
+                    false_positive_count += 1
+                else:
+                    false_negative_count += 1
 
         relevant_ratio = (
             relevant_count / result_count
+            if result_count
+            else 0.0
+        )
+
+        ground_truth_coverage_ratio = (
+            round(labeled_count / result_count, 4)
             if result_count
             else 0.0
         )
@@ -153,7 +176,14 @@ def calculate_method_metrics(
                 8,
             ),
             "labeled_result_count": labeled_count,
+            "ground_truth_coverage_ratio": (
+                ground_truth_coverage_ratio
+            ),
             "correct_prediction_count": correct_count,
+            "true_positive_count": true_positive_count,
+            "true_negative_count": true_negative_count,
+            "false_positive_count": false_positive_count,
+            "false_negative_count": false_negative_count,
             "accuracy": accuracy,
         }
 
@@ -205,11 +235,32 @@ def build_metrics_report(
         metrics["correct_prediction_count"]
         for metrics in method_metrics.values()
     )
+    true_positive_count = sum(
+        metrics["true_positive_count"]
+        for metrics in method_metrics.values()
+    )
+    true_negative_count = sum(
+        metrics["true_negative_count"]
+        for metrics in method_metrics.values()
+    )
+    false_positive_count = sum(
+        metrics["false_positive_count"]
+        for metrics in method_metrics.values()
+    )
+    false_negative_count = sum(
+        metrics["false_negative_count"]
+        for metrics in method_metrics.values()
+    )
 
     overall_accuracy = (
         round(correct_count / labeled_count, 4)
         if labeled_count
         else None
+    )
+    ground_truth_coverage_ratio = (
+        round(labeled_count / result_count, 4)
+        if result_count
+        else 0.0
     )
 
     return {
@@ -221,7 +272,14 @@ def build_metrics_report(
             ground_truth_record_count
         ),
         "labeled_result_count": labeled_count,
+        "ground_truth_coverage_ratio": (
+            ground_truth_coverage_ratio
+        ),
         "correct_prediction_count": correct_count,
+        "true_positive_count": true_positive_count,
+        "true_negative_count": true_negative_count,
+        "false_positive_count": false_positive_count,
+        "false_negative_count": false_negative_count,
         "accuracy": overall_accuracy,
         "methods": method_metrics,
     }

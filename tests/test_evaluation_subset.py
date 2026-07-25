@@ -91,6 +91,7 @@ class EvaluationSubsetTests(unittest.TestCase):
                 "storage_gb",
                 "ram_gb",
                 "color",
+                "source_url",
             ):
                 self.assertEqual(
                     str(subset_product[field_name]),

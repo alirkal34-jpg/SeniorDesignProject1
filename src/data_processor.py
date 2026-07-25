@@ -58,12 +58,12 @@ NON_NULL_COLUMNS = [
     "battery_mah",
     "color",
     "operating_system",
+    "source_url",
 ]
 
 
 # These columns must exist, but their values may be empty.
 NULLABLE_COLUMNS = [
-    "source_url",
 ]
 
 
@@ -285,6 +285,32 @@ def validate_non_null_values(
     return df
 
 
+def validate_source_urls(
+    df: pd.DataFrame,
+) -> pd.DataFrame:
+    """
+    Require non-empty source URLs to use HTTPS.
+
+    Missing URLs are reported by validate_non_null_values().
+    """
+
+    invalid_source_url_condition = (
+        df["source_url"].ne("")
+        & ~df["source_url"].str.match(
+            r"^https://",
+            na=False,
+        )
+    )
+
+    add_validation_error(
+        df,
+        invalid_source_url_condition,
+        "invalid_source_url",
+    )
+
+    return df
+
+
 def validate_duplicates(
     df: pd.DataFrame,
 ) -> pd.DataFrame:
@@ -391,6 +417,7 @@ def validate_data(df: pd.DataFrame) -> pd.DataFrame:
     df["validation_errors"] = ""
 
     df = validate_non_null_values(df)
+    df = validate_source_urls(df)
     df = validate_duplicates(df)
     df = validate_numeric_ranges(df)
     df = assign_validation_status(df)

@@ -56,7 +56,7 @@ def load_processed_data(
 
 def check_dataset_quality(
     df: pd.DataFrame,
-) -> None:
+) -> bool:
     """
     İşlenmiş veri setinin tamamına uygulanan
     dataset-level kalite kontrollerini gerçekleştirir.
@@ -150,16 +150,26 @@ def check_dataset_quality(
         )
     ]
 
-    # source_url nullable olduğu için boş URL bir
-    # validation hatası değildir. Yalnızca raporlanır.
-    missing_source_url_count = (
+    source_url_values = (
         df["source_url"]
         .fillna("")
         .astype(str)
         .str.strip()
+    )
+
+    missing_source_url_count = (
+        source_url_values
         .eq("")
         .sum()
     )
+
+    invalid_source_url_rows = df[
+        source_url_values.ne("")
+        & ~source_url_values.str.match(
+            r"^https://",
+            na=False,
+        )
+    ]
 
     total_rows = len(df)
 
@@ -177,6 +187,8 @@ def check_dataset_quality(
         and not unexpected_product_ids
         and duplicate_id_rows.empty
         and duplicate_product_rows.empty
+        and missing_source_url_count == 0
+        and invalid_source_url_rows.empty
     )
 
     # ==================================================
@@ -216,6 +228,11 @@ def check_dataset_quality(
     print(
         "Rows without source URL: "
         f"{missing_source_url_count}"
+    )
+
+    print(
+        "Rows with invalid source URL: "
+        f"{len(invalid_source_url_rows)}"
     )
 
     # Sorun varsa yalnızca sayısını değil,
@@ -263,6 +280,18 @@ def check_dataset_quality(
             ].to_string(index=False)
         )
 
+    if not invalid_source_url_rows.empty:
+        print()
+        print("Invalid source URLs:")
+        print(
+            invalid_source_url_rows[
+                [
+                    "product_id",
+                    "source_url",
+                ]
+            ].to_string(index=False)
+        )
+
     print()
 
     if dataset_passed:
@@ -273,6 +302,8 @@ def check_dataset_quality(
         print(
             "Dataset-level quality check: FAILED"
         )
+
+    return dataset_passed
 
 
 # ==================================================

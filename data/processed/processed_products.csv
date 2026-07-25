@@ -1,101 +1,101 @@
 product_id,product_name,brand,model,category,storage_gb,ram_gb,display_size_inch,battery_mah,color,operating_system,source_url
-P001,Apple iPhone 16 Pro Max 256 GB,Apple,iPhone 16 Pro Max,Smartphone,256,8,6.9,4685,Black Titanium,iOS,
-P002,Apple iPhone 16 Pro 128 GB,Apple,iPhone 16 Pro,Smartphone,128,8,6.3,3582,Natural Titanium,iOS,
-P003,Apple iPhone 16 Plus 128 GB,Apple,iPhone 16 Plus,Smartphone,128,8,6.7,4674,Ultramarine,iOS,
-P004,Apple iPhone 16 128 GB,Apple,iPhone 16,Smartphone,128,8,6.1,3561,Black,iOS,
-P005,Apple iPhone 15 Pro Max 256 GB,Apple,iPhone 15 Pro Max,Smartphone,256,8,6.7,4441,Blue Titanium,iOS,
-P006,Apple iPhone 15 Pro 128 GB,Apple,iPhone 15 Pro,Smartphone,128,8,6.1,3274,Natural Titanium,iOS,
-P007,Apple iPhone 15 Plus 128 GB,Apple,iPhone 15 Plus,Smartphone,128,6,6.7,4383,Blue,iOS,
-P008,Apple iPhone 15 128 GB,Apple,iPhone 15,Smartphone,128,6,6.1,3349,Black,iOS,
-P009,Apple iPhone 14 Pro Max 128 GB,Apple,iPhone 14 Pro Max,Smartphone,128,6,6.7,4323,Space Black,iOS,
-P010,Apple iPhone 14 128 GB,Apple,iPhone 14,Smartphone,128,6,6.1,3279,Midnight,iOS,
-P011,Samsung Galaxy S25 Ultra 256 GB,Samsung,Galaxy S25 Ultra,Smartphone,256,12,6.9,5000,Titanium Black,Android,
-P012,Samsung Galaxy S25 Plus 256 GB,Samsung,Galaxy S25+,Smartphone,256,12,6.7,4900,Navy,Android,
-P013,Samsung Galaxy S25 128 GB,Samsung,Galaxy S25,Smartphone,128,12,6.2,4000,Silver Shadow,Android,
-P014,Samsung Galaxy S24 Ultra 256 GB,Samsung,Galaxy S24 Ultra,Smartphone,256,12,6.8,5000,Titanium Gray,Android,
-P015,Samsung Galaxy S24 Plus 256 GB,Samsung,Galaxy S24+,Smartphone,256,12,6.7,4900,Onyx Black,Android,
-P016,Samsung Galaxy S24 128 GB,Samsung,Galaxy S24,Smartphone,128,8,6.2,4000,Marble Gray,Android,
-P017,Samsung Galaxy S23 Ultra 256 GB,Samsung,Galaxy S23 Ultra,Smartphone,256,8,6.8,5000,Phantom Black,Android,
-P018,Samsung Galaxy S23 Plus 256 GB,Samsung,Galaxy S23+,Smartphone,256,8,6.6,4700,Cream,Android,
-P019,Samsung Galaxy S23 128 GB,Samsung,Galaxy S23,Smartphone,128,8,6.1,3900,Green,Android,
-P020,Samsung Galaxy Z Fold6 256 GB,Samsung,Galaxy Z Fold6,Smartphone,256,12,7.6,4400,Navy,Android,
-P021,Samsung Galaxy Z Flip6 256 GB,Samsung,Galaxy Z Flip6,Smartphone,256,12,6.7,4000,Blue,Android,
-P022,Samsung Galaxy A56 5G 256 GB,Samsung,Galaxy A56 5G,Smartphone,256,8,6.7,5000,Awesome Graphite,Android,
-P023,Samsung Galaxy A55 5G 256 GB,Samsung,Galaxy A55 5G,Smartphone,256,8,6.6,5000,Awesome Navy,Android,
-P024,Samsung Galaxy A36 5G 128 GB,Samsung,Galaxy A36 5G,Smartphone,128,8,6.7,5000,Awesome Black,Android,
-P025,Samsung Galaxy A35 5G 128 GB,Samsung,Galaxy A35 5G,Smartphone,128,8,6.6,5000,Awesome Iceblue,Android,
-P026,Xiaomi 15 Ultra 512 GB,Xiaomi,Xiaomi 15 Ultra,Smartphone,512,16,6.73,5410,Black,Android,
-P027,Xiaomi 15 256 GB,Xiaomi,Xiaomi 15,Smartphone,256,12,6.36,5240,Black,Android,
-P028,Xiaomi 14 Ultra 512 GB,Xiaomi,Xiaomi 14 Ultra,Smartphone,512,16,6.73,5000,White,Android,
-P029,Xiaomi 14 256 GB,Xiaomi,Xiaomi 14,Smartphone,256,12,6.36,4610,Jade Green,Android,
-P030,Xiaomi 14T Pro 512 GB,Xiaomi,Xiaomi 14T Pro,Smartphone,512,12,6.67,5000,Titan Gray,Android,
-P031,Xiaomi 14T 256 GB,Xiaomi,Xiaomi 14T,Smartphone,256,12,6.67,5000,Lemon Green,Android,
-P032,Xiaomi 13T Pro 512 GB,Xiaomi,Xiaomi 13T Pro,Smartphone,512,12,6.67,5000,Alpine Blue,Android,
-P033,Xiaomi 13T 256 GB,Xiaomi,Xiaomi 13T,Smartphone,256,8,6.67,5000,Meadow Green,Android,
-P034,Xiaomi Redmi Note 14 Pro Plus 5G 256 GB,Xiaomi,Redmi Note 14 Pro+ 5G,Smartphone,256,12,6.67,5110,Midnight Black,Android,
-P035,Xiaomi Redmi Note 14 Pro 5G 256 GB,Xiaomi,Redmi Note 14 Pro 5G,Smartphone,256,8,6.67,5110,Coral Green,Android,
-P036,Xiaomi Redmi Note 13 Pro Plus 5G 256 GB,Xiaomi,Redmi Note 13 Pro+ 5G,Smartphone,256,12,6.67,5000,Moonlight White,Android,
-P037,Xiaomi Poco F6 Pro 512 GB,Xiaomi,Poco F6 Pro,Smartphone,512,12,6.67,5000,Black,Android,
-P038,Google Pixel 9 Pro XL 256 GB,Google,Pixel 9 Pro XL,Smartphone,256,16,6.8,5060,Obsidian,Android,
-P039,Google Pixel 9 Pro 128 GB,Google,Pixel 9 Pro,Smartphone,128,16,6.3,4700,Hazel,Android,
-P040,Google Pixel 9 128 GB,Google,Pixel 9,Smartphone,128,12,6.3,4700,Peony,Android,
-P041,Google Pixel 8 Pro 128 GB,Google,Pixel 8 Pro,Smartphone,128,12,6.7,5050,Bay,Android,
-P042,Google Pixel 8 128 GB,Google,Pixel 8,Smartphone,128,8,6.2,4575,Obsidian,Android,
-P043,Google Pixel 8a 128 GB,Google,Pixel 8a,Smartphone,128,8,6.1,4492,Aloe,Android,
-P044,Google Pixel 7 Pro 128 GB,Google,Pixel 7 Pro,Smartphone,128,12,6.7,5000,Snow,Android,
-P045,Google Pixel 7a 128 GB,Google,Pixel 7a,Smartphone,128,8,6.1,4385,Charcoal,Android,
-P046,OnePlus 13 256 GB,OnePlus,OnePlus 13,Smartphone,256,12,6.82,6000,Black Eclipse,Android,
-P047,OnePlus 12 256 GB,OnePlus,OnePlus 12,Smartphone,256,12,6.82,5400,Flowy Emerald,Android,
-P048,OnePlus 12R 256 GB,OnePlus,OnePlus 12R,Smartphone,256,16,6.78,5500,Cool Blue,Android,
-P049,OnePlus 11 256 GB,OnePlus,OnePlus 11,Smartphone,256,16,6.7,5000,Titan Black,Android,
-P050,OnePlus 10 Pro 256 GB,OnePlus,OnePlus 10 Pro,Smartphone,256,12,6.7,5000,Volcanic Black,Android,
-P051,OnePlus Nord 4 256 GB,OnePlus,Nord 4,Smartphone,256,12,6.74,5500,Obsidian Midnight,Android,
-P052,OnePlus Nord CE4 256 GB,OnePlus,Nord CE4,Smartphone,256,8,6.7,5500,Dark Chrome,Android,
-P053,OnePlus Open 512 GB,OnePlus,OnePlus Open,Smartphone,512,16,7.82,4805,Emerald Dusk,Android,
-P054,Oppo Find X8 Pro 512 GB,Oppo,Find X8 Pro,Smartphone,512,16,6.78,5910,Space Black,Android,
-P055,Oppo Find X8 256 GB,Oppo,Find X8,Smartphone,256,12,6.59,5630,Star Grey,Android,
-P056,Oppo Reno13 Pro 256 GB,Oppo,Reno13 Pro,Smartphone,256,12,6.83,5800,Graphite Grey,Android,
-P057,Oppo Reno13 256 GB,Oppo,Reno13,Smartphone,256,12,6.59,5600,Luminous Blue,Android,
-P058,Oppo Reno12 Pro 256 GB,Oppo,Reno12 Pro,Smartphone,256,12,6.7,5000,Nebula Silver,Android,
-P059,Oppo Reno12 256 GB,Oppo,Reno12,Smartphone,256,12,6.7,5000,Astro Silver,Android,
-P060,Oppo Reno11 Pro 256 GB,Oppo,Reno11 Pro,Smartphone,256,12,6.7,4600,Pearl White,Android,
-P061,Oppo Reno11 256 GB,Oppo,Reno11,Smartphone,256,8,6.7,5000,Wave Green,Android,
-P062,Oppo A5 Pro 256 GB,Oppo,A5 Pro,Smartphone,256,12,6.7,6000,Quartz White,Android,
-P063,Oppo A3 Pro 256 GB,Oppo,A3 Pro,Smartphone,256,12,6.7,5100,Azure,Android,
-P064,Vivo X200 Pro 512 GB,Vivo,X200 Pro,Smartphone,512,16,6.78,6000,Titanium Grey,Android,
-P065,Vivo X200 256 GB,Vivo,X200,Smartphone,256,12,6.67,5800,Natural Green,Android,
-P066,Vivo X100 Pro 512 GB,Vivo,X100 Pro,Smartphone,512,16,6.78,5400,Asteroid Black,Android,
-P067,Vivo X100 256 GB,Vivo,X100,Smartphone,256,12,6.78,5000,Stargaze Blue,Android,
-P068,Vivo V40 Pro 256 GB,Vivo,V40 Pro,Smartphone,256,12,6.78,5500,Ganges Blue,Android,
-P069,Vivo V40 256 GB,Vivo,V40,Smartphone,256,12,6.78,5500,Nebula Purple,Android,
-P070,Vivo V30 Pro 256 GB,Vivo,V30 Pro,Smartphone,256,12,6.78,5000,Andaman Blue,Android,
-P071,Vivo V30 256 GB,Vivo,V30,Smartphone,256,12,6.78,5000,Noble Black,Android,
-P072,Vivo Y200 Pro 128 GB,Vivo,Y200 Pro,Smartphone,128,8,6.78,5000,Silk Green,Android,
-P073,Vivo Y100 128 GB,Vivo,Y100,Smartphone,128,8,6.38,4500,Metal Black,Android,
-P074,Realme GT 7 Pro 256 GB,Realme,GT 7 Pro,Smartphone,256,12,6.78,6500,Mars Orange,Android,
-P075,Realme GT 6 256 GB,Realme,GT 6,Smartphone,256,12,6.78,5500,Fluid Silver,Android,
-P076,Realme GT 6T 256 GB,Realme,GT 6T,Smartphone,256,12,6.78,5500,Razor Green,Android,
-P077,Realme GT 5 Pro 256 GB,Realme,GT 5 Pro,Smartphone,256,12,6.78,5400,Red Rock,Android,
-P078,Realme 14 Pro Plus 256 GB,Realme,14 Pro+,Smartphone,256,12,6.83,6000,Pearl White,Android,
-P079,Realme 14 Pro 256 GB,Realme,14 Pro,Smartphone,256,12,6.77,6000,Suede Grey,Android,
-P080,Realme 13 Pro Plus 256 GB,Realme,13 Pro+,Smartphone,256,12,6.7,5200,Monet Gold,Android,
-P081,Realme 13 Pro 256 GB,Realme,13 Pro,Smartphone,256,12,6.7,5200,Emerald Green,Android,
-P082,Realme 12 Pro Plus 256 GB,Realme,12 Pro+,Smartphone,256,12,6.7,5000,Submarine Blue,Android,
-P083,Realme 12 Pro 256 GB,Realme,12 Pro,Smartphone,256,8,6.7,5000,Navigator Beige,Android,
-P084,Motorola Edge 50 Ultra 512 GB,Motorola,Edge 50 Ultra,Smartphone,512,16,6.67,4500,Forest Grey,Android,
-P085,Motorola Edge 50 Pro 512 GB,Motorola,Edge 50 Pro,Smartphone,512,12,6.7,4500,Luxe Lavender,Android,
-P086,Motorola Edge 50 Fusion 256 GB,Motorola,Edge 50 Fusion,Smartphone,256,12,6.7,5000,Marshmallow Blue,Android,
-P087,Motorola Edge 40 Pro 256 GB,Motorola,Edge 40 Pro,Smartphone,256,12,6.67,4600,Interstellar Black,Android,
-P088,Motorola Razr 50 Ultra 512 GB,Motorola,Razr 50 Ultra,Smartphone,512,12,6.9,4000,Midnight Blue,Android,
-P089,Motorola Razr 50 256 GB,Motorola,Razr 50,Smartphone,256,8,6.9,4200,Spritz Orange,Android,
-P090,Motorola Moto G85 256 GB,Motorola,Moto G85,Smartphone,256,12,6.67,5000,Olive Green,Android,
-P091,Motorola Moto G75 256 GB,Motorola,Moto G75,Smartphone,256,8,6.78,5000,Charcoal Grey,Android,
-P092,Motorola Moto G55 256 GB,Motorola,Moto G55,Smartphone,256,8,6.49,5000,Twilight Purple,Android,
-P093,Motorola Moto G35 128 GB,Motorola,Moto G35,Smartphone,128,8,6.72,5000,Leaf Green,Android,
-P094,Nothing Phone 2 256 GB,Nothing,Phone (2),Smartphone,256,12,6.7,4700,Dark Grey,Android,
-P095,Nothing Phone 2a Plus 256 GB,Nothing,Phone (2a) Plus,Smartphone,256,12,6.7,5000,Grey,Android,
-P096,Nothing Phone 2a 256 GB,Nothing,Phone (2a),Smartphone,256,12,6.7,5000,Milk,Android,
-P097,CMF Phone 1 256 GB,CMF by Nothing,CMF Phone 1,Smartphone,256,8,6.67,5000,Orange,Android,
-P098,Honor Magic7 Pro 512 GB,Honor,Magic7 Pro,Smartphone,512,16,6.8,5850,Lunar Shadow Grey,Android,
-P099,Honor Magic6 Pro 512 GB,Honor,Magic6 Pro,Smartphone,512,12,6.8,5600,Epi Green,Android,
-P100,Honor 200 Pro 512 GB,Honor,Honor 200 Pro,Smartphone,512,12,6.78,5200,Ocean Cyan,Android,
+P001,Apple iPhone 16 Pro Max 256 GB,Apple,iPhone 16 Pro Max,Smartphone,256,8,6.9,4685,Black Titanium,iOS,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Apple%20iPhone%2016%20Pro%20Max
+P002,Apple iPhone 16 Pro 128 GB,Apple,iPhone 16 Pro,Smartphone,128,8,6.3,3582,Natural Titanium,iOS,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Apple%20iPhone%2016%20Pro
+P003,Apple iPhone 16 Plus 128 GB,Apple,iPhone 16 Plus,Smartphone,128,8,6.7,4674,Ultramarine,iOS,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Apple%20iPhone%2016%20Plus
+P004,Apple iPhone 16 128 GB,Apple,iPhone 16,Smartphone,128,8,6.1,3561,Black,iOS,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Apple%20iPhone%2016
+P005,Apple iPhone 15 Pro Max 256 GB,Apple,iPhone 15 Pro Max,Smartphone,256,8,6.7,4441,Blue Titanium,iOS,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Apple%20iPhone%2015%20Pro%20Max
+P006,Apple iPhone 15 Pro 128 GB,Apple,iPhone 15 Pro,Smartphone,128,8,6.1,3274,Natural Titanium,iOS,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Apple%20iPhone%2015%20Pro
+P007,Apple iPhone 15 Plus 128 GB,Apple,iPhone 15 Plus,Smartphone,128,6,6.7,4383,Blue,iOS,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Apple%20iPhone%2015%20Plus
+P008,Apple iPhone 15 128 GB,Apple,iPhone 15,Smartphone,128,6,6.1,3349,Black,iOS,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Apple%20iPhone%2015
+P009,Apple iPhone 14 Pro Max 128 GB,Apple,iPhone 14 Pro Max,Smartphone,128,6,6.7,4323,Space Black,iOS,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Apple%20iPhone%2014%20Pro%20Max
+P010,Apple iPhone 14 128 GB,Apple,iPhone 14,Smartphone,128,6,6.1,3279,Midnight,iOS,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Apple%20iPhone%2014
+P011,Samsung Galaxy S25 Ultra 256 GB,Samsung,Galaxy S25 Ultra,Smartphone,256,12,6.9,5000,Titanium Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20S25%20Ultra
+P012,Samsung Galaxy S25 Plus 256 GB,Samsung,Galaxy S25+,Smartphone,256,12,6.7,4900,Navy,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20S25%20Plus
+P013,Samsung Galaxy S25 128 GB,Samsung,Galaxy S25,Smartphone,128,12,6.2,4000,Silver Shadow,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20S25
+P014,Samsung Galaxy S24 Ultra 256 GB,Samsung,Galaxy S24 Ultra,Smartphone,256,12,6.8,5000,Titanium Gray,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20S24%20Ultra
+P015,Samsung Galaxy S24 Plus 256 GB,Samsung,Galaxy S24+,Smartphone,256,12,6.7,4900,Onyx Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20S24%20Plus
+P016,Samsung Galaxy S24 128 GB,Samsung,Galaxy S24,Smartphone,128,8,6.2,4000,Marble Gray,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20S24
+P017,Samsung Galaxy S23 Ultra 256 GB,Samsung,Galaxy S23 Ultra,Smartphone,256,8,6.8,5000,Phantom Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20S23%20Ultra
+P018,Samsung Galaxy S23 Plus 256 GB,Samsung,Galaxy S23+,Smartphone,256,8,6.6,4700,Cream,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20S23%20Plus
+P019,Samsung Galaxy S23 128 GB,Samsung,Galaxy S23,Smartphone,128,8,6.1,3900,Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20S23
+P020,Samsung Galaxy Z Fold6 256 GB,Samsung,Galaxy Z Fold6,Smartphone,256,12,7.6,4400,Navy,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20Z%20Fold6
+P021,Samsung Galaxy Z Flip6 256 GB,Samsung,Galaxy Z Flip6,Smartphone,256,12,6.7,4000,Blue,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20Z%20Flip6
+P022,Samsung Galaxy A56 5G 256 GB,Samsung,Galaxy A56 5G,Smartphone,256,8,6.7,5000,Awesome Graphite,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20A56%205G
+P023,Samsung Galaxy A55 5G 256 GB,Samsung,Galaxy A55 5G,Smartphone,256,8,6.6,5000,Awesome Navy,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20A55%205G
+P024,Samsung Galaxy A36 5G 128 GB,Samsung,Galaxy A36 5G,Smartphone,128,8,6.7,5000,Awesome Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20A36%205G
+P025,Samsung Galaxy A35 5G 128 GB,Samsung,Galaxy A35 5G,Smartphone,128,8,6.6,5000,Awesome Iceblue,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Samsung%20Galaxy%20A35%205G
+P026,Xiaomi 15 Ultra 512 GB,Xiaomi,Xiaomi 15 Ultra,Smartphone,512,16,6.73,5410,Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%2015%20Ultra
+P027,Xiaomi 15 256 GB,Xiaomi,Xiaomi 15,Smartphone,256,12,6.36,5240,Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%2015
+P028,Xiaomi 14 Ultra 512 GB,Xiaomi,Xiaomi 14 Ultra,Smartphone,512,16,6.73,5000,White,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%2014%20Ultra
+P029,Xiaomi 14 256 GB,Xiaomi,Xiaomi 14,Smartphone,256,12,6.36,4610,Jade Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%2014
+P030,Xiaomi 14T Pro 512 GB,Xiaomi,Xiaomi 14T Pro,Smartphone,512,12,6.67,5000,Titan Gray,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%2014T%20Pro
+P031,Xiaomi 14T 256 GB,Xiaomi,Xiaomi 14T,Smartphone,256,12,6.67,5000,Lemon Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%2014T
+P032,Xiaomi 13T Pro 512 GB,Xiaomi,Xiaomi 13T Pro,Smartphone,512,12,6.67,5000,Alpine Blue,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%2013T%20Pro
+P033,Xiaomi 13T 256 GB,Xiaomi,Xiaomi 13T,Smartphone,256,8,6.67,5000,Meadow Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%2013T
+P034,Xiaomi Redmi Note 14 Pro Plus 5G 256 GB,Xiaomi,Redmi Note 14 Pro+ 5G,Smartphone,256,12,6.67,5110,Midnight Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%20Redmi%20Note%2014%20Pro%20Plus%205G
+P035,Xiaomi Redmi Note 14 Pro 5G 256 GB,Xiaomi,Redmi Note 14 Pro 5G,Smartphone,256,8,6.67,5110,Coral Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%20Redmi%20Note%2014%20Pro%205G
+P036,Xiaomi Redmi Note 13 Pro Plus 5G 256 GB,Xiaomi,Redmi Note 13 Pro+ 5G,Smartphone,256,12,6.67,5000,Moonlight White,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%20Redmi%20Note%2013%20Pro%20Plus%205G
+P037,Xiaomi Poco F6 Pro 512 GB,Xiaomi,Poco F6 Pro,Smartphone,512,12,6.67,5000,Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Xiaomi%20Poco%20F6%20Pro
+P038,Google Pixel 9 Pro XL 256 GB,Google,Pixel 9 Pro XL,Smartphone,256,16,6.8,5060,Obsidian,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Google%20Pixel%209%20Pro%20XL
+P039,Google Pixel 9 Pro 128 GB,Google,Pixel 9 Pro,Smartphone,128,16,6.3,4700,Hazel,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Google%20Pixel%209%20Pro
+P040,Google Pixel 9 128 GB,Google,Pixel 9,Smartphone,128,12,6.3,4700,Peony,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Google%20Pixel%209
+P041,Google Pixel 8 Pro 128 GB,Google,Pixel 8 Pro,Smartphone,128,12,6.7,5050,Bay,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Google%20Pixel%208%20Pro
+P042,Google Pixel 8 128 GB,Google,Pixel 8,Smartphone,128,8,6.2,4575,Obsidian,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Google%20Pixel%208
+P043,Google Pixel 8a 128 GB,Google,Pixel 8a,Smartphone,128,8,6.1,4492,Aloe,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Google%20Pixel%208a
+P044,Google Pixel 7 Pro 128 GB,Google,Pixel 7 Pro,Smartphone,128,12,6.7,5000,Snow,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Google%20Pixel%207%20Pro
+P045,Google Pixel 7a 128 GB,Google,Pixel 7a,Smartphone,128,8,6.1,4385,Charcoal,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Google%20Pixel%207a
+P046,OnePlus 13 256 GB,OnePlus,OnePlus 13,Smartphone,256,12,6.82,6000,Black Eclipse,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=OnePlus%2013
+P047,OnePlus 12 256 GB,OnePlus,OnePlus 12,Smartphone,256,12,6.82,5400,Flowy Emerald,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=OnePlus%2012
+P048,OnePlus 12R 256 GB,OnePlus,OnePlus 12R,Smartphone,256,16,6.78,5500,Cool Blue,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=OnePlus%2012R
+P049,OnePlus 11 256 GB,OnePlus,OnePlus 11,Smartphone,256,16,6.7,5000,Titan Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=OnePlus%2011
+P050,OnePlus 10 Pro 256 GB,OnePlus,OnePlus 10 Pro,Smartphone,256,12,6.7,5000,Volcanic Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=OnePlus%2010%20Pro
+P051,OnePlus Nord 4 256 GB,OnePlus,Nord 4,Smartphone,256,12,6.74,5500,Obsidian Midnight,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=OnePlus%20Nord%204
+P052,OnePlus Nord CE4 256 GB,OnePlus,Nord CE4,Smartphone,256,8,6.7,5500,Dark Chrome,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=OnePlus%20Nord%20CE4
+P053,OnePlus Open 512 GB,OnePlus,OnePlus Open,Smartphone,512,16,7.82,4805,Emerald Dusk,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=OnePlus%20Open
+P054,Oppo Find X8 Pro 512 GB,Oppo,Find X8 Pro,Smartphone,512,16,6.78,5910,Space Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Oppo%20Find%20X8%20Pro
+P055,Oppo Find X8 256 GB,Oppo,Find X8,Smartphone,256,12,6.59,5630,Star Grey,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Oppo%20Find%20X8
+P056,Oppo Reno13 Pro 256 GB,Oppo,Reno13 Pro,Smartphone,256,12,6.83,5800,Graphite Grey,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Oppo%20Reno13%20Pro
+P057,Oppo Reno13 256 GB,Oppo,Reno13,Smartphone,256,12,6.59,5600,Luminous Blue,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Oppo%20Reno13
+P058,Oppo Reno12 Pro 256 GB,Oppo,Reno12 Pro,Smartphone,256,12,6.7,5000,Nebula Silver,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Oppo%20Reno12%20Pro
+P059,Oppo Reno12 256 GB,Oppo,Reno12,Smartphone,256,12,6.7,5000,Astro Silver,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Oppo%20Reno12
+P060,Oppo Reno11 Pro 256 GB,Oppo,Reno11 Pro,Smartphone,256,12,6.7,4600,Pearl White,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Oppo%20Reno11%20Pro
+P061,Oppo Reno11 256 GB,Oppo,Reno11,Smartphone,256,8,6.7,5000,Wave Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Oppo%20Reno11
+P062,Oppo A5 Pro 256 GB,Oppo,A5 Pro,Smartphone,256,12,6.7,6000,Quartz White,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Oppo%20A5%20Pro
+P063,Oppo A3 Pro 256 GB,Oppo,A3 Pro,Smartphone,256,12,6.7,5100,Azure,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Oppo%20A3%20Pro
+P064,Vivo X200 Pro 512 GB,Vivo,X200 Pro,Smartphone,512,16,6.78,6000,Titanium Grey,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Vivo%20X200%20Pro
+P065,Vivo X200 256 GB,Vivo,X200,Smartphone,256,12,6.67,5800,Natural Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Vivo%20X200
+P066,Vivo X100 Pro 512 GB,Vivo,X100 Pro,Smartphone,512,16,6.78,5400,Asteroid Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Vivo%20X100%20Pro
+P067,Vivo X100 256 GB,Vivo,X100,Smartphone,256,12,6.78,5000,Stargaze Blue,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Vivo%20X100
+P068,Vivo V40 Pro 256 GB,Vivo,V40 Pro,Smartphone,256,12,6.78,5500,Ganges Blue,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Vivo%20V40%20Pro
+P069,Vivo V40 256 GB,Vivo,V40,Smartphone,256,12,6.78,5500,Nebula Purple,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Vivo%20V40
+P070,Vivo V30 Pro 256 GB,Vivo,V30 Pro,Smartphone,256,12,6.78,5000,Andaman Blue,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Vivo%20V30%20Pro
+P071,Vivo V30 256 GB,Vivo,V30,Smartphone,256,12,6.78,5000,Noble Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Vivo%20V30
+P072,Vivo Y200 Pro 128 GB,Vivo,Y200 Pro,Smartphone,128,8,6.78,5000,Silk Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Vivo%20Y200%20Pro
+P073,Vivo Y100 128 GB,Vivo,Y100,Smartphone,128,8,6.38,4500,Metal Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Vivo%20Y100
+P074,Realme GT 7 Pro 256 GB,Realme,GT 7 Pro,Smartphone,256,12,6.78,6500,Mars Orange,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Realme%20GT%207%20Pro
+P075,Realme GT 6 256 GB,Realme,GT 6,Smartphone,256,12,6.78,5500,Fluid Silver,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Realme%20GT%206
+P076,Realme GT 6T 256 GB,Realme,GT 6T,Smartphone,256,12,6.78,5500,Razor Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Realme%20GT%206T
+P077,Realme GT 5 Pro 256 GB,Realme,GT 5 Pro,Smartphone,256,12,6.78,5400,Red Rock,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Realme%20GT%205%20Pro
+P078,Realme 14 Pro Plus 256 GB,Realme,14 Pro+,Smartphone,256,12,6.83,6000,Pearl White,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Realme%2014%20Pro%20Plus
+P079,Realme 14 Pro 256 GB,Realme,14 Pro,Smartphone,256,12,6.77,6000,Suede Grey,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Realme%2014%20Pro
+P080,Realme 13 Pro Plus 256 GB,Realme,13 Pro+,Smartphone,256,12,6.7,5200,Monet Gold,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Realme%2013%20Pro%20Plus
+P081,Realme 13 Pro 256 GB,Realme,13 Pro,Smartphone,256,12,6.7,5200,Emerald Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Realme%2013%20Pro
+P082,Realme 12 Pro Plus 256 GB,Realme,12 Pro+,Smartphone,256,12,6.7,5000,Submarine Blue,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Realme%2012%20Pro%20Plus
+P083,Realme 12 Pro 256 GB,Realme,12 Pro,Smartphone,256,8,6.7,5000,Navigator Beige,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Realme%2012%20Pro
+P084,Motorola Edge 50 Ultra 512 GB,Motorola,Edge 50 Ultra,Smartphone,512,16,6.67,4500,Forest Grey,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Motorola%20Edge%2050%20Ultra
+P085,Motorola Edge 50 Pro 512 GB,Motorola,Edge 50 Pro,Smartphone,512,12,6.7,4500,Luxe Lavender,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Motorola%20Edge%2050%20Pro
+P086,Motorola Edge 50 Fusion 256 GB,Motorola,Edge 50 Fusion,Smartphone,256,12,6.7,5000,Marshmallow Blue,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Motorola%20Edge%2050%20Fusion
+P087,Motorola Edge 40 Pro 256 GB,Motorola,Edge 40 Pro,Smartphone,256,12,6.67,4600,Interstellar Black,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Motorola%20Edge%2040%20Pro
+P088,Motorola Razr 50 Ultra 512 GB,Motorola,Razr 50 Ultra,Smartphone,512,12,6.9,4000,Midnight Blue,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Motorola%20Razr%2050%20Ultra
+P089,Motorola Razr 50 256 GB,Motorola,Razr 50,Smartphone,256,8,6.9,4200,Spritz Orange,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Motorola%20Razr%2050
+P090,Motorola Moto G85 256 GB,Motorola,Moto G85,Smartphone,256,12,6.67,5000,Olive Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Motorola%20Moto%20G85
+P091,Motorola Moto G75 256 GB,Motorola,Moto G75,Smartphone,256,8,6.78,5000,Charcoal Grey,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Motorola%20Moto%20G75
+P092,Motorola Moto G55 256 GB,Motorola,Moto G55,Smartphone,256,8,6.49,5000,Twilight Purple,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Motorola%20Moto%20G55
+P093,Motorola Moto G35 128 GB,Motorola,Moto G35,Smartphone,128,8,6.72,5000,Leaf Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Motorola%20Moto%20G35
+P094,Nothing Phone 2 256 GB,Nothing,Phone (2),Smartphone,256,12,6.7,4700,Dark Grey,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Nothing%20Phone%202
+P095,Nothing Phone 2a Plus 256 GB,Nothing,Phone (2a) Plus,Smartphone,256,12,6.7,5000,Grey,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Nothing%20Phone%202a%20Plus
+P096,Nothing Phone 2a 256 GB,Nothing,Phone (2a),Smartphone,256,12,6.7,5000,Milk,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Nothing%20Phone%202a
+P097,CMF Phone 1 256 GB,CMF by Nothing,CMF Phone 1,Smartphone,256,8,6.67,5000,Orange,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=CMF%20Phone%201
+P098,Honor Magic7 Pro 512 GB,Honor,Magic7 Pro,Smartphone,512,16,6.8,5850,Lunar Shadow Grey,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Honor%20Magic7%20Pro
+P099,Honor Magic6 Pro 512 GB,Honor,Magic6 Pro,Smartphone,512,12,6.8,5600,Epi Green,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Honor%20Magic6%20Pro
+P100,Honor 200 Pro 512 GB,Honor,Honor 200 Pro,Smartphone,512,12,6.78,5200,Ocean Cyan,Android,https://www.gsmarena.com/results.php3?sQuickSearch=yes&sName=Honor%20200%20Pro

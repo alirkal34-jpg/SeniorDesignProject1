@@ -129,6 +129,10 @@ class MetricsTests(unittest.TestCase):
             nano_metrics["total_estimated_cost_usd"],
             0.02,
         )
+        self.assertEqual(
+            rule_metrics["ground_truth_coverage_ratio"],
+            0.0,
+        )
 
     def test_accuracy_uses_available_human_labels(self) -> None:
         payload = make_payload(
@@ -182,6 +186,18 @@ class MetricsTests(unittest.TestCase):
             metrics["accuracy"],
             0.5,
         )
+        self.assertEqual(
+            metrics["ground_truth_coverage_ratio"],
+            1.0,
+        )
+        self.assertEqual(
+            metrics["true_positive_count"],
+            1,
+        )
+        self.assertEqual(
+            metrics["false_positive_count"],
+            1,
+        )
 
     def test_accuracy_is_none_without_labels(self) -> None:
         payload = make_payload(
@@ -207,6 +223,10 @@ class MetricsTests(unittest.TestCase):
         )
         self.assertIsNone(
             metrics["accuracy"]
+        )
+        self.assertEqual(
+            metrics["ground_truth_coverage_ratio"],
+            0.0,
         )
 
     def test_report_loads_result_and_ground_truth_files(self) -> None:
@@ -256,6 +276,14 @@ class MetricsTests(unittest.TestCase):
         self.assertEqual(
             report["accuracy"],
             1.0,
+        )
+        self.assertEqual(
+            report["ground_truth_coverage_ratio"],
+            1.0,
+        )
+        self.assertEqual(
+            report["true_positive_count"],
+            1,
         )
 
 
