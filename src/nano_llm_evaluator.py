@@ -187,7 +187,7 @@ def make_nano_llm_evaluator(provider: str = "fake"):
 
         return OpenRouterNanoLLMEvaluator(
             api_key=os.environ.get("OPENROUTER_API_KEY", ""),
-            model=os.environ.get("NANO_LLM_MODEL", "google/gemma-3-27b-it:free"),
+            model=os.environ.get("NANO_LLM_MODEL", "openrouter/free"),
         )
     raise ValueError(f"Unsupported provider: {provider}")
 

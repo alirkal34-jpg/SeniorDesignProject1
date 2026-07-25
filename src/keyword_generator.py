@@ -19,7 +19,7 @@ from urllib import error, request
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT_PATH = ROOT_DIR / "data" / "processed" / "processed_products.json"
 DEFAULT_OUTPUT_PATH = ROOT_DIR / "data" / "processed" / "generated_keywords.json"
-DEFAULT_MODEL = "google/gemma-3-27b-it:free"
+DEFAULT_MODEL = "openrouter/free"
 OPENROUTER_BATCH_SIZE = 3
 
 
@@ -223,20 +223,25 @@ class OpenRouterKeywordClient:
             },
         }
 
-        response_data = self._post_json(payload)
-        try:
-            content = response_data["choices"][0]["message"]["content"]
-            if not isinstance(content, str) or not content.strip():
-                finish_reason = response_data.get("choices", [{}])[0].get("finish_reason")
-                raise KeywordGenerationError(
-                    f"OpenRouter returned empty structured content (finish_reason={finish_reason}, model={self.model})."
-                )
-            parsed = json.loads(content)
-        except KeywordGenerationError:
-            raise
-        except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
-            raise KeywordGenerationError(f"Could not parse OpenRouter structured response: {exc}") from exc
-        return validate_keyword_output(parsed, expected_ids)
+        last_error: KeywordGenerationError | None = None
+        for attempt in range(3):
+            response_data = self._post_json(payload)
+            try:
+                content = response_data["choices"][0]["message"]["content"]
+                if not isinstance(content, str) or not content.strip():
+                    finish_reason = response_data.get("choices", [{}])[0].get("finish_reason")
+                    raise KeywordGenerationError(
+                        f"OpenRouter returned empty structured content (finish_reason={finish_reason}, model={self.model})."
+                    )
+                parsed = json.loads(content)
+                return validate_keyword_output(parsed, expected_ids)
+            except KeywordGenerationError as exc:
+                last_error = exc
+            except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
+                last_error = KeywordGenerationError(f"Could not parse OpenRouter structured response: {exc}")
+            if attempt < 2:
+                continue
+        raise last_error or KeywordGenerationError("OpenRouter returned no usable keyword response.")
 
     def _post_json(self, payload: dict[str, Any]) -> dict[str, Any]:
         body = json.dumps(payload).encode("utf-8")
