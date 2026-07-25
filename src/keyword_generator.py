@@ -162,7 +162,8 @@ class OpenRouterKeywordClient:
         payload = {
             "model": self.model,
             "temperature": 0,
-            "max_tokens": 400,
+            "max_tokens": 800,
+            "reasoning": {"effort": "none"},
             "messages": [
                 {
                     "role": "system",
