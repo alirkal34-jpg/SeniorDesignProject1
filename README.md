@@ -127,7 +127,7 @@ through environment variables:
 
 ```text
 OPENROUTER_API_KEY=
-NANO_LLM_MODEL=google/gemini-2.5-flash-lite
+NANO_LLM_MODEL=openrouter/free
 TAVILY_API_KEY=
 TAVILY_COST_PER_SEARCH_USD=0
 ```
