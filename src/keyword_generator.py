@@ -160,12 +160,14 @@ class OpenRouterKeywordClient:
         expected_ids = {product.product_id for product in products}
         payload = {
             "model": self.model,
-            "temperature": 0.2,
+            "temperature": 0,
             "messages": [
                 {
                     "role": "system",
                     "content": (
                         "You generate Turkish transactional e-commerce SEO keywords. "
+                        f"Return exactly one keyword object for each of these product IDs: {sorted(expected_ids)}. "
+                        "Use every product ID exactly once; never duplicate or omit an ID. "
                         "Return only valid JSON matching the schema. Each keyword must include "
                         "brand, model, important variant such as storage, and buying intent such as fiyat."
                     ),
@@ -200,11 +202,13 @@ class OpenRouterKeywordClient:
                         "properties": {
                             "keywords": {
                                 "type": "array",
+                                "minItems": len(products),
+                                "maxItems": len(products),
                                 "items": {
                                     "type": "object",
                                     "additionalProperties": False,
                                     "properties": {
-                                        "product_id": {"type": "string"},
+                                        "product_id": {"type": "string", "enum": sorted(expected_ids)},
                                         "keyword": {"type": "string"},
                                     },
                                     "required": ["product_id", "keyword"],
