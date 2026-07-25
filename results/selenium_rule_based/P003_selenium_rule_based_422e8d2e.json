@@ -1,0 +1,49 @@
+{
+  "product_id": "P003",
+  "keyword": "Apple iPhone 16 Plus 128GB fiyat",
+  "method": "selenium_rule_based",
+  "runtime_seconds": 10.83,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/en-ucuz-iphone-16-plus-fiyati,310912012.html",
+      "title": "iPhone 16 Plus 128 GB Fiyatları, Özellikleri ve Yorumları",
+      "snippet": "En ucuz iPhone 16 Plus 128 GB fiyatları 71.399,00 TL'den başlayan seçeneklerle Akakçe'de! iPhone 16 Plus 128 GB özelliklerini incele, 74 mağazadaki ...",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-apple-iphone-16-plus-5g-128gb-fiyatlari,a2314910693",
+      "title": "Apple iPhone 16 Plus 5G 128GB Fiyatları ve Modelleri",
+      "snippet": "12 satıcı arasındaki en ucuz Apple iPhone 16 Plus 128GB fiyatı, 25.07.2026 tarihinde 71.399,00 TL. Şu anki fiyat, son 3 ayın en yüksek fiyatıdır.",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "apple.com",
+      "url": "https://www.apple.com/tr/shop/buy-iphone/iphone-16",
+      "title": "iPhone 16 satın alın",
+      "snippet": "... 128 GB depolama alanıyla sunulur Başlangıç fiyatı: 72.999 TL. iPhone 16 Plus 6.7 inç ekran Dipnot 2 128 GB veya 256 GB depolama seçeneği Başlangıç fiyatı: ...",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/iphone-16-plus-cep-telefonu-x-c103498-a292-v10591876",
+      "title": "iPhone 16 Plus Cep Telefonu",
+      "snippet": "128GB model: Yaklaşık 64.999 TL; 256GB model: Yaklaşık 69.999 TL; 512GB model: Yaklaşık 79.999 TL. Fiyatlar, döviz kurlarına ve vergilere bağlı olarak ...",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "mediamarkt.com.tr",
+      "url": "https://www.mediamarkt.com.tr/tr/product/_apple-iphone-16-plus-128gb-akilli-telefon-siyah-mxvu3tua-1239597.html",
+      "title": "APPLE iPhone 16 Plus 128 GB Akıllı Telefon Siyah ...",
+      "snippet": "APPLE iPhone 16 Plus 128 GB Akıllı Telefon Siyah MXVU3TU/A · 2 Yıl Kırılma ve Hırsızlık Sigortası + Araç Yıkama Asistansı Dahil. Popüler. + ₺18.499,– · 1 Yıl ...",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

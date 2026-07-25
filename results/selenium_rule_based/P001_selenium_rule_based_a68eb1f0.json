@@ -1,10 +1,8 @@
 {
   "product_id": "P001",
-  "keyword": "Apple iPhone 16 Pro Max 256 GB fiyat",
-  "method": "selenium_nano_llm",
-  "model": "openrouter/free",
-  "prompt_version": "relevance-v1",
-  "runtime_seconds": 31.32,
+  "keyword": "Apple iPhone 16 Pro Max 256GB fiyat",
+  "method": "selenium_rule_based",
+  "runtime_seconds": 10.68,
   "estimated_cost_usd": 0.0,
   "results": [
     {
@@ -13,7 +11,7 @@
       "title": "iPhone 16 Pro Max Modelleri ve Fiyatları",
       "snippet": "SIFIR 16 PRO MAX 256 GB MAĞAZADAN 16 AY!! TÜM RENKLER. 39.999 TL ; 1 YIL GARANTİLİ İPHONE 16 PRO MAX - 256 GB PİL %100. 34.990 TL ; APPLE 16 PRO MAX NATÜREL PIL ...",
       "predicted_relevant": true,
-      "relevance_score": 1.0
+      "relevance_score": 0.9
     },
     {
       "domain": "trendyol.com",
@@ -40,12 +38,12 @@
       "relevance_score": 1.0
     },
     {
-      "domain": "apple.com",
-      "url": "https://www.apple.com/tr/iphone/",
-      "title": "iPhone - Apple (TR)",
-      "snippet": "iPhone 16 · Karşılaştırın · Aksesuarlar · iPhone Satın ... Örneğin iPhone 17 Pro'da 31 saate kadar, iPhone 17 Pro Max'te 37 saate kadar video izleyebiliyorsunuz.",
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-apple-iphone-16-pro-max-256gb-desert-titanyum-fiyatlari,2389291001",
+      "title": "Apple iPhone 16 Pro Max 256GB Çöl Titanyum Fiyatları",
+      "snippet": "4 satıcı arasındaki en ucuz Apple iPhone 16 Pro Max 256GB Çöl Titanyum fiyatı, 25.07.2026 tarihinde 91.498,99 TL. Son 3 ay içindeki en ucuz fiyatı 89.099,01 TL.",
       "predicted_relevant": true,
-      "relevance_score": 0.9
+      "relevance_score": 0.85
     }
   ]
 }
