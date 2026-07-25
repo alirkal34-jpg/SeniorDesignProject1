@@ -10,8 +10,8 @@
 - Generated processed CSV and JSON outputs.
 - Generated a separate validation issues report.
 - Added a product-specific HTTPS reference lookup URL for every dataset row.
-- Human-labeled every currently stored search result and enabled accuracy
-  calculation.
+- Added initial AI-assisted relevance labels for every currently stored
+  search result and enabled preliminary accuracy calculation.
 
 ## Project overview
 
@@ -247,12 +247,14 @@ Calculate current metrics:
 .\.venv\Scripts\python.exe src\evaluation\metrics.py
 ```
 
-The 15 shared human-label records cover all 20 currently stored search
-results. The current overall accuracy is `0.95`; Selenium + Rule-Based is
-`1.0`, and the fake-provider Selenium + NanoLLM sample is `0.8`. These values
-describe only the small committed sample, not the final 100-product
-experiment. The NanoLLM sample uses the fake provider, so its `0.0` estimated
-cost must not be interpreted as a measured real-provider API cost.
+The 15 shared draft-label records cover all 20 currently stored search
+results. The preliminary overall accuracy is `0.95`; Selenium + Rule-Based is
+`1.0`, and the fake-provider Selenium + NanoLLM sample is `0.8`. The labels
+were prepared with AI assistance and must be confirmed by a project member
+before they are treated as final human ground truth. These values describe
+only the small committed sample, not the final 100-product experiment. The
+NanoLLM sample uses the fake provider, so its `0.0` estimated cost must not be
+interpreted as a measured real-provider API cost.
 
 ## Progress checklist
 
@@ -313,8 +315,10 @@ yet been verified with a real external provider.
   calculations.
 - [x] Add ground-truth loading and validation.
 - [x] Select a 10-product evaluation subset containing 10 different brands.
-- [x] Add 15 shared human relevance labels covering all 20 current result
-  rows and calculate the initial accuracy metrics.
+- [x] Add 15 shared draft relevance labels covering all 20 current result
+  rows and calculate the preliminary accuracy metrics.
+- [ ] Have a project member manually confirm the draft labels before using
+  them as final human ground truth.
 - [ ] Re-run a small live Rule-Based batch with two or three keywords if a
   fresh live-search verification is required.
 - [ ] Merge the reviewed feature work into `main`. The current work is pushed
