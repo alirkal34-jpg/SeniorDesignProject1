@@ -153,6 +153,9 @@ After the 3-product call is verified, generate the complete 100-product list:
 .\.venv\Scripts\python.exe src\keyword_generator.py --provider openrouter --limit 100
 ```
 
+OpenRouter requests are sent in verified 3-product batches and combined into
+the single output file. This avoids provider schema-size limits for 100 IDs.
+
 The command prints the elapsed runtime. OpenRouter usage cost is read from the
 API response for NanoLLM result files; if the provider does not return a cost,
 the recorded value remains `0.0` and the token usage should be retained in the

@@ -20,6 +20,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT_PATH = ROOT_DIR / "data" / "processed" / "processed_products.json"
 DEFAULT_OUTPUT_PATH = ROOT_DIR / "data" / "processed" / "generated_keywords.json"
 DEFAULT_MODEL = "google/gemini-2.5-flash-lite"
+OPENROUTER_BATCH_SIZE = 3
 
 
 class KeywordGenerationError(RuntimeError):
@@ -280,7 +281,15 @@ def generate_keywords(
 ) -> list[KeywordItem]:
     products = select_products(load_products(input_path), limit=limit)
     client = make_client(provider)
-    keywords = client.generate_keywords(products)
+    if provider == "openrouter":
+        # Google structured-output providers reject a single schema with a
+        # large product_id enum, so keep each request at the verified size.
+        keywords = []
+        for start in range(0, len(products), OPENROUTER_BATCH_SIZE):
+            batch = products[start : start + OPENROUTER_BATCH_SIZE]
+            keywords.extend(client.generate_keywords(batch))
+    else:
+        keywords = client.generate_keywords(products)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         json.dumps([item.to_dict() for item in keywords], ensure_ascii=False, indent=2) + "\n",
