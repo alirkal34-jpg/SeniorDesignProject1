@@ -84,7 +84,8 @@ class OpenRouterNanoLLMEvaluator(OpenRouterKeywordClient):
                     "content": (
                         "Evaluate whether each Google search result is relevant for a Turkish "
                         "transactional e-commerce product keyword. Relevant means product, "
-                        "category, marketplace, retailer, or price-comparison intent. Return JSON only."
+                        f"category, marketplace, retailer, or price-comparison intent. Return exactly {len(results)} "
+                        "evaluation objects in the same order as the input results. Return JSON only."
                     ),
                 },
                 {
@@ -117,6 +118,8 @@ class OpenRouterNanoLLMEvaluator(OpenRouterKeywordClient):
                         "properties": {
                             "results": {
                                 "type": "array",
+                                "minItems": len(results),
+                                "maxItems": len(results),
                                 "items": {
                                     "type": "object",
                                     "additionalProperties": False,

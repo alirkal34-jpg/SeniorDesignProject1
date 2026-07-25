@@ -31,29 +31,33 @@ def run_rule_based_batch(
     }
 
     for record in keyword_records:
-        try:
-            output = run_selenium_rule_based(
-                product_id=record.product_id,
-                keyword=record.keyword,
-                max_results=max_results,
-            )
-            output_file_path = save_result(output)
-            summary["successful_count"] += 1
-            summary["outputs"].append(
-                {
-                    "product_id": record.product_id,
-                    "keyword": record.keyword,
-                    "path": str(output_file_path),
-                }
-            )
-
-        except Exception as exc:
+        last_error: Exception | None = None
+        for _attempt in range(2):
+            try:
+                output = run_selenium_rule_based(
+                    product_id=record.product_id,
+                    keyword=record.keyword,
+                    max_results=max_results,
+                )
+                output_file_path = save_result(output)
+                summary["successful_count"] += 1
+                summary["outputs"].append(
+                    {
+                        "product_id": record.product_id,
+                        "keyword": record.keyword,
+                        "path": str(output_file_path),
+                    }
+                )
+                break
+            except Exception as exc:
+                last_error = exc
+        else:
             summary["failed_count"] += 1
             summary["errors"].append(
                 {
                     "product_id": record.product_id,
                     "keyword": record.keyword,
-                    "error": str(exc),
+                    "error": str(last_error),
                 }
             )
 
