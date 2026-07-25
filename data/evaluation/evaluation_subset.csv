@@ -1,0 +1,11 @@
+product_id,product_name,brand,model,storage_gb,ram_gb,color,selection_reason
+P001,Apple iPhone 16 Pro Max 256 GB,Apple,iPhone 16 Pro Max,256,8,Black Titanium,Apple flagship
+P011,Samsung Galaxy S25 Ultra 256 GB,Samsung,Galaxy S25 Ultra,256,12,Titanium Black,Samsung flagship
+P026,Xiaomi 15 Ultra 512 GB,Xiaomi,Xiaomi 15 Ultra,512,16,Black,High storage Android flagship
+P038,Google Pixel 9 Pro XL 256 GB,Google,Pixel 9 Pro XL,256,16,Obsidian,Google flagship
+P046,OnePlus 13 256 GB,OnePlus,OnePlus 13,256,12,Black Eclipse,OnePlus flagship
+P054,Oppo Find X8 Pro 512 GB,Oppo,Find X8 Pro,512,16,Space Black,High storage Oppo flagship
+P064,Vivo X200 Pro 512 GB,Vivo,X200 Pro,512,16,Titanium Grey,High storage Vivo flagship
+P074,Realme GT 7 Pro 256 GB,Realme,GT 7 Pro,256,12,Mars Orange,Performance-focused model
+P084,Motorola Edge 50 Ultra 512 GB,Motorola,Edge 50 Ultra,512,16,Forest Grey,Motorola flagship
+P097,CMF Phone 1 256 GB,CMF by Nothing,CMF Phone 1,256,8,Orange,Lower-memory alternative

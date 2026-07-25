@@ -199,3 +199,44 @@ Run API-free tests:
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests
 ```
+
+## Evaluation utilities
+
+The repository includes API-free utilities for validating result files and
+preparing the final comparison:
+
+- `src/evaluation/result_validator.py` checks the shared experiment JSON
+  schema and rejects missing fields, invalid method names, negative
+  runtime/cost values, invalid URLs, non-boolean predictions, and relevance
+  scores outside the `0-1` range.
+- `src/evaluation/metrics.py` calculates experiment count, result count,
+  average runtime, total/average estimated cost, and relevant-result ratio for
+  each method.
+- `src/evaluation/ground_truth.py` loads human relevance labels and supports
+  shared labels so that the same URL does not need to be labeled separately
+  for every method.
+- `data/evaluation/evaluation_subset.csv` defines a representative pilot set
+  of 10 products from 10 different brands.
+
+Validate every experiment result JSON:
+
+```powershell
+.\.venv\Scripts\python.exe src\evaluation\result_validator.py
+```
+
+Validate the ground-truth CSV:
+
+```powershell
+.\.venv\Scripts\python.exe src\evaluation\ground_truth.py
+```
+
+Calculate current metrics:
+
+```powershell
+.\.venv\Scripts\python.exe src\evaluation\metrics.py
+```
+
+Accuracy remains `null` until human labels are added to
+`data/labels/domain_ground_truth.csv`. The current Selenium + NanoLLM sample
+uses the fake provider, so its `0.0` estimated cost must not be interpreted as
+a measured real-provider API cost.
