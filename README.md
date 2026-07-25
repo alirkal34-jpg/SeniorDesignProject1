@@ -240,3 +240,76 @@ Accuracy remains `null` until human labels are added to
 `data/labels/domain_ground_truth.csv`. The current Selenium + NanoLLM sample
 uses the fake provider, so its `0.0` estimated cost must not be interpreted as
 a measured real-provider API cost.
+
+## Progress checklist
+
+This checklist describes the actual state of the
+`feature/evaluation-metrics` branch. A checked item is implemented and
+verified in the repository. An unchecked item is either incomplete or has not
+yet been verified with a real external provider.
+
+### Data and Selenium + Rule-Based work
+
+- [x] Prepare a raw dataset containing 100 smartphone products.
+- [x] Implement `src/data_processor.py`.
+- [x] Validate the schema, missing values, duplicates, and numeric ranges.
+- [x] Produce `processed_products.csv`, `processed_products.json`, and
+  `validation_issues.csv`.
+- [x] Implement and run the dataset-level `src/quality_check.py`.
+- [x] Implement `src/selenium_collector.py` and complete the initial Selenium
+  connection test.
+- [x] Add `data/reference/trusted_ecommerce_domains.csv`.
+- [x] Implement `src/rule_based_evaluator.py`.
+- [x] Implement the single-product `src/run_selenium_rule_based.py` pipeline.
+- [x] Store standardized result JSON files with runtime and estimated-cost
+  fields.
+
+### Keyword and NanoLLM work
+
+- [x] Add the initial LLM project structure and `.env.example`.
+- [x] Implement structured keyword-generation and validation code.
+- [x] Read products from `processed_products.json`.
+- [x] Add OpenRouter client support without committing an API key.
+- [x] Implement `src/keyword_loader.py`.
+- [x] Implement `src/run_rule_based_batch.py`.
+- [x] Add the `domain_ground_truth.csv` labeling schema.
+- [x] Implement `src/nano_llm_evaluator.py`.
+- [x] Implement `src/run_selenium_nano_llm.py`.
+- [x] Verify the NanoLLM pipeline with a deterministic fake provider.
+- [ ] Generate and verify 2-3 keywords using the real OpenRouter provider.
+  The current three records were generated with the fake provider.
+- [ ] Produce the fixed keyword list for all 100 products. The current
+  `generated_keywords.json` contains only three records.
+- [ ] Run and verify the real NanoLLM provider.
+- [ ] Produce real-provider `predicted_relevant` and `relevance_score` values.
+- [ ] Record measured model, prompt, API runtime, and API cost information.
+- [ ] Produce a Selenium + NanoLLM result using the real provider. The current
+  sample uses the fake provider.
+
+### Review and evaluation work
+
+- [x] Fetch and inspect the teammate's feature branch.
+- [x] Validate the generated-keyword and ground-truth schemas.
+- [x] Test the keyword loader with three records.
+- [x] Review the Rule-Based batch runner and branch diff.
+- [x] Validate all current result JSON files against the shared schema.
+- [x] Run the complete API-free unit-test suite.
+- [x] Implement runtime, estimated-cost, relevance-ratio, and accuracy metric
+  calculations.
+- [x] Add ground-truth loading and validation.
+- [x] Select a 10-product evaluation subset containing 10 different brands.
+- [ ] Add human relevance labels. The current ground-truth file contains only
+  its header, so accuracy is currently unavailable.
+- [ ] Re-run a small live Rule-Based batch with two or three keywords if a
+  fresh live-search verification is required.
+- [ ] Merge the reviewed feature work into `main`. The current work is pushed
+  to `feature/evaluation-metrics`, while `main` still points to the earlier
+  Selenium + Rule-Based commit.
+
+### Planned next steps
+
+- [ ] Add the Tavily API integration and Tavily + NanoLLM runner.
+- [ ] Add the Agentic web-search approach and runner.
+- [ ] Preserve the shared JSON output format across all four methods.
+- [ ] Prepare the LangGraph node and workflow design.
+- [ ] Run every method with the same fixed keyword list and comparison rules.
