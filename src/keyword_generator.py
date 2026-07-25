@@ -11,6 +11,7 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
+from time import perf_counter
 from typing import Any, Iterable, Protocol
 from urllib import error, request
 
@@ -152,6 +153,8 @@ class OpenRouterKeywordClient:
             raise KeywordGenerationError("OPENROUTER_API_KEY is not set.")
         self.api_key = api_key
         self.model = model
+        self.last_usage: dict[str, Any] = {}
+        self.last_cost_usd = 0.0
 
     def generate_keywords(self, products: list[Product]) -> list[KeywordItem]:
         expected_ids = {product.product_id for product in products}
@@ -237,7 +240,15 @@ class OpenRouterKeywordClient:
         )
         try:
             with request.urlopen(req, timeout=60) as response:
-                return json.loads(response.read().decode("utf-8"))
+                response_data = json.loads(response.read().decode("utf-8"))
+                usage = response_data.get("usage", {})
+                self.last_usage = usage if isinstance(usage, dict) else {}
+                raw_cost = self.last_usage.get("cost", self.last_usage.get("total_cost", 0.0))
+                try:
+                    self.last_cost_usd = float(raw_cost or 0.0)
+                except (TypeError, ValueError):
+                    self.last_cost_usd = 0.0
+                return response_data
         except error.HTTPError as exc:
             detail = exc.read().decode("utf-8", errors="replace")
             raise KeywordGenerationError(f"OpenRouter API error {exc.code}: {detail}") from exc
@@ -282,6 +293,7 @@ def main() -> None:
     parser.add_argument("--provider", choices=["openrouter", "fake"], default="openrouter")
     args = parser.parse_args()
 
+    started_at = perf_counter()
     keywords = generate_keywords(
         input_path=args.input,
         output_path=args.output,
@@ -289,6 +301,8 @@ def main() -> None:
         provider=args.provider,
     )
     print(json.dumps([item.to_dict() for item in keywords], ensure_ascii=False, indent=2))
+    elapsed = perf_counter() - started_at
+    print(f"runtime_seconds={elapsed:.2f}")
 
 
 if __name__ == "__main__":

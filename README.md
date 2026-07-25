@@ -140,6 +140,17 @@ Generate keywords with OpenRouter:
 .\.venv\Scripts\python.exe src\keyword_generator.py --provider openrouter --limit 3
 ```
 
+After the 3-product call is verified, generate the complete 100-product list:
+
+```powershell
+.\.venv\Scripts\python.exe src\keyword_generator.py --provider openrouter --limit 100
+```
+
+The command prints the elapsed runtime. OpenRouter usage cost is read from the
+API response for NanoLLM result files; if the provider does not return a cost,
+the recorded value remains `0.0` and the token usage should be retained in the
+provider dashboard for reporting.
+
 The structured output is written to:
 
 ```text
@@ -185,6 +196,12 @@ Run Selenium + NanoLLM for one keyword while reusing `selenium_collector.py`:
 
 ```powershell
 .\.venv\Scripts\python.exe src\run_selenium_nano_llm.py --provider fake --max-results 5
+```
+
+Run the real provider only after the 3-keyword call succeeds:
+
+```powershell
+.\.venv\Scripts\python.exe src\run_selenium_nano_llm.py --provider openrouter --max-results 5
 ```
 
 The human-labeling template for comparing predicted relevance with manual

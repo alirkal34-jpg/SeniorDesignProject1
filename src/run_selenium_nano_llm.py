@@ -41,13 +41,14 @@ def run_selenium_nano_llm(
         browser.quit()
 
     runtime_seconds = perf_counter() - start_time
+    estimated_cost_usd = float(getattr(evaluator, "last_cost_usd", ESTIMATED_COST_USD))
 
     return {
         "product_id": product_id,
         "keyword": keyword,
         "method": METHOD_SELENIUM_NANO_LLM,
         "runtime_seconds": round(runtime_seconds, 2),
-        "estimated_cost_usd": ESTIMATED_COST_USD,
+        "estimated_cost_usd": round(estimated_cost_usd, 8),
         "results": evaluated_results,
     }
 
