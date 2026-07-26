@@ -17,7 +17,7 @@ DOMAIN_RULES_FILE = (
     / "trusted_ecommerce_domains.csv"
 )
 
-RELEVANCE_THRESHOLD = 0.50
+RELEVANCE_THRESHOLD = 0.60
 
 
 # ==================================================

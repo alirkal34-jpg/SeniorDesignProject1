@@ -229,6 +229,41 @@ preparing the final comparison:
 - `data/evaluation/evaluation_subset.csv` defines a representative pilot set
   of 10 products from 10 different brands.
 
+## Evaluation protocol
+
+The following rules are fixed for the final method comparison and must be
+applied consistently to Selenium + Rule-Based, Selenium + NanoLLM,
+Tavily + NanoLLM, and Agentic Search.
+
+### Human relevance rule
+
+A search result is **relevant** when it matches the phone model specified in
+the keyword and, when present, the requested storage capacity, and has a
+transactional purpose such as a retailer product page, marketplace listing,
+classified listing, or price-comparison page.
+
+A result is **irrelevant** when it refers to the wrong model, the wrong storage
+capacity, an accessory, a news article, or a review page. An exact matching
+product remains relevant when it is temporarily out of stock.
+
+### Fixed experiment settings
+
+- Use the same 10-product subset from
+  `data/evaluation/evaluation_subset.csv`.
+- Assign one fixed keyword to each evaluation product.
+- Pass each product's keyword to all four methods without changing its text.
+- Collect at most five results per product and method (`max_results = 5`).
+- Use a relevance threshold of `0.60`. The Rule-Based implementation stores
+  this value as `RELEVANCE_THRESHOLD` in `src/rule_based_evaluator.py`.
+- Use the same version of
+  `data/reference/trusted_ecommerce_domains.csv` for every Rule-Based run.
+- Reuse shared human labels across methods when the product, keyword, domain,
+  and URL are the same.
+
+The fixed 100-product keyword file is still pending. Final comparison runs
+must not begin until that file is complete and the exact keyword for each
+evaluation product has been frozen.
+
 Validate every experiment result JSON:
 
 ```powershell
@@ -247,14 +282,15 @@ Calculate current metrics:
 .\.venv\Scripts\python.exe src\evaluation\metrics.py
 ```
 
-The 15 shared draft-label records cover all 20 currently stored search
-results. The preliminary overall accuracy is `0.95`; Selenium + Rule-Based is
-`1.0`, and the fake-provider Selenium + NanoLLM sample is `0.8`. The labels
-were prepared with AI assistance and must be confirmed by a project member
-before they are treated as final human ground truth. These values describe
-only the small committed sample, not the final 100-product experiment. The
-NanoLLM sample uses the fake provider, so its `0.0` estimated cost must not be
-interpreted as a measured real-provider API cost.
+The 15 shared human-confirmed label records cover all 20 currently stored
+search results. The preliminary overall accuracy is `0.95`; Selenium +
+Rule-Based is `1.0`, and the fake-provider Selenium + NanoLLM sample is `0.8`.
+The labels were initially prepared with AI assistance and were then manually
+checked by a project member. These values describe only the small committed
+sample, not the final 100-product experiment. The current human-confirmed
+sample contains no irrelevant results, so it is not a balanced final accuracy
+dataset. The NanoLLM sample uses the fake provider, so its `0.0` estimated
+cost must not be interpreted as a measured real-provider API cost.
 
 ## Progress checklist
 
@@ -315,14 +351,18 @@ yet been verified with a real external provider.
   calculations.
 - [x] Add ground-truth loading and validation.
 - [x] Select a 10-product evaluation subset containing 10 different brands.
-- [x] Add 15 shared draft relevance labels covering all 20 current result
+- [x] Add 15 shared relevance labels covering all 20 current result
   rows and calculate the preliminary accuracy metrics.
-- [ ] Have a project member manually confirm the draft labels before using
-  them as final human ground truth.
+- [x] Have a project member manually confirm the shared labels before using
+  them as human ground truth.
+- [x] Document the human relevance rule, 10-product subset, `max_results = 5`,
+  Rule-Based threshold `0.60`, and shared trusted-domain list.
+- [ ] Freeze one exact keyword per evaluation product and use it unchanged
+  across all four methods.
 - [ ] Re-run a small live Rule-Based batch with two or three keywords if a
   fresh live-search verification is required.
-- [ ] Merge the reviewed feature work into `main`. The current work is pushed
-  to `feature/evaluation-metrics`, while `main` still points to the earlier
+- [ ] Merge the reviewed feature work into `main`. The evaluation work remains
+  on `feature/evaluation-metrics`, while `main` still points to the earlier
   Selenium + Rule-Based commit.
 
 ### Planned next steps
