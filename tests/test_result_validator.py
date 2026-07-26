@@ -73,6 +73,32 @@ class ResultValidatorTests(unittest.TestCase):
                 source="test",
             )
 
+    def test_missing_runtime_seconds_is_rejected(self) -> None:
+        payload = create_valid_payload()
+        del payload["runtime_seconds"]
+
+        with self.assertRaisesRegex(
+            ResultValidationError,
+            "runtime_seconds",
+        ):
+            validate_result_payload(
+                payload=payload,
+                source="test",
+            )
+
+    def test_missing_estimated_cost_is_rejected(self) -> None:
+        payload = create_valid_payload()
+        del payload["estimated_cost_usd"]
+
+        with self.assertRaisesRegex(
+            ResultValidationError,
+            "estimated_cost_usd",
+        ):
+            validate_result_payload(
+                payload=payload,
+                source="test",
+            )
+
     def test_unsupported_method_is_rejected(self) -> None:
         payload = create_valid_payload()
         payload["method"] = "unknown_method"
@@ -157,6 +183,23 @@ class ResultValidatorTests(unittest.TestCase):
             "selenium_rule_based",
         )
 
+    def test_invalid_json_file_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_directory:
+            file_path = (
+                Path(temp_directory)
+                / "invalid_result.json"
+            )
+
+            file_path.write_text(
+                '{"product_id": "P001", invalid}',
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                ResultValidationError,
+                "invalid JSON",
+            ):
+                validate_result_file(file_path)
 
 if __name__ == "__main__":
     unittest.main()

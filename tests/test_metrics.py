@@ -199,6 +199,48 @@ class MetricsTests(unittest.TestCase):
             1,
         )
 
+    def test_partial_ground_truth_coverage_is_reported(self) -> None:
+        payload = make_payload(
+            "selenium_rule_based",
+            10.0,
+            0.0,
+            [
+                make_result(
+                    "https://example.com/labeled",
+                    True,
+                    0.9,
+                ),
+                make_result(
+                    "https://example.com/unlabeled",
+                    False,
+                    0.2,
+                ),
+            ],
+        )
+
+        records = [
+            GroundTruthRecord(
+                product_id="P001",
+                keyword="Example product fiyat",
+                domain="example.com",
+                url="https://example.com/labeled",
+                human_relevant=True,
+            )
+        ]
+
+        metrics = calculate_method_metrics(
+            [payload],
+            build_ground_truth_lookup(records),
+        )["selenium_rule_based"]
+
+        self.assertEqual(metrics["result_count"], 2)
+        self.assertEqual(metrics["labeled_result_count"], 1)
+        self.assertEqual(
+            metrics["ground_truth_coverage_ratio"],
+            0.5,
+        )
+        self.assertEqual(metrics["accuracy"], 1.0)
+
     def test_accuracy_is_none_without_labels(self) -> None:
         payload = make_payload(
             "selenium_rule_based",
