@@ -10,6 +10,7 @@ from time import perf_counter
 
 from agentic_search import AGENTIC_PLANNER_PROMPT_VERSION, AgenticSearch
 from nano_llm_evaluator import METHOD_AGENTIC_SEARCH, NANO_LLM_PROMPT_VERSION, make_nano_llm_evaluator
+from result_storage import create_unique_result_path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -63,8 +64,12 @@ def save_result(output: dict) -> Path:
     RESULTS_DIRECTORY.mkdir(parents=True, exist_ok=True)
     digest = hashlib.sha256(output["keyword"].encode("utf-8")).hexdigest()[:8]
     mode = output.get("execution_mode", "unknown")
-    path = RESULTS_DIRECTORY / (
-        f'{output["product_id"]}_{METHOD_AGENTIC_SEARCH}_{digest}_{mode}.json'
+    path = create_unique_result_path(
+        directory=RESULTS_DIRECTORY,
+        product_id=output["product_id"],
+        method=METHOD_AGENTIC_SEARCH,
+        keyword_digest=digest,
+        execution_mode=mode,
     )
     path.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return path

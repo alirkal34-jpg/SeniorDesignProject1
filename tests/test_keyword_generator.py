@@ -3,11 +3,13 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from agentic_search import AgenticSearch, FakeQueryPlanner
+import langgraph_flow as langgraph_module
 from keyword_generator import (
     FakeKeywordClient,
     generate_keywords,
@@ -16,7 +18,12 @@ from keyword_generator import (
     validate_keyword_output,
 )
 from keyword_loader import KeywordLoaderError, load_keywords
-from langgraph_flow import run_langgraph_pipeline, run_pipeline_step_by_step
+from langgraph_flow import (
+    build_comparison_langgraph,
+    run_comparison_langgraph,
+    run_langgraph_pipeline,
+    run_pipeline_step_by_step,
+)
 from nano_llm_evaluator import FakeNanoLLMEvaluator, validate_evaluation_output
 from relevance_evaluator import SearchResult, make_result_payload
 from rule_based_evaluator import RELEVANCE_THRESHOLD
@@ -217,6 +224,88 @@ class KeywordGeneratorTests(unittest.TestCase):
         self.assertIsNone(state["error"])
         self.assertEqual(state["output"]["method"], "agentic_search")
         self.assertEqual(len(state["output"]["results"]), 4)
+
+    def test_comparison_langgraph_runs_all_four_methods(self):
+        keyword = "Apple iPhone 16 Pro Max 256 GB fiyat"
+
+        state = run_comparison_langgraph(
+            product_id="P001",
+            keyword=keyword,
+            execution_mode="fake",
+            max_results=5,
+        )
+
+        output = state["output"]
+        self.assertTrue(state["completed"])
+        self.assertEqual(output["successful_method_count"], 4)
+        self.assertEqual(output["failed_method_count"], 0)
+        self.assertTrue(output["all_methods_used_same_keyword"])
+        self.assertEqual(
+            {
+                payload["method"]
+                for payload in output["method_outputs"]
+            },
+            {
+                "selenium_rule_based",
+                "selenium_nano_llm",
+                "tavily_llm",
+                "agentic_search",
+            },
+        )
+        for payload in output["method_outputs"]:
+            self.assertEqual(payload["keyword"], keyword)
+            self.assertLessEqual(len(payload["results"]), 5)
+            validate_result_payload(
+                payload,
+                source="comparison graph",
+            )
+
+    def test_comparison_langgraph_keeps_running_after_method_error(self):
+        with patch.object(
+            langgraph_module,
+            "run_tavily_llm",
+            side_effect=RuntimeError("Tavily unavailable"),
+        ):
+            state = run_comparison_langgraph(
+                product_id="P001",
+                keyword="Apple iPhone 16 Pro Max 256 GB fiyat",
+                execution_mode="fake",
+            )
+
+        self.assertFalse(state["completed"])
+        self.assertEqual(
+            state["output"]["successful_method_count"],
+            3,
+        )
+        self.assertEqual(
+            state["output"]["failed_method_count"],
+            1,
+        )
+        self.assertEqual(
+            state["output"]["errors"][0]["method"],
+            "tavily_llm",
+        )
+        self.assertIn(
+            "agentic_search",
+            {
+                payload["method"]
+                for payload in state["output"]["method_outputs"]
+            },
+        )
+
+    def test_comparison_langgraph_contains_required_method_nodes(self):
+        graph = build_comparison_langgraph().get_graph()
+
+        self.assertTrue(
+            {
+                "input",
+                "selenium_rule_based",
+                "selenium_nano_llm",
+                "tavily_llm",
+                "agentic_search",
+                "result_aggregation",
+            }.issubset(graph.nodes)
+        )
 
 
 if __name__ == "__main__":

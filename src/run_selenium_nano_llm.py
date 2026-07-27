@@ -9,6 +9,7 @@ from pathlib import Path
 from time import perf_counter
 
 from nano_llm_evaluator import METHOD_SELENIUM_NANO_LLM, NANO_LLM_PROMPT_VERSION, make_nano_llm_evaluator
+from result_storage import create_unique_result_path
 from selenium_collector import collect_search_results, create_browser
 
 
@@ -91,9 +92,13 @@ def save_result(output: dict) -> Path:
         keyword=output["keyword"],
     )
     mode = output.get("execution_mode", "unknown")
-    output_file_path = RESULTS_DIRECTORY / base_name.replace(
-        ".json",
-        f"_{mode}.json",
+    keyword_digest = base_name.rsplit("_", 1)[-1].removesuffix(".json")
+    output_file_path = create_unique_result_path(
+        directory=RESULTS_DIRECTORY,
+        product_id=output["product_id"],
+        method=METHOD_SELENIUM_NANO_LLM,
+        keyword_digest=keyword_digest,
+        execution_mode=mode,
     )
     output_file_path.write_text(
         json.dumps(output, ensure_ascii=False, indent=2) + "\n",

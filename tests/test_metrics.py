@@ -347,6 +347,58 @@ class MetricsTests(unittest.TestCase):
             report["true_positive_count"],
             1,
         )
+        self.assertEqual(
+            report["valid_result_file_count"],
+            1,
+        )
+        self.assertEqual(
+            report["invalid_result_file_count"],
+            0,
+        )
+
+    def test_report_counts_invalid_json_without_losing_valid_results(
+        self,
+    ) -> None:
+        payload = make_payload(
+            "selenium_rule_based",
+            2.0,
+            0.0,
+            [
+                make_result(
+                    "https://example.com/product",
+                    True,
+                    0.9,
+                )
+            ],
+        )
+
+        with tempfile.TemporaryDirectory() as temp_directory:
+            results_directory = Path(temp_directory)
+            (results_directory / "valid.json").write_text(
+                json.dumps(payload),
+                encoding="utf-8",
+            )
+            (results_directory / "invalid.json").write_text(
+                '{"broken":',
+                encoding="utf-8",
+            )
+
+            report = build_metrics_report(
+                input_path=results_directory,
+                ground_truth_path=None,
+            )
+
+        self.assertEqual(report["result_file_count"], 2)
+        self.assertEqual(report["valid_result_file_count"], 1)
+        self.assertEqual(report["invalid_result_file_count"], 1)
+        self.assertEqual(
+            report["missing_or_invalid_result_file_count"],
+            1,
+        )
+        self.assertIn(
+            "invalid.json",
+            report["invalid_result_files"][0]["path"],
+        )
 
 
 if __name__ == "__main__":

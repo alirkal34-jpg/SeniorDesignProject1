@@ -12,6 +12,7 @@ from selenium_collector import (
     collect_search_results,
     create_browser,
 )
+from result_storage import create_unique_result_path
 
 
 # ==================================================
@@ -161,12 +162,13 @@ def save_result(
     )
 
     mode = output.get("execution_mode", "unknown")
-    output_file_path = (
-        RESULTS_DIRECTORY
-        / output_file_name.replace(
-            ".json",
-            f"_{mode}.json",
-        )
+    keyword_digest = output_file_name.rsplit("_", 1)[-1].removesuffix(".json")
+    output_file_path = create_unique_result_path(
+        directory=RESULTS_DIRECTORY,
+        product_id=output["product_id"],
+        method=METHOD_NAME,
+        keyword_digest=keyword_digest,
+        execution_mode=mode,
     )
 
     with output_file_path.open(

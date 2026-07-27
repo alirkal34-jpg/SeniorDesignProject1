@@ -1,7 +1,8 @@
-"""LangGraph orchestration for agentic product search and evaluation.
+"""LangGraph orchestration for agentic and four-method comparison flows.
 
-The graph has four explicit nodes: plan, search, evaluate, and aggregate. The
-same nodes can also run sequentially for API-free tests and easier debugging.
+The agentic graph has plan, search, evaluate, and aggregate nodes. The
+comparison graph has shared input, one node for each of the four methods, and a
+final result aggregation node. Both flows support deterministic API-free tests.
 """
 
 from __future__ import annotations
@@ -19,6 +20,10 @@ from nano_llm_evaluator import (
     NANO_LLM_PROMPT_VERSION,
     make_nano_llm_evaluator,
 )
+from run_agentic_search import run_agentic_search
+from run_selenium_nano_llm import run_selenium_nano_llm
+from run_selenium_rule_based import run_selenium_rule_based
+from run_tavily_llm import run_tavily_llm
 
 
 logger = logging.getLogger(__name__)
@@ -41,6 +46,17 @@ class AgenticState(TypedDict, total=False):
     started_at: float
     output: dict[str, Any]
     error: str | None
+    completed: bool
+
+
+class ComparisonState(TypedDict, total=False):
+    product_id: str
+    keyword: str
+    execution_mode: str
+    max_results: int
+    method_outputs: dict[str, dict[str, Any]]
+    method_errors: list[dict[str, str]]
+    output: dict[str, Any]
     completed: bool
 
 
@@ -280,11 +296,350 @@ def run_langgraph_pipeline(
     )
 
 
+def comparison_input_node(
+    state: ComparisonState,
+) -> ComparisonState:
+    """Validate the shared product/keyword input for all methods."""
+
+    new_state = dict(state)
+    errors = list(state.get("method_errors", []))
+    product_id = state.get("product_id", "").strip()
+    keyword = state.get("keyword", "").strip()
+    execution_mode = state.get("execution_mode", "fake")
+    if not product_id:
+        errors.append(
+            {
+                "method": "input",
+                "error": "product_id is required.",
+            }
+        )
+    if not keyword:
+        errors.append(
+            {
+                "method": "input",
+                "error": "keyword is required.",
+            }
+        )
+    if execution_mode not in {"fake", "live"}:
+        errors.append(
+            {
+                "method": "input",
+                "error": "execution_mode must be 'fake' or 'live'.",
+            }
+        )
+    new_state["product_id"] = product_id
+    new_state["keyword"] = keyword
+    new_state["execution_mode"] = execution_mode
+    new_state["max_results"] = min(
+        max(1, int(state.get("max_results", 5))),
+        5,
+    )
+    new_state["method_outputs"] = dict(
+        state.get("method_outputs", {})
+    )
+    new_state["method_errors"] = errors
+    new_state["completed"] = False
+    return new_state
+
+
+def _comparison_method_node(
+    state: ComparisonState,
+    method: str,
+) -> ComparisonState:
+    new_state = dict(state)
+    outputs = dict(state.get("method_outputs", {}))
+    errors = list(state.get("method_errors", []))
+    if any(error.get("method") == "input" for error in errors):
+        new_state["method_outputs"] = outputs
+        new_state["method_errors"] = errors
+        return new_state
+
+    product_id = state.get("product_id", "")
+    keyword = state.get("keyword", "")
+    max_results = state.get("max_results", 5)
+    is_fake = state.get("execution_mode", "fake") == "fake"
+
+    try:
+        if method == "selenium_rule_based":
+            payload = run_selenium_rule_based(
+                product_id=product_id,
+                keyword=keyword,
+                max_results=max_results,
+                search_provider="fake" if is_fake else "selenium",
+            )
+        elif method == "selenium_nano_llm":
+            payload = run_selenium_nano_llm(
+                product_id=product_id,
+                keyword=keyword,
+                max_results=max_results,
+                provider="fake" if is_fake else "openrouter",
+                search_provider="fake" if is_fake else "selenium",
+            )
+        elif method == "tavily_llm":
+            payload = run_tavily_llm(
+                product_id=product_id,
+                keyword=keyword,
+                search_provider="fake" if is_fake else "tavily",
+                evaluator_provider="fake" if is_fake else "openrouter",
+                max_results=max_results,
+            )
+        elif method == "agentic_search":
+            payload = run_agentic_search(
+                product_id=product_id,
+                keyword=keyword,
+                planner_provider="fake" if is_fake else "openrouter",
+                search_provider="fake" if is_fake else "tavily",
+                evaluator_provider="fake" if is_fake else "openrouter",
+                max_results=max_results,
+            )
+        else:
+            raise ValueError(f"Unsupported comparison method: {method}")
+        outputs[method] = payload
+    except Exception as exc:
+        logger.error("Comparison method %s failed: %s", method, exc)
+        errors.append(
+            {
+                "method": method,
+                "error": str(exc),
+            }
+        )
+
+    new_state["method_outputs"] = outputs
+    new_state["method_errors"] = errors
+    return new_state
+
+
+def selenium_rule_based_node(
+    state: ComparisonState,
+) -> ComparisonState:
+    """Run Selenium + Rule-Based with the shared input."""
+
+    return _comparison_method_node(
+        state,
+        "selenium_rule_based",
+    )
+
+
+def selenium_nano_llm_node(
+    state: ComparisonState,
+) -> ComparisonState:
+    """Run Selenium + NanoLLM with the shared input."""
+
+    return _comparison_method_node(
+        state,
+        "selenium_nano_llm",
+    )
+
+
+def tavily_llm_node(
+    state: ComparisonState,
+) -> ComparisonState:
+    """Run Tavily + NanoLLM with the shared input."""
+
+    return _comparison_method_node(
+        state,
+        "tavily_llm",
+    )
+
+
+def agentic_search_node(
+    state: ComparisonState,
+) -> ComparisonState:
+    """Run LLM-planned Agentic Search with the shared input."""
+
+    return _comparison_method_node(
+        state,
+        "agentic_search",
+    )
+
+
+def comparison_aggregate_node(
+    state: ComparisonState,
+) -> ComparisonState:
+    """Aggregate method payloads and preserve per-method errors."""
+
+    new_state = dict(state)
+    method_outputs = dict(state.get("method_outputs", {}))
+    method_errors = list(state.get("method_errors", []))
+    ordered_methods = (
+        "selenium_rule_based",
+        "selenium_nano_llm",
+        "tavily_llm",
+        "agentic_search",
+    )
+    outputs = [
+        method_outputs[method]
+        for method in ordered_methods
+        if method in method_outputs
+    ]
+    keywords = {
+        payload.get("keyword")
+        for payload in outputs
+    }
+    new_state["output"] = {
+        "product_id": state.get("product_id", ""),
+        "keyword": state.get("keyword", ""),
+        "execution_mode": state.get("execution_mode", "fake"),
+        "requested_method_count": len(ordered_methods),
+        "successful_method_count": len(outputs),
+        "failed_method_count": len(method_errors),
+        "all_methods_used_same_keyword": (
+            len(keywords) == 1
+            and state.get("keyword") in keywords
+        ),
+        "total_runtime_seconds": round(
+            sum(
+                float(payload.get("runtime_seconds", 0.0))
+                for payload in outputs
+            ),
+            4,
+        ),
+        "total_estimated_cost_usd": round(
+            sum(
+                float(payload.get("estimated_cost_usd", 0.0))
+                for payload in outputs
+            ),
+            8,
+        ),
+        "method_outputs": outputs,
+        "errors": method_errors,
+    }
+    new_state["completed"] = (
+        len(outputs) == len(ordered_methods)
+        and not method_errors
+    )
+    return new_state
+
+
+def comparison_initial_state(
+    product_id: str,
+    keyword: str,
+    execution_mode: str = "fake",
+    max_results: int = 5,
+) -> ComparisonState:
+    return {
+        "product_id": product_id,
+        "keyword": keyword,
+        "execution_mode": execution_mode,
+        "max_results": max_results,
+        "method_outputs": {},
+        "method_errors": [],
+        "completed": False,
+    }
+
+
+def build_comparison_langgraph():
+    """Compile the six-node, four-method comparison graph."""
+
+    try:
+        from langgraph.graph import END, START, StateGraph
+    except ImportError as exc:
+        raise RuntimeError(
+            "Install the requirements, including langgraph, to build the graph flow."
+        ) from exc
+
+    graph = StateGraph(ComparisonState)
+    graph.add_node("input", comparison_input_node)
+    graph.add_node(
+        "selenium_rule_based",
+        selenium_rule_based_node,
+    )
+    graph.add_node(
+        "selenium_nano_llm",
+        selenium_nano_llm_node,
+    )
+    graph.add_node("tavily_llm", tavily_llm_node)
+    graph.add_node(
+        "agentic_search",
+        agentic_search_node,
+    )
+    graph.add_node(
+        "result_aggregation",
+        comparison_aggregate_node,
+    )
+    graph.add_edge(START, "input")
+    graph.add_edge("input", "selenium_rule_based")
+    graph.add_edge(
+        "selenium_rule_based",
+        "selenium_nano_llm",
+    )
+    graph.add_edge("selenium_nano_llm", "tavily_llm")
+    graph.add_edge("tavily_llm", "agentic_search")
+    graph.add_edge(
+        "agentic_search",
+        "result_aggregation",
+    )
+    graph.add_edge("result_aggregation", END)
+    return graph.compile()
+
+
+def run_comparison_langgraph(
+    product_id: str,
+    keyword: str,
+    execution_mode: str = "fake",
+    max_results: int = 5,
+) -> ComparisonState:
+    """Run one product through all four methods using the same keyword."""
+
+    graph = build_comparison_langgraph()
+    return graph.invoke(
+        comparison_initial_state(
+            product_id=product_id,
+            keyword=keyword,
+            execution_mode=execution_mode,
+            max_results=max_results,
+        )
+    )
+
+
 if __name__ == "__main__":
+    import argparse
     import json
 
-    result = run_pipeline_step_by_step(
-        "P001",
-        "Apple iPhone 16 Pro Max 256 GB fiyat",
+    parser = argparse.ArgumentParser(
+        description="Run an API-free LangGraph demonstration."
     )
+    parser.add_argument(
+        "--flow",
+        choices=["agentic", "comparison"],
+        default="comparison",
+    )
+    parser.add_argument("--product-id", default="P001")
+    parser.add_argument(
+        "--keyword",
+        default="Apple iPhone 16 Pro Max 256 GB fiyat",
+    )
+    parser.add_argument(
+        "--execution-mode",
+        choices=["fake", "live"],
+        default="fake",
+    )
+    parser.add_argument("--max-results", type=int, default=5)
+    args = parser.parse_args()
+
+    if args.flow == "comparison":
+        result = run_comparison_langgraph(
+            product_id=args.product_id,
+            keyword=args.keyword,
+            execution_mode=args.execution_mode,
+            max_results=args.max_results,
+        )
+    else:
+        provider = (
+            "fake"
+            if args.execution_mode == "fake"
+            else "openrouter"
+        )
+        result = run_langgraph_pipeline(
+            product_id=args.product_id,
+            keyword=args.keyword,
+            planner_provider=provider,
+            search_provider=(
+                "fake"
+                if args.execution_mode == "fake"
+                else "tavily"
+            ),
+            evaluator_provider=provider,
+            max_results=args.max_results,
+        )
     print(json.dumps(result, ensure_ascii=False, indent=2))

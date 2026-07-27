@@ -197,10 +197,26 @@ def build_metrics_report(
     """Load result files and build the full metrics report."""
 
     result_files = find_result_files(input_path)
-    payloads = [
-        validate_result_file(file_path)
-        for file_path in result_files
-    ]
+    payloads: list[dict[str, Any]] = []
+    invalid_result_files: list[dict[str, str]] = []
+    for file_path in result_files:
+        try:
+            payloads.append(
+                validate_result_file(file_path)
+            )
+        except (ValueError, OSError) as error:
+            invalid_result_files.append(
+                {
+                    "path": str(file_path),
+                    "error": str(error),
+                }
+            )
+
+    if not payloads:
+        raise MetricsError(
+            "No valid result JSON files were found. "
+            f"Invalid file count: {len(invalid_result_files)}."
+        )
 
     ground_truth_lookup: GroundTruthLookup | None = None
     ground_truth_record_count = 0
@@ -264,6 +280,15 @@ def build_metrics_report(
     )
 
     return {
+        "result_file_count": len(result_files),
+        "valid_result_file_count": len(payloads),
+        "invalid_result_file_count": len(
+            invalid_result_files
+        ),
+        "missing_or_invalid_result_file_count": len(
+            invalid_result_files
+        ),
+        "invalid_result_files": invalid_result_files,
         "experiment_count": len(payloads),
         "method_count": len(method_metrics),
         "result_count": result_count,

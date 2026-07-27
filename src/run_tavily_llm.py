@@ -9,6 +9,7 @@ from pathlib import Path
 from time import perf_counter
 
 from nano_llm_evaluator import METHOD_TAVILY_LLM, NANO_LLM_PROMPT_VERSION, make_nano_llm_evaluator
+from result_storage import create_unique_result_path
 from tavily_client import make_tavily_client
 
 
@@ -56,8 +57,12 @@ def save_result(output: dict) -> Path:
     RESULTS_DIRECTORY.mkdir(parents=True, exist_ok=True)
     digest = hashlib.sha256(output["keyword"].encode("utf-8")).hexdigest()[:8]
     mode = output.get("execution_mode", "unknown")
-    path = RESULTS_DIRECTORY / (
-        f'{output["product_id"]}_{METHOD_TAVILY_LLM}_{digest}_{mode}.json'
+    path = create_unique_result_path(
+        directory=RESULTS_DIRECTORY,
+        product_id=output["product_id"],
+        method=METHOD_TAVILY_LLM,
+        keyword_digest=digest,
+        execution_mode=mode,
     )
     path.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return path

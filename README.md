@@ -23,8 +23,10 @@ Completed and locally verified:
 - Tavily search integration.
 - An OpenRouter-based Agentic query planner that chooses search queries before
   the Tavily search tool is executed.
-- A compiled LangGraph flow with `plan`, `search`, `evaluate`, and `aggregate`
-  nodes.
+- A compiled Agentic LangGraph flow with `plan`, `search`, `evaluate`, and
+  `aggregate` nodes.
+- A compiled comparison LangGraph with shared input, four method nodes, result
+  aggregation, and per-method error isolation.
 - A shared result validator, human ground-truth loader, and metrics module.
 - A fixed 10-product evaluation subset and 15 manually confirmed shared labels.
 
@@ -181,7 +183,15 @@ Agentic Search API-free and live:
 The live Agentic method uses an OpenRouter LLM to select one to three queries,
 executes them using Tavily, deduplicates the search results, and evaluates them
 with the NanoLLM provider. `src/langgraph_flow.py` implements the same process
-as a compiled four-node LangGraph flow.
+as a compiled four-node Agentic flow. It also provides a six-node comparison
+flow containing shared input, Selenium + Rule-Based, Selenium + NanoLLM,
+Tavily + NanoLLM, Agentic Search, and result aggregation nodes.
+
+Run the compiled four-method comparison graph without network calls:
+
+```powershell
+.\.venv\Scripts\python.exe src\langgraph_flow.py --flow comparison --execution-mode fake
+```
 
 Verify that the same fixed keyword reaches all four methods without making
 network calls:
@@ -204,8 +214,9 @@ Every newly generated experiment JSON contains:
 - At most five result objects containing domain, URL, title, snippet,
   `predicted_relevant`, and `relevance_score`
 
-Fake and live executions include the mode in their output filenames, so a fake
-test cannot overwrite a live result for the same product and keyword.
+Each saved execution includes the mode plus a unique UTC/UUID run identifier in
+its filename. Repeated runs therefore cannot overwrite another fake or live
+result for the same product and keyword.
 
 ## Evaluation protocol
 
@@ -238,9 +249,10 @@ coverage until those new URLs are manually reviewed.
 .\.venv\Scripts\python.exe -m unittest discover -s tests -p "test*.py" -v
 ```
 
-The metrics module reports method-level experiment/result counts, relevant
-result ratio, average runtime, total/average estimated cost, ground-truth
-coverage, confusion counts, and accuracy.
+The metrics module reports valid/invalid result-file counts, invalid-file
+details, method-level experiment/result counts, relevant-result ratio, average
+runtime, total/average estimated cost, ground-truth coverage, confusion counts,
+and accuracy.
 
 ## Status checklist
 
@@ -254,7 +266,11 @@ coverage, confusion counts, and accuracy.
 - [x] Selenium + NanoLLM runner.
 - [x] Tavily search integration and Tavily + NanoLLM runner.
 - [x] LLM-planned Agentic Search runner.
-- [x] Compiled LangGraph plan/search/evaluate/aggregate flow.
+- [x] Compiled Agentic LangGraph plan/search/evaluate/aggregate flow.
+- [x] Compiled four-method comparison LangGraph with error isolation.
+- [x] Collision-free result storage for repeated fake and live executions.
+- [x] Batch continuation after an individual product fails.
+- [x] Valid/invalid JSON counts in the metrics report.
 - [x] Shared JSON schema including execution/provider/model/prompt/runtime/cost.
 - [x] API-free tests for all four pipelines.
 - [x] Metrics, evaluation subset, ground-truth loading, and preliminary labels.

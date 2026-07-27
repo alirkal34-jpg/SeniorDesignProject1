@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -16,6 +17,10 @@ from evaluation.result_validator import (
 )
 from keyword_loader import KeywordRecord
 from nano_llm_evaluator import FakeNanoLLMEvaluator
+import run_agentic_search as agentic_runner
+import run_selenium_nano_llm as nano_runner
+import run_selenium_rule_based as rule_runner
+import run_tavily_llm as tavily_runner
 from run_evaluation_batch import METHODS, run_evaluation_batch
 from run_rule_based_batch import run_rule_based_batch
 from run_selenium_nano_llm import run_selenium_nano_llm
@@ -76,6 +81,40 @@ class BatchRunnerTests(unittest.TestCase):
             0,
         )
         self.assertEqual(run_mock.call_count, 2)
+
+    @patch("run_rule_based_batch.save_result")
+    @patch("run_rule_based_batch.run_selenium_rule_based")
+    @patch("run_rule_based_batch.load_keywords")
+    def test_rule_based_batch_continues_after_one_record_fails(
+        self,
+        load_keywords_mock: Mock,
+        run_mock: Mock,
+        save_mock: Mock,
+    ) -> None:
+        load_keywords_mock.return_value = [
+            KeywordRecord("P001", "Apple iPhone fiyat"),
+            KeywordRecord("P002", "Samsung Galaxy fiyat"),
+        ]
+        run_mock.side_effect = [
+            RuntimeError("temporary failure"),
+            RuntimeError("repeated failure"),
+            {
+                "product_id": "P002",
+                "keyword": "Samsung Galaxy fiyat",
+            },
+        ]
+        save_mock.return_value = Path("P002.json")
+
+        summary = run_rule_based_batch(
+            limit=2,
+            max_results=5,
+        )
+
+        self.assertEqual(summary["requested_count"], 2)
+        self.assertEqual(summary["successful_count"], 1)
+        self.assertEqual(summary["failed_count"], 1)
+        self.assertEqual(summary["errors"][0]["product_id"], "P001")
+        self.assertEqual(run_mock.call_count, 3)
 
     @patch(
         "run_selenium_nano_llm."
@@ -179,6 +218,61 @@ class BatchRunnerTests(unittest.TestCase):
                 execution_mode="live",
                 limit=4,
             )
+
+    def test_repeated_saves_never_overwrite_result_files(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            cases = [
+                (
+                    rule_runner,
+                    rule_runner.run_selenium_rule_based(
+                        "P001",
+                        "Apple iPhone fiyat",
+                        search_provider="fake",
+                    ),
+                ),
+                (
+                    nano_runner,
+                    nano_runner.run_selenium_nano_llm(
+                        "P001",
+                        "Apple iPhone fiyat",
+                        provider="fake",
+                        search_provider="fake",
+                    ),
+                ),
+                (
+                    tavily_runner,
+                    tavily_runner.run_tavily_llm(
+                        "P001",
+                        "Apple iPhone fiyat",
+                        search_provider="fake",
+                        evaluator_provider="fake",
+                    ),
+                ),
+                (
+                    agentic_runner,
+                    agentic_runner.run_agentic_search(
+                        "P001",
+                        "Apple iPhone fiyat",
+                        planner_provider="fake",
+                        search_provider="fake",
+                        evaluator_provider="fake",
+                    ),
+                ),
+            ]
+
+            for module, payload in cases:
+                with patch.object(
+                    module,
+                    "RESULTS_DIRECTORY",
+                    root / payload["method"],
+                ):
+                    first_path = module.save_result(payload)
+                    second_path = module.save_result(payload)
+
+                self.assertNotEqual(first_path, second_path)
+                self.assertTrue(first_path.exists())
+                self.assertTrue(second_path.exists())
 
 
 if __name__ == "__main__":
