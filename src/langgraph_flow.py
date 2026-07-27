@@ -388,7 +388,7 @@ def _comparison_method_node(
                 product_id=product_id,
                 keyword=keyword,
                 planner_provider="fake" if is_fake else "openrouter",
-                search_provider="fake" if is_fake else "tavily",
+                search_provider="fake" if is_fake else "selenium",
                 evaluator_provider="fake" if is_fake else "openrouter",
                 max_results=max_results,
             )

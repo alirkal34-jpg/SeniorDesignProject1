@@ -113,7 +113,7 @@ def _run_method(
                 product_id,
                 keyword,
                 planner_provider="fake" if execution_mode == "fake" else "openrouter",
-                search_provider="fake" if execution_mode == "fake" else "tavily",
+                search_provider="fake" if execution_mode == "fake" else "selenium",
                 evaluator_provider="fake" if execution_mode == "fake" else "openrouter",
                 max_results=max_results,
             ),

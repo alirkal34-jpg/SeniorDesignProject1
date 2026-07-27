@@ -7,6 +7,7 @@ Tavily tool is called. A deterministic fake planner is kept for API-free tests.
 from __future__ import annotations
 
 import json
+import logging
 import os
 from typing import Any, Protocol
 
@@ -16,11 +17,18 @@ from keyword_generator import (
     OpenRouterKeywordClient,
     load_env_file,
 )
+from selenium_collector import (
+    collect_search_results,
+    create_browser,
+)
 from tavily_client import make_tavily_client
 
 
 AGENTIC_PLANNER_PROMPT_VERSION = "agentic-search-plan-v1"
 MAX_AGENTIC_QUERIES = 3
+
+
+logger = logging.getLogger(__name__)
 
 
 class QueryPlanner(Protocol):
@@ -147,25 +155,89 @@ def make_query_planner(provider: str = "openrouter") -> QueryPlanner:
     raise ValueError(f"Unsupported agentic planner provider: {provider}")
 
 
+class SeleniumSearchClient:
+    """Expose Selenium collection as an agent-controlled search tool."""
+
+    last_cost_usd = 0.0
+
+    def __init__(
+        self,
+        max_results: int = 5,
+        search_engine: str = "bing",
+    ) -> None:
+        self.max_results = min(
+            max(1, max_results),
+            5,
+        )
+        self.search_engine = search_engine
+        self.browser = None
+
+    def search(
+        self,
+        keyword: str,
+    ) -> list[dict[str, str]]:
+        if self.browser is None:
+            self.browser = create_browser()
+
+        return collect_search_results(
+            browser=self.browser,
+            keyword=keyword,
+            max_results=self.max_results,
+            search_engine=self.search_engine,
+        )
+
+    def close(self) -> None:
+        if self.browser is not None:
+            self.browser.quit()
+            self.browser = None
+
+
+def make_search_client(
+    provider: str,
+    max_results: int,
+    search_engine: str,
+):
+    if provider == "selenium":
+        return SeleniumSearchClient(
+            max_results=max_results,
+            search_engine=search_engine,
+        )
+    if provider in {"tavily", "fake"}:
+        return make_tavily_client(
+            provider,
+            max_results=max_results,
+        )
+    raise ValueError(
+        f"Unsupported agentic search provider: {provider}"
+    )
+
+
 class AgenticSearch:
     """Use a planner to choose queries, then execute them with a search tool."""
 
     def __init__(
         self,
-        search_provider: str = "tavily",
+        search_provider: str = "selenium",
         planner_provider: str = "openrouter",
         max_results: int = 5,
+        search_engine: str = "bing",
     ) -> None:
         self.search_provider = search_provider
         self.planner_provider = planner_provider
         self.max_results = min(max(1, max_results), 5)
-        self.client = make_tavily_client(search_provider, max_results=self.max_results)
+        self.search_engine = search_engine
+        self.client = make_search_client(
+            provider=search_provider,
+            max_results=self.max_results,
+            search_engine=search_engine,
+        )
         self.planner = make_query_planner(planner_provider)
         self.planner_model = self.planner.model
         self.last_planning_cost_usd = 0.0
         self.last_search_cost_usd = 0.0
         self.last_cost_usd = 0.0
         self.last_queries: list[str] = []
+        self.search_errors: list[dict[str, str]] = []
 
     def plan_queries(self, keyword: str) -> list[str]:
         queries = self.planner.plan(keyword)
@@ -179,9 +251,23 @@ class AgenticSearch:
         merged: list[dict[str, str]] = []
         seen_urls: set[str] = set()
         search_cost = 0.0
+        self.search_errors = []
 
         for query in queries:
-            results = self.client.search(query)
+            try:
+                results = self.client.search(query)
+            except Exception as exc:
+                logger.warning(
+                    "Agentic search query failed: %s",
+                    exc,
+                )
+                self.search_errors.append(
+                    {
+                        "query": query,
+                        "error": str(exc),
+                    }
+                )
+                continue
             search_cost += float(getattr(self.client, "last_cost_usd", 0.0))
             for result in results:
                 url = result.get("url", "")
@@ -196,7 +282,20 @@ class AgenticSearch:
 
         self.last_search_cost_usd = search_cost
         self.last_cost_usd = self.last_planning_cost_usd + search_cost
+        if not merged and self.search_errors:
+            raise RuntimeError(
+                "All agentic search queries failed."
+            )
         return merged[: self.max_results]
 
     def search(self, keyword: str) -> list[dict[str, str]]:
         return self.search_queries(self.plan_queries(keyword))
+
+    def close(self) -> None:
+        close_client = getattr(
+            self.client,
+            "close",
+            None,
+        )
+        if callable(close_client):
+            close_client()

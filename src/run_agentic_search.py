@@ -20,18 +20,23 @@ RESULTS_DIRECTORY = PROJECT_ROOT / "results" / "agentic_search"
 def run_agentic_search(
     product_id: str,
     keyword: str,
-    search_provider: str = "tavily",
+    search_provider: str = "selenium",
     evaluator_provider: str = "openrouter",
     planner_provider: str = "openrouter",
     max_results: int = 5,
+    search_engine: str = "bing",
 ) -> dict:
     started_at = perf_counter()
     searcher = AgenticSearch(
         search_provider=search_provider,
         planner_provider=planner_provider,
         max_results=max_results,
+        search_engine=search_engine,
     )
-    raw_results = searcher.search(keyword)
+    try:
+        raw_results = searcher.search(keyword)
+    finally:
+        searcher.close()
     evaluator = make_nano_llm_evaluator(provider=evaluator_provider)
     evaluated_results = evaluator.evaluate_results(keyword, raw_results)
     execution_mode = (
@@ -45,12 +50,18 @@ def run_agentic_search(
         "method": METHOD_AGENTIC_SEARCH,
         "execution_mode": execution_mode,
         "provider": f"{planner_provider}+{search_provider}+{evaluator_provider}",
+        "search_engine": (
+            search_engine
+            if search_provider == "selenium"
+            else search_provider
+        ),
         "model": getattr(evaluator, "model", evaluator_provider),
         "planner_model": searcher.planner_model,
         "prompt_version": (
             f"{AGENTIC_PLANNER_PROMPT_VERSION}+{NANO_LLM_PROMPT_VERSION}"
         ),
         "search_queries": searcher.last_queries,
+        "search_errors": searcher.search_errors,
         "runtime_seconds": round(perf_counter() - started_at, 2),
         "estimated_cost_usd": round(
             searcher.last_cost_usd + float(getattr(evaluator, "last_cost_usd", 0.0)),
@@ -79,7 +90,16 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run agentic web search for one keyword.")
     parser.add_argument("--product-id", default="P001")
     parser.add_argument("--keyword", default="Apple iPhone 16 Pro Max 256 GB fiyat")
-    parser.add_argument("--search-provider", choices=["tavily", "fake"], default="tavily")
+    parser.add_argument(
+        "--search-provider",
+        choices=["selenium", "tavily", "fake"],
+        default="selenium",
+    )
+    parser.add_argument(
+        "--search-engine",
+        choices=["google", "bing"],
+        default="bing",
+    )
     parser.add_argument("--evaluator-provider", choices=["openrouter", "fake"], default="openrouter")
     parser.add_argument("--planner-provider", choices=["openrouter", "fake"], default="openrouter")
     parser.add_argument("--max-results", type=int, default=5)
@@ -91,6 +111,7 @@ def main() -> None:
         evaluator_provider=args.evaluator_provider,
         planner_provider=args.planner_provider,
         max_results=args.max_results,
+        search_engine=args.search_engine,
     )
     path = save_result(output)
     print(json.dumps(output, ensure_ascii=False, indent=2))

@@ -3,12 +3,16 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from agentic_search import AgenticSearch, FakeQueryPlanner
+from agentic_search import (
+    AgenticSearch,
+    FakeQueryPlanner,
+    SeleniumSearchClient,
+)
 import langgraph_flow as langgraph_module
 from keyword_generator import (
     DEFAULT_MODEL,
@@ -185,6 +189,41 @@ class KeywordGeneratorTests(unittest.TestCase):
         self.assertLessEqual(len(results), 5)
         self.assertEqual(len({result["url"] for result in results}), len(results))
 
+    def test_agentic_search_keeps_results_when_one_query_fails(self):
+        searcher = AgenticSearch(
+            search_provider="fake",
+            planner_provider="fake",
+        )
+        searcher.client = Mock()
+        searcher.client.last_cost_usd = 0.0
+        searcher.client.search.side_effect = [
+            [
+                {
+                    "domain": "example.com",
+                    "url": "https://example.com/product",
+                    "title": "Apple iPhone",
+                    "snippet": "Fiyat",
+                }
+            ],
+            RuntimeError("temporary search failure"),
+        ]
+
+        results = searcher.search_queries(
+            [
+                "Apple iPhone fiyat",
+                "Apple iPhone satın al",
+            ]
+        )
+
+        self.assertEqual(
+            len(results),
+            1,
+        )
+        self.assertEqual(
+            searcher.search_errors[0]["query"],
+            "Apple iPhone satın al",
+        )
+
     def test_fake_agentic_planner_preserves_product_keyword(self):
         keyword = "Apple iPhone 16 Pro Max 256 GB fiyat"
 
@@ -192,6 +231,47 @@ class KeywordGeneratorTests(unittest.TestCase):
 
         self.assertEqual(queries[0], keyword)
         self.assertGreaterEqual(len(queries), 2)
+
+    @patch("agentic_search.collect_search_results")
+    @patch("agentic_search.create_browser")
+    def test_agentic_selenium_client_reuses_and_closes_browser(
+        self,
+        create_browser_mock: Mock,
+        collect_mock: Mock,
+    ):
+        browser = Mock()
+        create_browser_mock.return_value = browser
+        collect_mock.return_value = [
+            {
+                "domain": "example.com",
+                "url": "https://example.com/product",
+                "title": "Apple iPhone",
+                "snippet": "Fiyat",
+            }
+        ]
+        client = SeleniumSearchClient(
+            max_results=5,
+            search_engine="bing",
+        )
+
+        first_results = client.search(
+            "Apple iPhone fiyat"
+        )
+        second_results = client.search(
+            "Apple iPhone satın al"
+        )
+        client.close()
+
+        self.assertEqual(
+            first_results,
+            second_results,
+        )
+        create_browser_mock.assert_called_once_with()
+        self.assertEqual(
+            collect_mock.call_count,
+            2,
+        )
+        browser.quit.assert_called_once_with()
 
     def test_fake_agentic_runner_keeps_method_and_product_id(self):
         payload = run_agentic_search(

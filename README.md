@@ -25,7 +25,7 @@ Completed and locally verified:
 - Successful one-product live Selenium + NanoLLM, Tavily + NanoLLM, and Agentic
   Search smoke tests.
 - An OpenRouter-based Agentic query planner that chooses search queries before
-  the Tavily search tool is executed.
+  the Selenium/Bing search tool is executed.
 - A compiled Agentic LangGraph flow with `plan`, `search`, `evaluate`, and
   `aggregate` nodes.
 - A compiled comparison LangGraph with shared input, four method nodes, result
@@ -192,15 +192,18 @@ Agentic Search API-free and live:
 
 ```powershell
 .\.venv\Scripts\python.exe src\run_agentic_search.py --planner-provider fake --search-provider fake --evaluator-provider fake --max-results 5
-.\.venv\Scripts\python.exe src\run_agentic_search.py --planner-provider openrouter --search-provider tavily --evaluator-provider openrouter --max-results 5
+.\.venv\Scripts\python.exe src\run_agentic_search.py --planner-provider openrouter --search-provider selenium --search-engine bing --evaluator-provider openrouter --max-results 5
 ```
 
 The live Agentic method uses an OpenRouter LLM to select one to three queries,
-executes them using Tavily, deduplicates the search results, and evaluates them
-with the NanoLLM provider. `src/langgraph_flow.py` implements the same process
-as a compiled four-node Agentic flow. It also provides a six-node comparison
-flow containing shared input, Selenium + Rule-Based, Selenium + NanoLLM,
-Tavily + NanoLLM, Agentic Search, and result aggregation nodes.
+executes them using Selenium with Bing, deduplicates the search results, and
+evaluates them with the NanoLLM provider. This keeps Agentic Search independent
+from the separate Tavily + NanoLLM method. The older
+`openrouter+tavily+openrouter` JSON is retained only as legacy smoke-test
+evidence. `src/langgraph_flow.py` implements the current process as a compiled
+four-node Agentic flow. It also provides a six-node comparison flow containing
+shared input, Selenium + Rule-Based, Selenium + NanoLLM, Tavily + NanoLLM,
+Agentic Search, and result aggregation nodes.
 
 Run the compiled four-method comparison graph without network calls:
 
