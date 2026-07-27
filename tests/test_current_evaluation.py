@@ -37,15 +37,15 @@ class CurrentEvaluationTests(unittest.TestCase):
     ) -> None:
         self.assertEqual(
             self.report["ground_truth_record_count"],
-            15,
+            21,
         )
         self.assertGreaterEqual(
             self.report["result_count"],
-            41,
+            61,
         )
         self.assertGreaterEqual(
             self.report["labeled_result_count"],
-            20,
+            40,
         )
         self.assertEqual(
             self.report[
@@ -96,7 +96,7 @@ class CurrentEvaluationTests(unittest.TestCase):
         )
         self.assertEqual(
             self.report["false_positive_count"],
-            0,
+            2,
         )
 
 
