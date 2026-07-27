@@ -29,6 +29,8 @@ works with a 100-product smartphone dataset and provides:
   reference file.
 - Structured OpenRouter/Nano LLM keyword generation for processed products.
 - Testable Nano LLM relevance evaluation output for Selenium + NanoLLM.
+- Tavily + NanoLLM and agentic web-search runners with the same output format.
+- A LangGraph node/flow draft for the agentic method.
 - Standardized JSON experiment output containing the product ID, keyword,
   method, runtime, estimated cost, and evaluated results.
 
@@ -38,12 +40,8 @@ The completed prototype is **Selenium + Rule-Based** for one product/keyword.
 It collects up to five search results, assigns domain-based relevance scores,
 and writes a standardized JSON file under `results/selenium_rule_based/`.
 
-The other comparison methods are planned next steps and are not implemented
-yet:
-
-- Tavily
-- Agentic
-- Selenium + NanoLLM keyword relevance evaluation scaffold
+The comparison methods share the same JSON result contract. Each method returns
+at most five results and preserves the input `product_id` and `keyword`.
 
 ## Project structure
 
@@ -59,6 +57,8 @@ first-task/
 |-- results/
 |   |-- selenium_nano_llm/           # Fake-provider example result JSON
 |   `-- selenium_rule_based/         # Standardized example result JSON
+|   |-- tavily_llm/                  # Tavily + NanoLLM outputs
+|   `-- agentic_search/              # Agentic search outputs
 |-- src/
 |   |-- evaluation/                  # Schema, labels, and metrics utilities
 |   |-- data_processor.py
@@ -71,6 +71,11 @@ first-task/
 |   |-- rule_based_evaluator.py
 |   |-- run_rule_based_batch.py
 |   |-- run_selenium_nano_llm.py
+|   |-- tavily_client.py
+|   |-- run_tavily_llm.py
+|   |-- agentic_search.py
+|   |-- run_agentic_search.py
+|   |-- langgraph_flow.py
 |   `-- run_selenium_rule_based.py
 |-- tests/
 |   `-- tests/
@@ -133,7 +138,9 @@ through environment variables:
 
 ```text
 OPENROUTER_API_KEY=
-NANO_LLM_MODEL=google/gemini-flash-1.5-8b
+NANO_LLM_MODEL=openrouter/free
+TAVILY_API_KEY=
+TAVILY_COST_PER_SEARCH_USD=0
 ```
 
 Copy `.env.example` to `.env` locally and add the real API key only in `.env`.
@@ -150,6 +157,20 @@ Generate keywords with OpenRouter:
 ```powershell
 .\.venv\Scripts\python.exe src\keyword_generator.py --provider openrouter --limit 3
 ```
+
+After the 3-product call is verified, generate the complete 100-product list:
+
+```powershell
+.\.venv\Scripts\python.exe src\keyword_generator.py --provider openrouter --limit 100
+```
+
+OpenRouter requests are sent in verified 3-product batches and combined into
+the single output file. This avoids provider schema-size limits for 100 IDs.
+
+The command prints the elapsed runtime. OpenRouter usage cost is read from the
+API response for NanoLLM result files; if the provider does not return a cost,
+the recorded value remains `0.0` and the token usage should be retained in the
+provider dashboard for reporting.
 
 The structured output is written to:
 
@@ -197,6 +218,34 @@ Run Selenium + NanoLLM for one keyword while reusing `selenium_collector.py`:
 ```powershell
 .\.venv\Scripts\python.exe src\run_selenium_nano_llm.py --provider fake --max-results 5
 ```
+
+Run the real provider only after the 3-keyword call succeeds:
+
+```powershell
+.\.venv\Scripts\python.exe src\run_selenium_nano_llm.py --provider openrouter --max-results 5
+```
+
+Run Tavily + NanoLLM for one keyword:
+
+```powershell
+.\.venv\Scripts\python.exe src\run_tavily_llm.py --search-provider tavily --evaluator-provider openrouter --max-results 5
+```
+
+Run the API-free Tavily pipeline check:
+
+```powershell
+.\.venv\Scripts\python.exe src\run_tavily_llm.py --search-provider fake --evaluator-provider fake
+```
+
+Run the agentic search method. It plans a base query and a purchase/comparison
+query, deduplicates the results, and keeps at most five records:
+
+```powershell
+.\.venv\Scripts\python.exe src\run_agentic_search.py --search-provider tavily --evaluator-provider openrouter
+```
+
+The LangGraph implementation draft is in `src/langgraph_flow.py`; it defines
+plan, search, and evaluate nodes and requires the optional `langgraph` package.
 
 The human-labeling template for comparing predicted relevance with manual
 judgment is:

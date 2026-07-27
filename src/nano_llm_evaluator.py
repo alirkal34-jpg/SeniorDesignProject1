@@ -19,6 +19,7 @@ METHOD_TAVILY_LLM = "tavily_llm"
 METHOD_AGENTIC_SEARCH = "agentic_search"
 METHOD_SELENIUM_NANO_LLM = "selenium_nano_llm"
 METHOD_SELENIUM_RULE_BASED = "selenium_rule_based"
+NANO_LLM_PROMPT_VERSION = "relevance-v1"
 
 
 @dataclass(frozen=True)
@@ -83,7 +84,8 @@ class OpenRouterNanoLLMEvaluator(OpenRouterKeywordClient):
                     "content": (
                         "Evaluate whether each Google search result is relevant for a Turkish "
                         "transactional e-commerce product keyword. Relevant means product, "
-                        "category, marketplace, retailer, or price-comparison intent. Return JSON only."
+                        f"category, marketplace, retailer, or price-comparison intent. Return exactly {len(results)} "
+                        "evaluation objects in the same order as the input results. Return JSON only."
                     ),
                 },
                 {
@@ -116,6 +118,8 @@ class OpenRouterNanoLLMEvaluator(OpenRouterKeywordClient):
                         "properties": {
                             "results": {
                                 "type": "array",
+                                "minItems": len(results),
+                                "maxItems": len(results),
                                 "items": {
                                     "type": "object",
                                     "additionalProperties": False,
@@ -186,7 +190,7 @@ def make_nano_llm_evaluator(provider: str = "fake"):
 
         return OpenRouterNanoLLMEvaluator(
             api_key=os.environ.get("OPENROUTER_API_KEY", ""),
-            model=os.environ.get("NANO_LLM_MODEL", "google/gemini-flash-1.5-8b"),
+            model=os.environ.get("NANO_LLM_MODEL", "openrouter/free"),
         )
     raise ValueError(f"Unsupported provider: {provider}")
 

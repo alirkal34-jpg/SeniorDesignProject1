@@ -11,6 +11,7 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
+from time import perf_counter
 from typing import Any, Iterable, Protocol
 from urllib import error, request
 
@@ -18,7 +19,8 @@ from urllib import error, request
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT_PATH = ROOT_DIR / "data" / "processed" / "processed_products.json"
 DEFAULT_OUTPUT_PATH = ROOT_DIR / "data" / "processed" / "generated_keywords.json"
-DEFAULT_MODEL = "google/gemini-flash-1.5-8b"
+DEFAULT_MODEL = "openrouter/free"
+OPENROUTER_BATCH_SIZE = 3
 
 
 class KeywordGenerationError(RuntimeError):
@@ -152,17 +154,22 @@ class OpenRouterKeywordClient:
             raise KeywordGenerationError("OPENROUTER_API_KEY is not set.")
         self.api_key = api_key
         self.model = model
+        self.last_usage: dict[str, Any] = {}
+        self.last_cost_usd = 0.0
 
     def generate_keywords(self, products: list[Product]) -> list[KeywordItem]:
         expected_ids = {product.product_id for product in products}
         payload = {
             "model": self.model,
-            "temperature": 0.2,
+            "temperature": 0,
+            "max_tokens": 800,
             "messages": [
                 {
                     "role": "system",
                     "content": (
                         "You generate Turkish transactional e-commerce SEO keywords. "
+                        f"Return exactly one keyword object for each of these product IDs: {sorted(expected_ids)}. "
+                        "Use every product ID exactly once; never duplicate or omit an ID. "
                         "Return only valid JSON matching the schema. Each keyword must include "
                         "brand, model, important variant such as storage, and buying intent such as fiyat."
                     ),
@@ -197,11 +204,13 @@ class OpenRouterKeywordClient:
                         "properties": {
                             "keywords": {
                                 "type": "array",
+                                "minItems": len(products),
+                                "maxItems": len(products),
                                 "items": {
                                     "type": "object",
                                     "additionalProperties": False,
                                     "properties": {
-                                        "product_id": {"type": "string"},
+                                        "product_id": {"type": "string", "enum": sorted(expected_ids)},
                                         "keyword": {"type": "string"},
                                     },
                                     "required": ["product_id", "keyword"],
@@ -214,13 +223,25 @@ class OpenRouterKeywordClient:
             },
         }
 
-        response_data = self._post_json(payload)
-        try:
-            content = response_data["choices"][0]["message"]["content"]
-            parsed = json.loads(content)
-        except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
-            raise KeywordGenerationError(f"Could not parse OpenRouter structured response: {exc}") from exc
-        return validate_keyword_output(parsed, expected_ids)
+        last_error: KeywordGenerationError | None = None
+        for attempt in range(3):
+            response_data = self._post_json(payload)
+            try:
+                content = response_data["choices"][0]["message"]["content"]
+                if not isinstance(content, str) or not content.strip():
+                    finish_reason = response_data.get("choices", [{}])[0].get("finish_reason")
+                    raise KeywordGenerationError(
+                        f"OpenRouter returned empty structured content (finish_reason={finish_reason}, model={self.model})."
+                    )
+                parsed = json.loads(content)
+                return validate_keyword_output(parsed, expected_ids)
+            except KeywordGenerationError as exc:
+                last_error = exc
+            except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
+                last_error = KeywordGenerationError(f"Could not parse OpenRouter structured response: {exc}")
+            if attempt < 2:
+                continue
+        raise last_error or KeywordGenerationError("OpenRouter returned no usable keyword response.")
 
     def _post_json(self, payload: dict[str, Any]) -> dict[str, Any]:
         body = json.dumps(payload).encode("utf-8")
@@ -237,7 +258,15 @@ class OpenRouterKeywordClient:
         )
         try:
             with request.urlopen(req, timeout=60) as response:
-                return json.loads(response.read().decode("utf-8"))
+                response_data = json.loads(response.read().decode("utf-8"))
+                usage = response_data.get("usage", {})
+                self.last_usage = usage if isinstance(usage, dict) else {}
+                raw_cost = self.last_usage.get("cost", self.last_usage.get("total_cost", 0.0))
+                try:
+                    self.last_cost_usd = float(raw_cost or 0.0)
+                except (TypeError, ValueError):
+                    self.last_cost_usd = 0.0
+                return response_data
         except error.HTTPError as exc:
             detail = exc.read().decode("utf-8", errors="replace")
             raise KeywordGenerationError(f"OpenRouter API error {exc.code}: {detail}") from exc
@@ -265,7 +294,15 @@ def generate_keywords(
 ) -> list[KeywordItem]:
     products = select_products(load_products(input_path), limit=limit)
     client = make_client(provider)
-    keywords = client.generate_keywords(products)
+    if provider == "openrouter":
+        # Google structured-output providers reject a single schema with a
+        # large product_id enum, so keep each request at the verified size.
+        keywords = []
+        for start in range(0, len(products), OPENROUTER_BATCH_SIZE):
+            batch = products[start : start + OPENROUTER_BATCH_SIZE]
+            keywords.extend(client.generate_keywords(batch))
+    else:
+        keywords = client.generate_keywords(products)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         json.dumps([item.to_dict() for item in keywords], ensure_ascii=False, indent=2) + "\n",
@@ -282,6 +319,7 @@ def main() -> None:
     parser.add_argument("--provider", choices=["openrouter", "fake"], default="openrouter")
     args = parser.parse_args()
 
+    started_at = perf_counter()
     keywords = generate_keywords(
         input_path=args.input,
         output_path=args.output,
@@ -289,6 +327,8 @@ def main() -> None:
         provider=args.provider,
     )
     print(json.dumps([item.to_dict() for item in keywords], ensure_ascii=False, indent=2))
+    elapsed = perf_counter() - started_at
+    print(f"runtime_seconds={elapsed:.2f}")
 
 
 if __name__ == "__main__":

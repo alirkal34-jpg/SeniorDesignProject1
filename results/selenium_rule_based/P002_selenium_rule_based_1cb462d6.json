@@ -1,0 +1,49 @@
+{
+  "product_id": "P002",
+  "keyword": "Apple iPhone 16 Pro 128GB fiyat",
+  "method": "selenium_rule_based",
+  "runtime_seconds": 8.02,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "mediamarkt.com.tr",
+      "url": "https://www.mediamarkt.com.tr/tr/product/_apple-iphone-16-pro-128-gb-akilli-telefon-siyah-146317261.html",
+      "title": "APPLE MYND3TU/A iPhone 16 Pro 8 GB 128 GB Akıllı ...",
+      "snippet": "APPLE MYND3TU/A iPhone 16 Pro 8 GB 128 GB Akıllı Telefon Siyah Titanium · Mükemmel. ₺97.359,–₺97359,00 · Çok İyi. ₺96.289,–₺96289,00 · İyi. ₺94.679,–₺94679,00.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/en-ucuz-iphone-16-pro-fiyati,760848471.html",
+      "title": "iPhone 16 Pro 128 GB Fiyatları, Özellikleri ve Yorumları",
+      "snippet": "En ucuz iPhone 16 Pro 128 GB fiyatları 90.999,00 TL'den başlayan seçeneklerle Akakçe'de! iPhone 16 Pro 128 GB özelliklerini incele, 24 mağazadaki ...",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-apple-iphone-16-pro-5g-128gb-fiyatlari,a2314866756",
+      "title": "Apple iPhone 16 Pro 5G 128GB Fiyatları ve Modelleri",
+      "snippet": "En ucuz Apple iPhone 16 Pro 128GB fiyatları 89.990,00 TL'den başlayan tekliflerle Cimri'de! Apple iPhone 16 Pro 128GB özelliklerini incele, ...",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-apple-iphone-16-pro",
+      "title": "iPhone 16 Pro Modelleri ve Fiyatları",
+      "snippet": "1 YIL GARANTİLİ 16 PRO - GB PİL %98 MAĞZADAN 12 AY!! 30.000 TL ; SIFIR KAPALI KUTU 16 PRO 128 GB 1 YIL GARANTİLİ. 37.499 TL ; APPLE 16 PRO 128 GB GARANTİLİ 12AY ...",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/apple/iphone-16-pro-128gb-beyaz-titanyum-p-857296096",
+      "title": "Apple iPhone 16 Pro 128GB Beyaz Titanyum - Trendyol",
+      "snippet": "Apple iPhone 16 Pro 128GB Beyaz Titanyum modelinde, 6.1 inç Super Retina XDR OLED ekran kullanılıyor. Bu ekran, yüksek çözünürlük ve mükemmel renk üretimi ile ...",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

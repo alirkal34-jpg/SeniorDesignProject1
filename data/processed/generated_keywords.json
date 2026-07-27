@@ -10,5 +10,393 @@
   {
     "product_id": "P003",
     "keyword": "Apple iPhone 16 Plus 128 GB fiyat"
+  },
+  {
+    "product_id": "P004",
+    "keyword": "Apple iPhone 16 128 GB fiyat"
+  },
+  {
+    "product_id": "P005",
+    "keyword": "Apple iPhone 15 Pro Max 256 GB fiyat"
+  },
+  {
+    "product_id": "P006",
+    "keyword": "Apple iPhone 15 Pro 128 GB fiyat"
+  },
+  {
+    "product_id": "P007",
+    "keyword": "Apple iPhone 15 Plus 128 GB fiyat"
+  },
+  {
+    "product_id": "P008",
+    "keyword": "Apple iPhone 15 128 GB fiyat"
+  },
+  {
+    "product_id": "P009",
+    "keyword": "Apple iPhone 14 Pro Max 128 GB fiyat"
+  },
+  {
+    "product_id": "P010",
+    "keyword": "Apple iPhone 14 128 GB fiyat"
+  },
+  {
+    "product_id": "P011",
+    "keyword": "Samsung Galaxy S25 Ultra 256 GB fiyat"
+  },
+  {
+    "product_id": "P012",
+    "keyword": "Samsung Galaxy S25 Plus 256 GB fiyat"
+  },
+  {
+    "product_id": "P013",
+    "keyword": "Samsung Galaxy S25 128 GB fiyat"
+  },
+  {
+    "product_id": "P014",
+    "keyword": "Samsung Galaxy S24 Ultra 256 GB fiyat"
+  },
+  {
+    "product_id": "P015",
+    "keyword": "Samsung Galaxy S24 Plus 256 GB fiyat"
+  },
+  {
+    "product_id": "P016",
+    "keyword": "Samsung Galaxy S24 128 GB fiyat"
+  },
+  {
+    "product_id": "P017",
+    "keyword": "Samsung Galaxy S23 Ultra 256 GB fiyat"
+  },
+  {
+    "product_id": "P018",
+    "keyword": "Samsung Galaxy S23 Plus 256 GB fiyat"
+  },
+  {
+    "product_id": "P019",
+    "keyword": "Samsung Galaxy S23 128 GB fiyat"
+  },
+  {
+    "product_id": "P020",
+    "keyword": "Samsung Galaxy Z Fold6 256 GB fiyat"
+  },
+  {
+    "product_id": "P021",
+    "keyword": "Samsung Galaxy Z Flip6 256 GB fiyat"
+  },
+  {
+    "product_id": "P022",
+    "keyword": "Samsung Galaxy A56 5G 256 GB fiyat"
+  },
+  {
+    "product_id": "P023",
+    "keyword": "Samsung Galaxy A55 5G 256 GB fiyat"
+  },
+  {
+    "product_id": "P024",
+    "keyword": "Samsung Galaxy A36 5G 128 GB fiyat"
+  },
+  {
+    "product_id": "P025",
+    "keyword": "Samsung Galaxy A35 5G 128 GB fiyat"
+  },
+  {
+    "product_id": "P026",
+    "keyword": "Xiaomi Xiaomi 15 Ultra 512 GB fiyat"
+  },
+  {
+    "product_id": "P027",
+    "keyword": "Xiaomi Xiaomi 15 256 GB fiyat"
+  },
+  {
+    "product_id": "P028",
+    "keyword": "Xiaomi Xiaomi 14 Ultra 512 GB fiyat"
+  },
+  {
+    "product_id": "P029",
+    "keyword": "Xiaomi Xiaomi 14 256 GB fiyat"
+  },
+  {
+    "product_id": "P030",
+    "keyword": "Xiaomi Xiaomi 14T Pro 512 GB fiyat"
+  },
+  {
+    "product_id": "P031",
+    "keyword": "Xiaomi Xiaomi 14T 256 GB fiyat"
+  },
+  {
+    "product_id": "P032",
+    "keyword": "Xiaomi Xiaomi 13T Pro 512 GB fiyat"
+  },
+  {
+    "product_id": "P033",
+    "keyword": "Xiaomi Xiaomi 13T 256 GB fiyat"
+  },
+  {
+    "product_id": "P034",
+    "keyword": "Xiaomi Redmi Note 14 Pro Plus 5G 256 GB fiyat"
+  },
+  {
+    "product_id": "P035",
+    "keyword": "Xiaomi Redmi Note 14 Pro 5G 256 GB fiyat"
+  },
+  {
+    "product_id": "P036",
+    "keyword": "Xiaomi Redmi Note 13 Pro Plus 5G 256 GB fiyat"
+  },
+  {
+    "product_id": "P037",
+    "keyword": "Xiaomi Poco F6 Pro 512 GB fiyat"
+  },
+  {
+    "product_id": "P038",
+    "keyword": "Google Pixel 9 Pro XL 256 GB fiyat"
+  },
+  {
+    "product_id": "P039",
+    "keyword": "Google Pixel 9 Pro 128 GB fiyat"
+  },
+  {
+    "product_id": "P040",
+    "keyword": "Google Pixel 9 128 GB fiyat"
+  },
+  {
+    "product_id": "P041",
+    "keyword": "Google Pixel 8 Pro 128 GB fiyat"
+  },
+  {
+    "product_id": "P042",
+    "keyword": "Google Pixel 8 128 GB fiyat"
+  },
+  {
+    "product_id": "P043",
+    "keyword": "Google Pixel 8a 128 GB fiyat"
+  },
+  {
+    "product_id": "P044",
+    "keyword": "Google Pixel 7 Pro 128 GB fiyat"
+  },
+  {
+    "product_id": "P045",
+    "keyword": "Google Pixel 7a 128 GB fiyat"
+  },
+  {
+    "product_id": "P046",
+    "keyword": "OnePlus OnePlus 13 256 GB fiyat"
+  },
+  {
+    "product_id": "P047",
+    "keyword": "OnePlus OnePlus 12 256 GB fiyat"
+  },
+  {
+    "product_id": "P048",
+    "keyword": "OnePlus OnePlus 12R 256 GB fiyat"
+  },
+  {
+    "product_id": "P049",
+    "keyword": "OnePlus OnePlus 11 256 GB fiyat"
+  },
+  {
+    "product_id": "P050",
+    "keyword": "OnePlus OnePlus 10 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P051",
+    "keyword": "OnePlus Nord 4 256 GB fiyat"
+  },
+  {
+    "product_id": "P052",
+    "keyword": "OnePlus Nord CE4 256 GB fiyat"
+  },
+  {
+    "product_id": "P053",
+    "keyword": "OnePlus OnePlus Open 512 GB fiyat"
+  },
+  {
+    "product_id": "P054",
+    "keyword": "Oppo Find X8 Pro 512 GB fiyat"
+  },
+  {
+    "product_id": "P055",
+    "keyword": "Oppo Find X8 256 GB fiyat"
+  },
+  {
+    "product_id": "P056",
+    "keyword": "Oppo Reno13 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P057",
+    "keyword": "Oppo Reno13 256 GB fiyat"
+  },
+  {
+    "product_id": "P058",
+    "keyword": "Oppo Reno12 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P059",
+    "keyword": "Oppo Reno12 256 GB fiyat"
+  },
+  {
+    "product_id": "P060",
+    "keyword": "Oppo Reno11 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P061",
+    "keyword": "Oppo Reno11 256 GB fiyat"
+  },
+  {
+    "product_id": "P062",
+    "keyword": "Oppo A5 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P063",
+    "keyword": "Oppo A3 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P064",
+    "keyword": "Vivo X200 Pro 512 GB fiyat"
+  },
+  {
+    "product_id": "P065",
+    "keyword": "Vivo X200 256 GB fiyat"
+  },
+  {
+    "product_id": "P066",
+    "keyword": "Vivo X100 Pro 512 GB fiyat"
+  },
+  {
+    "product_id": "P067",
+    "keyword": "Vivo X100 256 GB fiyat"
+  },
+  {
+    "product_id": "P068",
+    "keyword": "Vivo V40 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P069",
+    "keyword": "Vivo V40 256 GB fiyat"
+  },
+  {
+    "product_id": "P070",
+    "keyword": "Vivo V30 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P071",
+    "keyword": "Vivo V30 256 GB fiyat"
+  },
+  {
+    "product_id": "P072",
+    "keyword": "Vivo Y200 Pro 128 GB fiyat"
+  },
+  {
+    "product_id": "P073",
+    "keyword": "Vivo Y100 128 GB fiyat"
+  },
+  {
+    "product_id": "P074",
+    "keyword": "Realme GT 7 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P075",
+    "keyword": "Realme GT 6 256 GB fiyat"
+  },
+  {
+    "product_id": "P076",
+    "keyword": "Realme GT 6T 256 GB fiyat"
+  },
+  {
+    "product_id": "P077",
+    "keyword": "Realme GT 5 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P078",
+    "keyword": "Realme 14 Pro Plus 256 GB fiyat"
+  },
+  {
+    "product_id": "P079",
+    "keyword": "Realme 14 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P080",
+    "keyword": "Realme 13 Pro Plus 256 GB fiyat"
+  },
+  {
+    "product_id": "P081",
+    "keyword": "Realme 13 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P082",
+    "keyword": "Realme 12 Pro Plus 256 GB fiyat"
+  },
+  {
+    "product_id": "P083",
+    "keyword": "Realme 12 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P084",
+    "keyword": "Motorola Edge 50 Ultra 512 GB fiyat"
+  },
+  {
+    "product_id": "P085",
+    "keyword": "Motorola Edge 50 Pro 512 GB fiyat"
+  },
+  {
+    "product_id": "P086",
+    "keyword": "Motorola Edge 50 Fusion 256 GB fiyat"
+  },
+  {
+    "product_id": "P087",
+    "keyword": "Motorola Edge 40 Pro 256 GB fiyat"
+  },
+  {
+    "product_id": "P088",
+    "keyword": "Motorola Razr 50 Ultra 512 GB fiyat"
+  },
+  {
+    "product_id": "P089",
+    "keyword": "Motorola Razr 50 256 GB fiyat"
+  },
+  {
+    "product_id": "P090",
+    "keyword": "Motorola Moto G85 256 GB fiyat"
+  },
+  {
+    "product_id": "P091",
+    "keyword": "Motorola Moto G75 256 GB fiyat"
+  },
+  {
+    "product_id": "P092",
+    "keyword": "Motorola Moto G55 256 GB fiyat"
+  },
+  {
+    "product_id": "P093",
+    "keyword": "Motorola Moto G35 128 GB fiyat"
+  },
+  {
+    "product_id": "P094",
+    "keyword": "Nothing Phone (2) 256 GB fiyat"
+  },
+  {
+    "product_id": "P095",
+    "keyword": "Nothing Phone (2a) Plus 256 GB fiyat"
+  },
+  {
+    "product_id": "P096",
+    "keyword": "Nothing Phone (2a) 256 GB fiyat"
+  },
+  {
+    "product_id": "P097",
+    "keyword": "CMF by Nothing CMF Phone 1 256 GB fiyat"
+  },
+  {
+    "product_id": "P098",
+    "keyword": "Honor Magic7 Pro 512 GB fiyat"
+  },
+  {
+    "product_id": "P099",
+    "keyword": "Honor Magic6 Pro 512 GB fiyat"
+  },
+  {
+    "product_id": "P100",
+    "keyword": "Honor Honor 200 Pro 512 GB fiyat"
   }
 ]

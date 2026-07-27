@@ -177,7 +177,7 @@ def make_result_payload(
 
         evaluator = OpenRouterRelevanceEvaluator(
             api_key=os.environ.get("OPENROUTER_API_KEY", ""),
-            model=os.environ.get("NANO_LLM_MODEL", "google/gemini-flash-1.5-8b"),
+            model=os.environ.get("NANO_LLM_MODEL", "openrouter/free"),
         )
         evaluated = evaluator.evaluate(keyword, results)
     else:
