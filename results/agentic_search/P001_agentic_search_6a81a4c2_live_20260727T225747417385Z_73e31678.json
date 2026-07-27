@@ -1,0 +1,59 @@
+{
+  "product_id": "P001",
+  "keyword": "Apple iPhone 16 Pro Max 256 GB fiyat",
+  "method": "agentic_search",
+  "execution_mode": "live",
+  "provider": "openrouter+tavily+openrouter",
+  "model": "openrouter/free",
+  "planner_model": "openrouter/free",
+  "prompt_version": "agentic-search-plan-v1+relevance-v1",
+  "search_queries": [
+    "Apple iPhone 16 Pro Max 256 GB fiyat",
+    "iPhone 16 Pro Max 256 GB fiyat",
+    "Apple iPhone 16 Pro Max 256 GB fiyat listesi"
+  ],
+  "runtime_seconds": 13.12,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-apple-iphone-16-pro-max-256gb-desert-titanyum-fiyatlari,2389291001",
+      "title": "Apple iPhone 16 Pro Max 256GB Çöl Titanyum Fiyatları",
+      "snippet": "3 satıcı arasındaki en ucuz Apple iPhone 16 Pro Max 256GB Çöl Titanyum fiyatı, 27.07.2026 tarihinde 91.498,99 TL. Son 3 ay içindeki en ucuz fiyatı 89.099,01 TL.Read more",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-apple-iphone-16-pro-max",
+      "title": "iPhone 16 Pro Max Modelleri ve Fiyatları",
+      "snippet": "APPLE TECH / iPhone 16 Pro Max 256 & SIFIR KUTULU YDISI 16 AY ! 56.500 TL. İstanbul, Bayrampaşa. APPLE TECH / iPhone 16 Pro Max 256 LANSMAN RENGI YDISI 3-4 ...Read more",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "epey.com",
+      "url": "https://www.epey.com/akilli-telefonlar/apple-iphone-16-pro-max.html",
+      "title": "Apple iPhone 16 Pro Max (256 GB) Fiyatı ve Özellikleri",
+      "snippet": "Apple iPhone 16 Pro Max (256 GB) 120 Hz Ekran Oranı (Aspect Ratio) 19.5:9 Ekran Alanı 115.76 cm2 Batarya Kapasitesi (Tipik) 4685 mAh. Ağırlık 227 Gram Renk",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "amazon.com",
+      "url": "https://www.amazon.com/Apple-iPhone-16-Pro-Max/dp/B0DHJ896RY",
+      "title": "Apple iPhone 16 Pro Max, 256GB, Black Titanium - Unlocked (Renewed)",
+      "snippet": "|  |  |\n --- |\n| Brand | Apple |\n| Operating System | iOS 18 |\n| Ram Memory Installed Size | 8 GB |\n| CPU Model | Apple A18 Pro |\n| CPU Speed | 3.8 GHz |\n| Memory Storage Capacity | 256 GB |\n| Screen Size | 6.9 inches |\n| Resolution | 2868 × 1320 |\n| Refresh Rate | 120 hertz |\n| Model Name | iPhone 16 Pro Max |\n\n# About this item\n\n|  |\n\n|  |\n\n##### Amazon Music\n\n##### Amazon Ads\n\n##### 6pm\n\n##### AbeBooks\n\n##### ACX\n\n##### Sell on Amazon\n\n##### Veeqo\n\n##### Amazon Business\n\n##### Amazon Fresh [...] ## Skip to\n\n## Keyboard shortcuts\n\nCell Phones & Accessories\nInternational Kindle Paperwhite\n\nNo featured offers available\n\nWe feature offers with an Add to Cart button when an offer meets our high standards for: \n\n Quality Price,\n Reliable delivery option, and\n Seller who offers good customer service\n\n “No featured offers available” means no offers currently meet all of these expectations. Select See All Buying Options to shop available offers.\n\n### Sorry, there was a problem. [...] ### Sorry, there was a problem.\n\n#### Image Unavailable\n\nApple iPhone 16 Pro Max, 256GB, Black Titanium - Unlocked (Renewed)\n\n# Apple iPhone 16 Pro Max, 256GB, Black Titanium - Unlocked (Renewed)",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "apple.com",
+      "url": "https://www.apple.com/tr/iphone",
+      "title": "iPhone - Apple (TR)",
+      "snippet": "Aradığınız telefona   \nşu anda ulaşılabiliyor.\n\nDaha Fazla Bilgi\nSatın alın\n\n### iPhone 16 iPhone 16 [...] Ekranı kısmen görünen ve yan duran Laciverttaş rengi iPhone 16’nın Eylem düğmesi, ses düğmesi ve Yan düğmesi görünüyor. Arkadan dış görünümünde sol üst köşede gelişmiş çift kamera sistemi görünüyor.\nEkranı kısmen görünen ve yan duran Laciverttaş rengi iPhone 16’nın Eylem düğmesi, ses düğmesi ve yan düğmesi görünüyor. Arkadan dış görünümünde sol üst köşede gelişmiş çift kamera sistemi görünüyor.\n\nİnanılmaz performans.   \nDayanıklı tasarım.\n\n## Ayrıntılara yakından bakış. [...] Safari’deki Özel Dolaşma modu, kullanmadığınız zamanlarda tarama pencerelerini kilitliyor, bilinen veri izleyicilerinin sayfalarda yüklenmesini engelliyor ve siz internette gezinirken URL’lere eklenen takip edicileri kaldırıyor.\n\nSol üst köşesinde çift kamera sistemi yer alan pembe renk iPhone 16’nın arkadan dış kısmı görünecek şekilde yüzünün önünde tutan biri\nSol üst köşesinde çift kamera sistemi yer alan pembe rengi iPhone 16’nın arkadan dış kısmı görünecek şekilde yüzünün önünde tutan biri",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

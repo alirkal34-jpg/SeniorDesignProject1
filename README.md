@@ -21,6 +21,8 @@ Completed and locally verified:
   providers for repeatable API-free tests.
 - OpenRouter keyword generation and relevance-evaluation clients.
 - Tavily search integration.
+- A successful three-product live OpenRouter keyword smoke test.
+- Successful one-product live Tavily + NanoLLM and Agentic Search smoke tests.
 - An OpenRouter-based Agentic query planner that chooses search queries before
   the Tavily search tool is executed.
 - A compiled Agentic LangGraph flow with `plan`, `search`, `evaluate`, and
@@ -30,10 +32,11 @@ Completed and locally verified:
 - A shared result validator, human ground-truth loader, and metrics module.
 - A fixed 10-product evaluation subset and 15 manually confirmed shared labels.
 
-The fully verified live prototype remains **Selenium + Rule-Based**. The other
-three runners are implemented and pass API-free integration tests, but final
-live OpenRouter/Tavily runs still require local API keys. The committed fake
-outputs must not be presented as measured real-provider results.
+The **Selenium + Rule-Based**, **Tavily + NanoLLM**, and **Agentic Search**
+methods now have retained live smoke-test evidence. Selenium + NanoLLM is
+implemented and passes API-free integration tests, but its live Google attempt
+was blocked by Google's CAPTCHA page before results could be collected. The
+committed fake outputs must not be presented as measured real-provider results.
 
 ## Project structure
 
@@ -124,6 +127,11 @@ each product ID from `P001` through `P100`. The accompanying
 `generated_keywords.metadata.json` records whether the list was produced with
 the fake or live provider, plus model, prompt version, runtime, and estimated
 cost.
+
+The retained three-product OpenRouter smoke-test output is stored separately as
+`generated_keywords.live_smoke.json` and
+`generated_keywords.live_smoke.metadata.json`, so it does not overwrite the
+fixed 100-product experiment input.
 
 Generate an API-free deterministic list:
 
@@ -274,15 +282,17 @@ and accuracy.
 - [x] Shared JSON schema including execution/provider/model/prompt/runtime/cost.
 - [x] API-free tests for all four pipelines.
 - [x] Metrics, evaluation subset, ground-truth loading, and preliminary labels.
+- [x] Three-product real OpenRouter keyword smoke test and retained metadata.
+- [x] One-product live Tavily + NanoLLM experiment.
+- [x] One-product live LLM-planned Agentic Search experiment.
+- [x] Live provider/model/prompt/runtime/cost fields retained in result files.
 
 ### Requires local API keys or manual work
 
-- [ ] Run a three-product real OpenRouter keyword smoke test.
-- [ ] Generate and preserve real-provider keyword metadata.
-- [ ] Run one live Selenium + NanoLLM experiment.
-- [ ] Run one live Tavily + NanoLLM experiment.
-- [ ] Run one live LLM-planned Agentic Search experiment.
-- [ ] Confirm actual provider model, runtime, usage, and cost in live outputs.
+- [ ] Complete one live Selenium + NanoLLM experiment after Google CAPTCHA is
+  cleared or an approved search provider is substituted.
+- [ ] Generate all 100 fixed keywords with the real provider if the final
+  experiment requires LLM-generated rather than deterministic keywords.
 - [ ] Manually label the additional retained search-result URLs.
 - [ ] Run all four methods on the fixed 10-product subset.
 - [ ] Review this integration branch and merge it into `main`.

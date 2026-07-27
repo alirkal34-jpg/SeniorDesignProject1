@@ -1,0 +1,9 @@
+{
+  "execution_mode": "live",
+  "provider": "openrouter",
+  "model": "openrouter/free",
+  "prompt_version": "keyword-generation-v1",
+  "product_count": 3,
+  "runtime_seconds": 19.27,
+  "estimated_cost_usd": 0.0
+}
