@@ -27,6 +27,10 @@ REQUIRED_PAYLOAD_FIELDS = {
     "product_id",
     "keyword",
     "method",
+    "execution_mode",
+    "provider",
+    "model",
+    "prompt_version",
     "runtime_seconds",
     "estimated_cost_usd",
     "results",
@@ -184,6 +188,36 @@ def validate_result_payload(
             f"Allowed methods: {sorted(ALLOWED_METHODS)}"
         )
 
+    execution_mode = require_non_empty_string(
+        payload["execution_mode"],
+        "execution_mode",
+        source,
+    )
+    if execution_mode not in {"fake", "live"}:
+        raise ResultValidationError(
+            f"{source}: 'execution_mode' must be 'fake' or 'live'."
+        )
+
+    provider = require_non_empty_string(
+        payload["provider"],
+        "provider",
+        source,
+    )
+    require_non_empty_string(
+        payload["model"],
+        "model",
+        source,
+    )
+    require_non_empty_string(
+        payload["prompt_version"],
+        "prompt_version",
+        source,
+    )
+    if execution_mode == "live" and "fake" in provider.casefold():
+        raise ResultValidationError(
+            f"{source}: a live result cannot declare a fake provider."
+        )
+
     runtime_seconds = payload["runtime_seconds"]
 
     if not is_number(runtime_seconds):
@@ -213,6 +247,11 @@ def validate_result_payload(
     if not isinstance(results, list):
         raise ResultValidationError(
             f"{source}: 'results' must be a JSON list."
+        )
+
+    if len(results) > 5:
+        raise ResultValidationError(
+            f"{source}: 'results' cannot contain more than 5 items."
         )
 
     if not results:

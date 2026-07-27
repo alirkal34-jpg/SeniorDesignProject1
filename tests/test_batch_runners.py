@@ -16,6 +16,7 @@ from evaluation.result_validator import (
 )
 from keyword_loader import KeywordRecord
 from nano_llm_evaluator import FakeNanoLLMEvaluator
+from run_evaluation_batch import METHODS, run_evaluation_batch
 from run_rule_based_batch import run_rule_based_batch
 from run_selenium_nano_llm import run_selenium_nano_llm
 
@@ -122,10 +123,62 @@ class BatchRunnerTests(unittest.TestCase):
             "selenium_nano_llm",
         )
         self.assertEqual(
+            validated["execution_mode"],
+            "fake",
+        )
+        self.assertEqual(
             len(validated["results"]),
             1,
         )
         browser.quit.assert_called_once_with()
+
+    def test_evaluation_batch_reuses_exact_keywords_for_all_methods(
+        self,
+    ) -> None:
+        summary = run_evaluation_batch(
+            execution_mode="fake",
+            limit=2,
+            max_results=5,
+            save=False,
+        )
+
+        self.assertEqual(summary["failed_count"], 0)
+        self.assertEqual(
+            summary["successful_count"],
+            2 * len(METHODS),
+        )
+        outputs_by_product: dict[str, list[dict]] = {}
+        for output in summary["outputs"]:
+            outputs_by_product.setdefault(
+                output["product_id"],
+                [],
+            ).append(output)
+            validate_result_payload(
+                output["payload"],
+                source="evaluation batch",
+            )
+
+        for product_outputs in outputs_by_product.values():
+            self.assertEqual(
+                {item["method"] for item in product_outputs},
+                set(METHODS),
+            )
+            self.assertEqual(
+                len({item["keyword"] for item in product_outputs}),
+                1,
+            )
+
+    def test_live_batch_requires_explicit_opt_in_above_three_products(
+        self,
+    ) -> None:
+        with self.assertRaisesRegex(
+            ValueError,
+            "limited to three products",
+        ):
+            run_evaluation_batch(
+                execution_mode="live",
+                limit=4,
+            )
 
 
 if __name__ == "__main__":

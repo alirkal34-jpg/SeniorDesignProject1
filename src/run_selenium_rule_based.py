@@ -92,6 +92,14 @@ def run_selenium_rule_based(
         "product_id": product_id,
         "keyword": keyword,
         "method": METHOD_NAME,
+        "execution_mode": (
+            "fake"
+            if search_provider == "fake"
+            else "live"
+        ),
+        "provider": f"{search_provider}+rule_based",
+        "model": "rule-based-v1",
+        "prompt_version": "not_applicable",
         "runtime_seconds": round(
             runtime_seconds,
             2,
@@ -152,9 +160,13 @@ def save_result(
         )
     )
 
+    mode = output.get("execution_mode", "unknown")
     output_file_path = (
         RESULTS_DIRECTORY
-        / output_file_name
+        / output_file_name.replace(
+            ".json",
+            f"_{mode}.json",
+        )
     )
 
     with output_file_path.open(

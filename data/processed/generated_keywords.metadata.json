@@ -1,0 +1,9 @@
+{
+  "execution_mode": "fake",
+  "provider": "fake",
+  "model": "deterministic-fake-keyword-generator",
+  "prompt_version": "keyword-generation-v1",
+  "product_count": 100,
+  "runtime_seconds": 0.0,
+  "estimated_cost_usd": 0.0
+}

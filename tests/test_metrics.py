@@ -47,6 +47,26 @@ def make_payload(
         "product_id": "P001",
         "keyword": "Example product fiyat",
         "method": method,
+        "execution_mode": (
+            "live"
+            if method == "selenium_rule_based"
+            else "fake"
+        ),
+        "provider": (
+            "selenium+rule_based"
+            if method == "selenium_rule_based"
+            else "fake+fake"
+        ),
+        "model": (
+            "rule-based-v1"
+            if method == "selenium_rule_based"
+            else "fake"
+        ),
+        "prompt_version": (
+            "not_applicable"
+            if method == "selenium_rule_based"
+            else "relevance-v1"
+        ),
         "runtime_seconds": runtime,
         "estimated_cost_usd": cost,
         "results": results,

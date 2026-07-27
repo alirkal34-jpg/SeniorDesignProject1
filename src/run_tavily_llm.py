@@ -29,10 +29,17 @@ def run_tavily_llm(
     evaluator = make_nano_llm_evaluator(provider=evaluator_provider)
     evaluated_results = evaluator.evaluate_results(keyword, raw_results)
     runtime_seconds = perf_counter() - start_time
+    execution_mode = (
+        "fake"
+        if "fake" in {search_provider, evaluator_provider}
+        else "live"
+    )
     return {
         "product_id": product_id,
         "keyword": keyword,
         "method": METHOD_TAVILY_LLM,
+        "execution_mode": execution_mode,
+        "provider": f"{search_provider}+{evaluator_provider}",
         "model": getattr(evaluator, "model", evaluator_provider),
         "prompt_version": NANO_LLM_PROMPT_VERSION,
         "runtime_seconds": round(runtime_seconds, 2),
@@ -48,7 +55,10 @@ def run_tavily_llm(
 def save_result(output: dict) -> Path:
     RESULTS_DIRECTORY.mkdir(parents=True, exist_ok=True)
     digest = hashlib.sha256(output["keyword"].encode("utf-8")).hexdigest()[:8]
-    path = RESULTS_DIRECTORY / f'{output["product_id"]}_{METHOD_TAVILY_LLM}_{digest}.json'
+    mode = output.get("execution_mode", "unknown")
+    path = RESULTS_DIRECTORY / (
+        f'{output["product_id"]}_{METHOD_TAVILY_LLM}_{digest}_{mode}.json'
+    )
     path.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return path
 

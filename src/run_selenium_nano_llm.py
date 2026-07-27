@@ -59,11 +59,18 @@ def run_selenium_nano_llm(
 
     runtime_seconds = perf_counter() - start_time
     estimated_cost_usd = float(getattr(evaluator, "last_cost_usd", ESTIMATED_COST_USD))
+    execution_mode = (
+        "fake"
+        if "fake" in {search_provider, provider}
+        else "live"
+    )
 
     return {
         "product_id": product_id,
         "keyword": keyword,
         "method": METHOD_SELENIUM_NANO_LLM,
+        "execution_mode": execution_mode,
+        "provider": f"{search_provider}+{provider}",
         "model": getattr(evaluator, "model", provider),
         "prompt_version": NANO_LLM_PROMPT_VERSION,
         "runtime_seconds": round(runtime_seconds, 2),
@@ -79,9 +86,14 @@ def create_output_file_name(product_id: str, keyword: str) -> str:
 
 def save_result(output: dict) -> Path:
     RESULTS_DIRECTORY.mkdir(parents=True, exist_ok=True)
-    output_file_path = RESULTS_DIRECTORY / create_output_file_name(
+    base_name = create_output_file_name(
         product_id=output["product_id"],
         keyword=output["keyword"],
+    )
+    mode = output.get("execution_mode", "unknown")
+    output_file_path = RESULTS_DIRECTORY / base_name.replace(
+        ".json",
+        f"_{mode}.json",
     )
     output_file_path.write_text(
         json.dumps(output, ensure_ascii=False, indent=2) + "\n",

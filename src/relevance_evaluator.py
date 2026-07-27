@@ -6,6 +6,7 @@ import argparse
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from time import perf_counter
 from typing import Any
 
 from keyword_generator import KeywordGenerationError, OpenRouterKeywordClient, load_env_file
@@ -169,9 +170,13 @@ def make_result_payload(
     provider: str = "fake",
     method: str = METHOD_SELENIUM_NANO_LLM,
 ) -> dict[str, Any]:
+    started_at = perf_counter()
     load_env_file()
     if provider == "fake":
-        evaluated = FakeRelevanceEvaluator().evaluate(keyword, results)
+        evaluator = FakeRelevanceEvaluator()
+        model = "fake"
+        evaluated = evaluator.evaluate(keyword, results)
+        estimated_cost_usd = 0.0
     elif provider == "openrouter":
         import os
 
@@ -179,7 +184,9 @@ def make_result_payload(
             api_key=os.environ.get("OPENROUTER_API_KEY", ""),
             model=os.environ.get("NANO_LLM_MODEL", "openrouter/free"),
         )
+        model = evaluator.model
         evaluated = evaluator.evaluate(keyword, results)
+        estimated_cost_usd = float(getattr(evaluator, "last_cost_usd", 0.0))
     else:
         raise ValueError(f"Unsupported provider: {provider}")
 
@@ -187,8 +194,12 @@ def make_result_payload(
         "product_id": product_id,
         "keyword": keyword,
         "method": method,
-        "runtime_seconds": 0.0,
-        "estimated_cost_usd": 0.0,
+        "execution_mode": "fake" if provider == "fake" else "live",
+        "provider": f"local_input+{provider}",
+        "model": model,
+        "prompt_version": "relevance-v1",
+        "runtime_seconds": round(perf_counter() - started_at, 2),
+        "estimated_cost_usd": round(estimated_cost_usd, 8),
         "results": [item.to_dict() for item in evaluated],
     }
 

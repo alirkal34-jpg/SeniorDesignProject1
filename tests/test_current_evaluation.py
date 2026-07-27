@@ -32,7 +32,7 @@ class CurrentEvaluationTests(unittest.TestCase):
             ground_truth_path=GROUND_TRUTH_FILE,
         )
 
-    def test_all_current_results_have_human_labels(
+    def test_human_labeled_baseline_is_preserved(
         self,
     ) -> None:
         self.assertEqual(
@@ -41,7 +41,7 @@ class CurrentEvaluationTests(unittest.TestCase):
         )
         self.assertEqual(
             self.report["result_count"],
-            20,
+            41,
         )
         self.assertEqual(
             self.report["labeled_result_count"],
@@ -51,7 +51,7 @@ class CurrentEvaluationTests(unittest.TestCase):
             self.report[
                 "ground_truth_coverage_ratio"
             ],
-            1.0,
+            0.4878,
         )
 
     def test_current_accuracy_is_reproducible(

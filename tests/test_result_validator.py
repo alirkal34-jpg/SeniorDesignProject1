@@ -32,6 +32,10 @@ def create_valid_payload() -> dict:
         "product_id": "P001",
         "keyword": "Apple iPhone 16 Pro Max 256 GB fiyat",
         "method": "selenium_rule_based",
+        "execution_mode": "live",
+        "provider": "selenium+rule_based",
+        "model": "rule-based-v1",
+        "prompt_version": "not_applicable",
         "runtime_seconds": 12.5,
         "estimated_cost_usd": 0.0,
         "results": [
@@ -188,6 +192,32 @@ class ResultValidatorTests(unittest.TestCase):
             file_path = (
                 Path(temp_directory)
                 / "invalid_result.json"
+            )
+
+    def test_live_payload_cannot_use_fake_provider(self) -> None:
+        payload = create_valid_payload()
+        payload["provider"] = "fake+rule_based"
+
+        with self.assertRaisesRegex(
+            ResultValidationError,
+            "live result cannot declare a fake provider",
+        ):
+            validate_result_payload(
+                payload=payload,
+                source="test",
+            )
+
+    def test_more_than_five_results_are_rejected(self) -> None:
+        payload = create_valid_payload()
+        payload["results"] = payload["results"] * 6
+
+        with self.assertRaisesRegex(
+            ResultValidationError,
+            "more than 5",
+        ):
+            validate_result_payload(
+                payload=payload,
+                source="test",
             )
 
             file_path.write_text(

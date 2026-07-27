@@ -21,6 +21,7 @@ DEFAULT_INPUT_PATH = ROOT_DIR / "data" / "processed" / "processed_products.json"
 DEFAULT_OUTPUT_PATH = ROOT_DIR / "data" / "processed" / "generated_keywords.json"
 DEFAULT_MODEL = "openrouter/free"
 OPENROUTER_BATCH_SIZE = 3
+KEYWORD_PROMPT_VERSION = "keyword-generation-v1"
 
 
 class KeywordGenerationError(RuntimeError):
@@ -135,11 +136,19 @@ def validate_keyword_output(raw_output: Any, expected_ids: set[str]) -> list[Key
 class FakeKeywordClient:
     """Deterministic local client for tests and zero-cost sample output."""
 
+    model = "deterministic-fake-keyword-generator"
+    last_cost_usd = 0.0
+
     def generate_keywords(self, products: list[Product]) -> list[KeywordItem]:
         raw_items = []
         for product in products:
             storage = f" {product.storage_gb} GB" if product.storage_gb else ""
-            name = f"{product.brand} {product.model}{storage}".replace("+", " Plus")
+            model = product.model.strip()
+            if model.casefold().startswith(product.brand.strip().casefold()):
+                name = f"{model}{storage}"
+            else:
+                name = f"{product.brand} {model}{storage}"
+            name = name.replace("+", " Plus")
             raw_items.append({"product_id": product.product_id, "keyword": f"{name} fiyat"})
         return validate_keyword_output(raw_items, {product.product_id for product in products})
 
@@ -292,8 +301,10 @@ def generate_keywords(
     limit: int = 3,
     provider: str = "openrouter",
 ) -> list[KeywordItem]:
+    started_at = perf_counter()
     products = select_products(load_products(input_path), limit=limit)
     client = make_client(provider)
+    total_cost_usd = 0.0
     if provider == "openrouter":
         # Google structured-output providers reject a single schema with a
         # large product_id enum, so keep each request at the verified size.
@@ -301,11 +312,31 @@ def generate_keywords(
         for start in range(0, len(products), OPENROUTER_BATCH_SIZE):
             batch = products[start : start + OPENROUTER_BATCH_SIZE]
             keywords.extend(client.generate_keywords(batch))
+            total_cost_usd += float(getattr(client, "last_cost_usd", 0.0))
     else:
         keywords = client.generate_keywords(products)
+        total_cost_usd = float(getattr(client, "last_cost_usd", 0.0))
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         json.dumps([item.to_dict() for item in keywords], ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    metadata_path = output_path.with_name(f"{output_path.stem}.metadata.json")
+    metadata_path.write_text(
+        json.dumps(
+            {
+                "execution_mode": "fake" if provider == "fake" else "live",
+                "provider": provider,
+                "model": getattr(client, "model", provider),
+                "prompt_version": KEYWORD_PROMPT_VERSION,
+                "product_count": len(keywords),
+                "runtime_seconds": round(perf_counter() - started_at, 2),
+                "estimated_cost_usd": round(total_cost_usd, 8),
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
         encoding="utf-8",
     )
     return keywords

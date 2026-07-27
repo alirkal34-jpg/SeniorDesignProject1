@@ -60,16 +60,15 @@ def load_keywords(file_path: Path = DEFAULT_KEYWORDS_FILE, limit: int | None = N
         raise KeywordLoaderError("Generated keywords file must contain a JSON list.")
 
     records: list[KeywordRecord] = []
-    seen_pairs: set[tuple[str, str]] = set()
+    seen_product_ids: set[str] = set()
 
     for index, raw_record in enumerate(raw_data):
         record = _validate_raw_record(raw_record, index)
-        pair = (record.product_id, record.keyword.lower())
-        if pair in seen_pairs:
+        if record.product_id in seen_product_ids:
             raise KeywordLoaderError(
-                f"Duplicate product_id/keyword pair found: {record.product_id} - {record.keyword}"
+                f"Duplicate product_id found in fixed keyword list: {record.product_id}"
             )
-        seen_pairs.add(pair)
+        seen_product_ids.add(record.product_id)
         records.append(record)
 
         if limit is not None and len(records) >= limit:

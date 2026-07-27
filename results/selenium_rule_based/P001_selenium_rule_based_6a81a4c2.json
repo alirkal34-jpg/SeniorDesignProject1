@@ -2,6 +2,10 @@
   "product_id": "P001",
   "keyword": "Apple iPhone 16 Pro Max 256 GB fiyat",
   "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
   "runtime_seconds": 21.66,
   "estimated_cost_usd": 0.0,
   "results": [
