@@ -39,6 +39,7 @@ def run_selenium_rule_based(
     product_id: str,
     keyword: str,
     max_results: int = 5,
+    search_provider: str = "selenium",
 ) -> dict:
     """
     Selenium ile arama sonuçlarını toplar,
@@ -50,32 +51,42 @@ def run_selenium_rule_based(
         DOMAIN_RULES_FILE
     )
 
-    # perf_counter süre ölçümü için başlangıç
-    # noktasını kaydeder.
     start_time = perf_counter()
 
-    browser = create_browser()
+    if search_provider == "fake":
+        raw_results = [
+            {
+                "domain": "trendyol.com",
+                "url": "https://www.trendyol.com/apple-iphone-16-pro-max",
+                "title": f"{keyword} satın al",
+                "snippet": "Mağaza fiyatları ve satın alma seçenekleri.",
+            },
+            {
+                "domain": "teknoseyir.com",
+                "url": "https://teknoseyir.com/iphone-16-pro-max-inceleme",
+                "title": f"{keyword} inceleme",
+                "snippet": "Kamera, pil ve performans değerlendirmesi.",
+            },
+        ][:max_results]
+    else:
+        browser = create_browser()
+        try:
+            raw_results = collect_search_results(
+                browser=browser,
+                keyword=keyword,
+                max_results=max_results,
+            )
+        finally:
+            browser.quit()
 
-    try:
-        raw_results = collect_search_results(
-            browser=browser,
-            keyword=keyword,
-            max_results=max_results,
-        )
+    evaluated_results = evaluate_results(
+        results=raw_results,
+        domain_rules=domain_rules,
+    )
 
-        evaluated_results = evaluate_results(
-            results=raw_results,
-            domain_rules=domain_rules,
-        )
-
-        # Veri toplama ve değerlendirme bittikten
-        # sonra geçen süreyi hesapla.
-        runtime_seconds = (
-            perf_counter() - start_time
-        )
-
-    finally:
-        browser.quit()
+    runtime_seconds = (
+        perf_counter() - start_time
+    )
 
     output = {
         "product_id": product_id,
@@ -169,17 +180,19 @@ def main() -> None:
     Pipeline'ı P001 ve tek bir test keyword'ü
     kullanarak uçtan uca çalıştırır.
     """
-
-    product_id = "P001"
-
-    keyword = (
-        "iPhone 16 Pro Max 256 GB fiyat"
-    )
+    import argparse
+    parser = argparse.ArgumentParser(description="Run Selenium + Rule-Based for one keyword.")
+    parser.add_argument("--product-id", default="P001")
+    parser.add_argument("--keyword", default="iPhone 16 Pro Max 256 GB fiyat")
+    parser.add_argument("--max-results", type=int, default=5)
+    parser.add_argument("--search-provider", choices=["selenium", "fake"], default="selenium")
+    args = parser.parse_args()
 
     output = run_selenium_rule_based(
-        product_id=product_id,
-        keyword=keyword,
-        max_results=5,
+        product_id=args.product_id,
+        keyword=args.keyword,
+        max_results=args.max_results,
+        search_provider=args.search_provider,
     )
 
     output_file_path = save_result(

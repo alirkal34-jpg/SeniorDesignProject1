@@ -22,23 +22,40 @@ def run_selenium_nano_llm(
     keyword: str,
     max_results: int = 5,
     provider: str = "fake",
+    search_provider: str = "selenium",
 ) -> dict:
     start_time = perf_counter()
-    browser = create_browser()
+    if search_provider == "fake":
+        raw_results = [
+            {
+                "domain": "trendyol.com",
+                "url": "https://www.trendyol.com/apple-iphone-16-pro-max",
+                "title": f"{keyword} satın al",
+                "snippet": "Mağaza fiyatları ve satın alma seçenekleri.",
+            },
+            {
+                "domain": "teknoseyir.com",
+                "url": "https://teknoseyir.com/iphone-16-pro-max-inceleme",
+                "title": f"{keyword} inceleme",
+                "snippet": "Kamera, pil ve performans değerlendirmesi.",
+            },
+        ][:max_results]
+    else:
+        browser = create_browser()
+        try:
+            raw_results = collect_search_results(
+                browser=browser,
+                keyword=keyword,
+                max_results=max_results,
+            )
+        finally:
+            browser.quit()
 
-    try:
-        raw_results = collect_search_results(
-            browser=browser,
-            keyword=keyword,
-            max_results=max_results,
-        )
-        evaluator = make_nano_llm_evaluator(provider=provider)
-        evaluated_results = evaluator.evaluate_results(
-            keyword=keyword,
-            results=raw_results,
-        )
-    finally:
-        browser.quit()
+    evaluator = make_nano_llm_evaluator(provider=provider)
+    evaluated_results = evaluator.evaluate_results(
+        keyword=keyword,
+        results=raw_results,
+    )
 
     runtime_seconds = perf_counter() - start_time
     estimated_cost_usd = float(getattr(evaluator, "last_cost_usd", ESTIMATED_COST_USD))
@@ -79,6 +96,7 @@ def main() -> None:
     parser.add_argument("--keyword", default="Apple iPhone 16 Pro Max 256 GB fiyat")
     parser.add_argument("--max-results", type=int, default=5)
     parser.add_argument("--provider", choices=["fake", "openrouter"], default="fake")
+    parser.add_argument("--search-provider", choices=["selenium", "fake"], default="selenium")
     args = parser.parse_args()
 
     output = run_selenium_nano_llm(
@@ -86,6 +104,7 @@ def main() -> None:
         keyword=args.keyword,
         max_results=args.max_results,
         provider=args.provider,
+        search_provider=args.search_provider,
     )
     output_file_path = save_result(output)
     print(json.dumps(output, ensure_ascii=False, indent=2))

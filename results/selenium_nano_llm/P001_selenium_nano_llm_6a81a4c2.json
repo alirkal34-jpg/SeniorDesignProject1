@@ -2,50 +2,26 @@
   "product_id": "P001",
   "keyword": "Apple iPhone 16 Pro Max 256 GB fiyat",
   "method": "selenium_nano_llm",
-  "model": "openrouter/free",
+  "model": "fake",
   "prompt_version": "relevance-v1",
-  "runtime_seconds": 31.32,
+  "runtime_seconds": 0.0,
   "estimated_cost_usd": 0.0,
   "results": [
     {
-      "domain": "sahibinden.com",
-      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-apple-iphone-16-pro-max",
-      "title": "iPhone 16 Pro Max Modelleri ve Fiyatları",
-      "snippet": "SIFIR 16 PRO MAX 256 GB MAĞAZADAN 16 AY!! TÜM RENKLER. 39.999 TL ; 1 YIL GARANTİLİ İPHONE 16 PRO MAX - 256 GB PİL %100. 34.990 TL ; APPLE 16 PRO MAX NATÜREL PIL ...",
-      "predicted_relevant": true,
-      "relevance_score": 1.0
-    },
-    {
       "domain": "trendyol.com",
-      "url": "https://www.trendyol.com/iphone-16-pro-max-cep-telefonu-x-c103498-a292-v10577513",
-      "title": "IPhone 16 Pro Max Cep Telefonu",
-      "snippet": "iPhone 16 Pro Max 256 GB Çöl Titanyum (İthalatçı Garantili) · 4.4. (347). Değerlendirme fotoğrafları mevcut · 96.559 TL ; Yenilenmiş iPhone 16 Pro Max 256 GB Çöl ...",
+      "url": "https://www.trendyol.com/apple-iphone-16-pro-max",
+      "title": "Apple iPhone 16 Pro Max 256 GB fiyat satın al",
+      "snippet": "Mağaza fiyatları ve satın alma seçenekleri.",
       "predicted_relevant": true,
-      "relevance_score": 1.0
+      "relevance_score": 0.97
     },
     {
-      "domain": "mediamarkt.com.tr",
-      "url": "https://www.mediamarkt.com.tr/tr/product/_apple-iphone-16-pro-max-256-gb-akilli-telefon-siyah-147051791.html",
-      "title": "APPLE MYWV3TU/A iPhone 16 Pro Max 8 GB 256 ...",
-      "snippet": "APPLE MYWV3TU/A iPhone 16 Pro Max 8 GB 256 GB Akıllı Telefon Siyah Titanium · Mükemmel. ₺108.059,–₺108059,00 · Çok İyi. Stokta Yok · İyi. Stokta Yok.",
-      "predicted_relevant": true,
-      "relevance_score": 1.0
-    },
-    {
-      "domain": "teknosa.com",
-      "url": "https://www.teknosa.com/iphone-16-pro-max-c-100001001032",
-      "title": "iPhone 16 Pro Max Fiyatları - 256GB, 512GB & 1TB",
-      "snippet": "Apple iPhone 16 Pro Max 256GB Siyah Titanyum Akıllı Telefon. 122.999 TL ; Apple iPhone 16 Pro Max 256GB Natürel Titanyum Akıllı Telefon. 132.249 TL ; Apple iPhone ...",
-      "predicted_relevant": true,
-      "relevance_score": 1.0
-    },
-    {
-      "domain": "apple.com",
-      "url": "https://www.apple.com/tr/iphone/",
-      "title": "iPhone - Apple (TR)",
-      "snippet": "iPhone 16 · Karşılaştırın · Aksesuarlar · iPhone Satın ... Örneğin iPhone 17 Pro'da 31 saate kadar, iPhone 17 Pro Max'te 37 saate kadar video izleyebiliyorsunuz.",
-      "predicted_relevant": true,
-      "relevance_score": 0.9
+      "domain": "teknoseyir.com",
+      "url": "https://teknoseyir.com/iphone-16-pro-max-inceleme",
+      "title": "Apple iPhone 16 Pro Max 256 GB fiyat inceleme",
+      "snippet": "Kamera, pil ve performans değerlendirmesi.",
+      "predicted_relevant": false,
+      "relevance_score": 0.4
     }
   ]
 }

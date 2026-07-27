@@ -2,50 +2,42 @@
   "product_id": "P001",
   "keyword": "Apple iPhone 16 Pro Max 256 GB fiyat",
   "method": "agentic_search",
-  "model": "openrouter/free",
+  "model": "fake",
   "prompt_version": "relevance-v1",
-  "runtime_seconds": 8.2,
+  "runtime_seconds": 0.0,
   "estimated_cost_usd": 0.0,
   "results": [
     {
-      "domain": "cimri.com",
-      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-apple-iphone-16-pro-max-256gb-desert-titanyum-fiyatlari,2389291001",
-      "title": "Apple iPhone 16 Pro Max 256GB Çöl Titanyum Fiyatları",
-      "snippet": "4 satıcı arasındaki en ucuz Apple iPhone 16 Pro Max 256GB Çöl Titanyum fiyatı, 25.07.2026 tarihinde 91.498,99 TL. Son 3 ay içindeki en ucuz fiyatı 89.099,01 TL.",
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/Apple-iPhone-16-Pro-Max-256-GB-fiyat",
+      "title": "Apple iPhone 16 Pro Max 256 GB fiyat fiyat ve satın alma",
+      "snippet": "Apple iPhone 16 Pro Max 256 GB fiyat için mağaza fiyatları ve satın alma seçenekleri.",
       "predicted_relevant": true,
-      "relevance_score": 0.95
+      "relevance_score": 0.97
     },
     {
-      "domain": "sahibinden.com",
-      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-apple-iphone-16-pro-max",
-      "title": "iPhone 16 Pro Max Modelleri ve Fiyatları",
-      "snippet": "SIFIR 16 PRO MAX 256 GB MAĞAZADAN 16 AY!! TÜM RENKLER. 39.999 TL ; 1 YIL GARANTİLİ İPHONE 16 PRO MAX - 256 GB PİL %100. 34.990 TL ; APPLE 16 PRO MAX NATÜREL PIL",
-      "predicted_relevant": true,
-      "relevance_score": 0.93
-    },
-    {
-      "domain": "instagram.com",
-      "url": "https://www.instagram.com/popular/iphone-16-pro-max-256-gb-fiyat",
-      "title": "Iphone 16 Pro Max 256 Gb Fiyat",
-      "snippet": "İPHONE 16 PRO MAX 256 GB PİL 90 4 AY KULLANIM MEVCUT TERTEMİZ HATASIZ LEKESİZ 44500 8,559. İPHONE 16 PRO MAX 256 GB PİL 90 4 AY KULLANIM MEVCUT",
+      "domain": "teknoseyir.com",
+      "url": "https://teknoseyir.com/Apple-iPhone-16-Pro-Max-256-GB-fiyat",
+      "title": "Apple iPhone 16 Pro Max 256 GB fiyat inceleme",
+      "snippet": "Ürün özellikleri ve kullanıcı değerlendirmeleri.",
       "predicted_relevant": false,
-      "relevance_score": 0.2
+      "relevance_score": 0.4
     },
     {
       "domain": "trendyol.com",
-      "url": "https://www.trendyol.com/iphone-16-pro-max-cep-telefonu-x-c103498-a292-v10577513",
-      "title": "IPhone 16 Pro Max Cep Telefonu",
-      "snippet": "iPhone 16 Pro Max Cep Telefonu. Düşük Fiyatı 77.099 TL 77.949 TL Apple iPhone 17 Pro 256GB Gümüş - Yetkili Satıcı Apple Resmi satıcı",
+      "url": "https://www.trendyol.com/Apple-iPhone-16-Pro-Max-256-GB-fiyat-en-ucuz-fiyat-karşılaştır",
+      "title": "Apple iPhone 16 Pro Max 256 GB fiyat en ucuz fiyat karşılaştır fiyat ve satın alma",
+      "snippet": "Apple iPhone 16 Pro Max 256 GB fiyat en ucuz fiyat karşılaştır için mağaza fiyatları ve satın alma seçenekleri.",
       "predicted_relevant": true,
-      "relevance_score": 0.96
+      "relevance_score": 0.97
     },
     {
-      "domain": "epey.com",
-      "url": "https://www.epey.com/akilli-telefonlar/apple-iphone-16-pro-max.html",
-      "title": "Apple iPhone 16 Pro Max (256 GB) Fiyatı ve Özellikleri",
-      "snippet": "Apple iPhone 16 Pro Max (256 GB) 120 Hz Ekran Oranı (Aspect Ratio) 19.5:9 Ekran Alanı 115.76 cm2 Batarya Kapasitesi (Tipik) 4685 mAh. Ağırlık 227 Gram Renk",
-      "predicted_relevant": true,
-      "relevance_score": 0.88
+      "domain": "teknoseyir.com",
+      "url": "https://teknoseyir.com/Apple-iPhone-16-Pro-Max-256-GB-fiyat-en-ucuz-fiyat-karşılaştır",
+      "title": "Apple iPhone 16 Pro Max 256 GB fiyat en ucuz fiyat karşılaştır inceleme",
+      "snippet": "Ürün özellikleri ve kullanıcı değerlendirmeleri.",
+      "predicted_relevant": false,
+      "relevance_score": 0.4
     }
   ]
 }
