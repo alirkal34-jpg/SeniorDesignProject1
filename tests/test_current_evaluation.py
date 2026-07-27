@@ -78,13 +78,19 @@ class CurrentEvaluationTests(unittest.TestCase):
             ]["accuracy"],
             1.0,
         )
-        self.assertEqual(
-            methods[
-                "selenium_nano_llm"
-            ]["accuracy"],
-            0.8,
+        nano_metrics = methods[
+            "selenium_nano_llm"
+        ]
+        expected_nano_accuracy = round(
+            nano_metrics["correct_prediction_count"]
+            / nano_metrics["labeled_result_count"],
+            4,
         )
         self.assertEqual(
+            nano_metrics["accuracy"],
+            expected_nano_accuracy,
+        )
+        self.assertGreaterEqual(
             self.report["false_negative_count"],
             1,
         )

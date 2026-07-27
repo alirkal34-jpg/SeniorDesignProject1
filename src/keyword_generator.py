@@ -19,7 +19,7 @@ from urllib import error, request
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT_PATH = ROOT_DIR / "data" / "processed" / "processed_products.json"
 DEFAULT_OUTPUT_PATH = ROOT_DIR / "data" / "processed" / "generated_keywords.json"
-DEFAULT_MODEL = "openrouter/free"
+DEFAULT_MODEL = "google/gemma-4-26b-a4b-it:free"
 OPENROUTER_BATCH_SIZE = 3
 KEYWORD_PROMPT_VERSION = "keyword-generation-v1"
 

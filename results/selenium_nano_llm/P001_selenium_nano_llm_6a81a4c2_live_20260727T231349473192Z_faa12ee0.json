@@ -1,0 +1,54 @@
+{
+  "product_id": "P001",
+  "keyword": "Apple iPhone 16 Pro Max 256 GB fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 14.17,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-apple-iphone-16-pro-max-5g-256gb-fiyatlari,a2314863848",
+      "title": "iPhone 16 Pro Max Fiyatları, Özellikleri ve Yorumları | Cimri",
+      "snippet": "En ucuz Apple iPhone 16 Pro Max 256GB fiyatları 91.498,99 TL'den başlayan tekliflerle Cimri'de! Apple iPhone 16 Pro Max 256GB özelliklerini incele, avantajlı fırsatları kaçırma!☝🏻",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/iphone-16-pro-max-cep-telefonu-x-c103498-a292-v10577513",
+      "title": "iPhone 16 Pro Max Cep Telefonu Fiyatları Trendyol",
+      "snippet": "Apple Yenilenmiş iPhone 16 Pro Max 256 GB Siyah Titanyum (12 Ay Garantili) - A Grade A seviye-Mükemmel 3.1 (11)",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-apple-iphone-16-pro-max",
+      "title": "iPhone 16 Pro Max Modelleri ve Fiyatları - Sahibinden",
+      "snippet": "6 gün önce · Aradığınız cep telefonu markası ve en popüler iPhone 16 Pro Max cep telefonu modelleri bir arada; tüm serileri karşılaştırmak için hemen göz atın.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "mediamarkt.com.tr",
+      "url": "https://www.mediamarkt.com.tr/tr/category/iphone-16-pro-max-903531.html",
+      "title": "iPhone 16 Pro Max Fiyat ve Özellikler - MediaMarkt",
+      "snippet": "iPhone 16 Pro Max, gelişmiş en uzun pil ömrü ve 5x optik zoom telefoto lensiyle öne çıkıyor. Hemen MediaMarkt'taki modelleri incele, fırsatları yakala!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "vatanbilgisayar.com",
+      "url": "https://www.vatanbilgisayar.com/iphone-16-pro-max-akilli-telefon.html",
+      "title": "iPhone 16 Pro Max Fiyatı ve Özellikleri - Vatan Bilgisayar",
+      "snippet": "iPhone 16 Pro Max fiyatı, teknik özellikleri, modelleri, en ucuz fiyatlarla Vatan Bilgisayar'da",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

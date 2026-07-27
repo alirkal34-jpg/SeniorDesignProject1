@@ -11,6 +11,7 @@ import os
 from typing import Any, Protocol
 
 from keyword_generator import (
+    DEFAULT_MODEL,
     KeywordGenerationError,
     OpenRouterKeywordClient,
     load_env_file,
@@ -141,7 +142,7 @@ def make_query_planner(provider: str = "openrouter") -> QueryPlanner:
     if provider == "openrouter":
         return OpenRouterQueryPlanner(
             api_key=os.environ.get("OPENROUTER_API_KEY", ""),
-            model=os.environ.get("AGENTIC_PLANNER_MODEL", "openrouter/free"),
+            model=os.environ.get("AGENTIC_PLANNER_MODEL", DEFAULT_MODEL),
         )
     raise ValueError(f"Unsupported agentic planner provider: {provider}")
 

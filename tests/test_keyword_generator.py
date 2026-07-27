@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from agentic_search import AgenticSearch, FakeQueryPlanner
 import langgraph_flow as langgraph_module
 from keyword_generator import (
+    DEFAULT_MODEL,
     FakeKeywordClient,
     generate_keywords,
     load_products,
@@ -33,6 +34,12 @@ from evaluation.result_validator import validate_result_payload
 
 
 class KeywordGeneratorTests(unittest.TestCase):
+    def test_live_model_is_fixed_for_reproducibility(self):
+        self.assertEqual(
+            DEFAULT_MODEL,
+            "google/gemma-4-26b-a4b-it:free",
+        )
+
     def test_fake_keyword_client_keeps_product_ids(self):
         products = select_products(load_products(ROOT / "data" / "processed" / "processed_products.json"), limit=3)
 

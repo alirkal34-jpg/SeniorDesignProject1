@@ -24,6 +24,7 @@ def run_selenium_nano_llm(
     max_results: int = 5,
     provider: str = "fake",
     search_provider: str = "selenium",
+    search_engine: str = "bing",
 ) -> dict:
     start_time = perf_counter()
     if search_provider == "fake":
@@ -48,6 +49,7 @@ def run_selenium_nano_llm(
                 browser=browser,
                 keyword=keyword,
                 max_results=max_results,
+                search_engine=search_engine,
             )
         finally:
             browser.quit()
@@ -65,13 +67,22 @@ def run_selenium_nano_llm(
         if "fake" in {search_provider, provider}
         else "live"
     )
+    resolved_search_engine = (
+        "fake"
+        if search_provider == "fake"
+        else search_engine
+    )
 
     return {
         "product_id": product_id,
         "keyword": keyword,
         "method": METHOD_SELENIUM_NANO_LLM,
         "execution_mode": execution_mode,
-        "provider": f"{search_provider}+{provider}",
+        "provider": (
+            f"{search_provider}:{resolved_search_engine}"
+            f"+{provider}"
+        ),
+        "search_engine": resolved_search_engine,
         "model": getattr(evaluator, "model", provider),
         "prompt_version": NANO_LLM_PROMPT_VERSION,
         "runtime_seconds": round(runtime_seconds, 2),
@@ -114,6 +125,7 @@ def main() -> None:
     parser.add_argument("--max-results", type=int, default=5)
     parser.add_argument("--provider", choices=["fake", "openrouter"], default="fake")
     parser.add_argument("--search-provider", choices=["selenium", "fake"], default="selenium")
+    parser.add_argument("--search-engine", choices=["google", "bing"], default="bing")
     args = parser.parse_args()
 
     output = run_selenium_nano_llm(
@@ -122,6 +134,7 @@ def main() -> None:
         max_results=args.max_results,
         provider=args.provider,
         search_provider=args.search_provider,
+        search_engine=args.search_engine,
     )
     output_file_path = save_result(output)
     print(json.dumps(output, ensure_ascii=False, indent=2))

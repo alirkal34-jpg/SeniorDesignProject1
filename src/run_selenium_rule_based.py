@@ -41,6 +41,7 @@ def run_selenium_rule_based(
     keyword: str,
     max_results: int = 5,
     search_provider: str = "selenium",
+    search_engine: str = "bing",
 ) -> dict:
     """
     Selenium ile arama sonuçlarını toplar,
@@ -76,6 +77,7 @@ def run_selenium_rule_based(
                 browser=browser,
                 keyword=keyword,
                 max_results=max_results,
+                search_engine=search_engine,
             )
         finally:
             browser.quit()
@@ -99,6 +101,11 @@ def run_selenium_rule_based(
             else "live"
         ),
         "provider": f"{search_provider}+rule_based",
+        "search_engine": (
+            "fake"
+            if search_provider == "fake"
+            else search_engine
+        ),
         "model": "rule-based-v1",
         "prompt_version": "not_applicable",
         "runtime_seconds": round(
@@ -200,6 +207,7 @@ def main() -> None:
     parser.add_argument("--keyword", default="iPhone 16 Pro Max 256 GB fiyat")
     parser.add_argument("--max-results", type=int, default=5)
     parser.add_argument("--search-provider", choices=["selenium", "fake"], default="selenium")
+    parser.add_argument("--search-engine", choices=["google", "bing"], default="bing")
     args = parser.parse_args()
 
     output = run_selenium_rule_based(
@@ -207,6 +215,7 @@ def main() -> None:
         keyword=args.keyword,
         max_results=args.max_results,
         search_provider=args.search_provider,
+        search_engine=args.search_engine,
     )
 
     output_file_path = save_result(

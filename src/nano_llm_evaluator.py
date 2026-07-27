@@ -12,7 +12,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from keyword_generator import KeywordGenerationError, OpenRouterKeywordClient, load_env_file
+from keyword_generator import (
+    DEFAULT_MODEL,
+    KeywordGenerationError,
+    OpenRouterKeywordClient,
+    load_env_file,
+)
 
 
 METHOD_TAVILY_LLM = "tavily_llm"
@@ -190,7 +195,7 @@ def make_nano_llm_evaluator(provider: str = "fake"):
 
         return OpenRouterNanoLLMEvaluator(
             api_key=os.environ.get("OPENROUTER_API_KEY", ""),
-            model=os.environ.get("NANO_LLM_MODEL", "openrouter/free"),
+            model=os.environ.get("NANO_LLM_MODEL", DEFAULT_MODEL),
         )
     raise ValueError(f"Unsupported provider: {provider}")
 

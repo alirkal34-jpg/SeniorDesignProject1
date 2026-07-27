@@ -22,7 +22,8 @@ Completed and locally verified:
 - OpenRouter keyword generation and relevance-evaluation clients.
 - Tavily search integration.
 - A successful three-product live OpenRouter keyword smoke test.
-- Successful one-product live Tavily + NanoLLM and Agentic Search smoke tests.
+- Successful one-product live Selenium + NanoLLM, Tavily + NanoLLM, and Agentic
+  Search smoke tests.
 - An OpenRouter-based Agentic query planner that chooses search queries before
   the Tavily search tool is executed.
 - A compiled Agentic LangGraph flow with `plan`, `search`, `evaluate`, and
@@ -32,11 +33,10 @@ Completed and locally verified:
 - A shared result validator, human ground-truth loader, and metrics module.
 - A fixed 10-product evaluation subset and 15 manually confirmed shared labels.
 
-The **Selenium + Rule-Based**, **Tavily + NanoLLM**, and **Agentic Search**
-methods now have retained live smoke-test evidence. Selenium + NanoLLM is
-implemented and passes API-free integration tests, but its live Google attempt
-was blocked by Google's CAPTCHA page before results could be collected. The
-committed fake outputs must not be presented as measured real-provider results.
+All four methods now have retained live smoke-test evidence. The first
+Selenium + NanoLLM attempt was blocked by Google's CAPTCHA page, so the
+successful run used Bing through the same Selenium collector. The committed
+fake outputs must not be presented as measured real-provider results.
 
 ## Project structure
 
@@ -96,13 +96,16 @@ Copy `.env.example` to `.env` only for real-provider runs:
 
 ```text
 OPENROUTER_API_KEY=
-NANO_LLM_MODEL=openrouter/free
-AGENTIC_PLANNER_MODEL=openrouter/free
+NANO_LLM_MODEL=google/gemma-4-26b-a4b-it:free
+AGENTIC_PLANNER_MODEL=google/gemma-4-26b-a4b-it:free
 TAVILY_API_KEY=
 TAVILY_COST_PER_SEARCH_USD=0
 ```
 
 Never commit `.env`, API keys, tokens, or passwords.
+
+The fixed `google/gemma-4-26b-a4b-it:free` model is used instead of the
+random `openrouter/free` router so repeated experiments use the same model.
 
 ## Data processing
 
@@ -171,8 +174,12 @@ Selenium + NanoLLM API-free:
 Selenium + NanoLLM live:
 
 ```powershell
-.\.venv\Scripts\python.exe src\run_selenium_nano_llm.py --search-provider selenium --provider openrouter --max-results 5
+.\.venv\Scripts\python.exe src\run_selenium_nano_llm.py --search-provider selenium --search-engine bing --provider openrouter --max-results 5
 ```
+
+Both Selenium runners support `--search-engine google` and
+`--search-engine bing`. Bing is the default because the automated Google smoke
+test reached Google's CAPTCHA page. No CAPTCHA bypass is implemented.
 
 Tavily + NanoLLM API-free and live:
 
@@ -285,12 +292,12 @@ and accuracy.
 - [x] Three-product real OpenRouter keyword smoke test and retained metadata.
 - [x] One-product live Tavily + NanoLLM experiment.
 - [x] One-product live LLM-planned Agentic Search experiment.
+- [x] One-product live Selenium + NanoLLM experiment using Selenium with Bing.
+- [x] Fixed free OpenRouter model for reproducible structured output.
 - [x] Live provider/model/prompt/runtime/cost fields retained in result files.
 
 ### Requires local API keys or manual work
 
-- [ ] Complete one live Selenium + NanoLLM experiment after Google CAPTCHA is
-  cleared or an approved search provider is substituted.
 - [ ] Generate all 100 fixed keywords with the real provider if the final
   experiment requires LLM-generated rather than deterministic keywords.
 - [ ] Manually label the additional retained search-result URLs.

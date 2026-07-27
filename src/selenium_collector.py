@@ -1,3 +1,4 @@
+import base64
 import json
 from urllib.parse import parse_qs
 from urllib.parse import quote_plus
@@ -9,6 +10,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+
+SUPPORTED_SEARCH_ENGINES = ("google", "bing")
 
 
 # ==================================================
@@ -64,6 +68,37 @@ def normalize_result_url(url: str) -> str:
 
         if target_urls:
             return target_urls[0]
+
+    is_bing_redirect = (
+        parsed_url.netloc.endswith("bing.com")
+        and parsed_url.path == "/ck/a"
+    )
+
+    if is_bing_redirect:
+        query_parameters = parse_qs(
+            parsed_url.query
+        )
+        encoded_targets = query_parameters.get(
+            "u",
+            [],
+        )
+
+        if encoded_targets:
+            encoded_target = encoded_targets[0]
+            if encoded_target.startswith("a1"):
+                encoded_target = encoded_target[2:]
+            padding = "=" * (-len(encoded_target) % 4)
+            try:
+                target_url = base64.urlsafe_b64decode(
+                    encoded_target + padding
+                ).decode("utf-8")
+            except (ValueError, UnicodeDecodeError):
+                target_url = ""
+
+            if target_url.startswith(
+                ("http://", "https://")
+            ):
+                return target_url
 
     return url
 
@@ -128,26 +163,69 @@ def extract_snippet(
     return snippet_elements[0].text.strip()
 
 
+def extract_bing_snippet(link) -> str:
+    """
+    Bir Bing sonucunun linkinden hareketle aynı
+    sonuç kutusundaki snippet metnini bulur.
+    """
+
+    result_containers = link.find_elements(
+        By.XPATH,
+        "./ancestor::li[contains(@class, 'b_algo')][1]",
+    )
+
+    if not result_containers:
+        return ""
+
+    snippet_elements = result_containers[0].find_elements(
+        By.CSS_SELECTOR,
+        "div.b_caption p, p",
+    )
+
+    if not snippet_elements:
+        return ""
+
+    return snippet_elements[0].text.strip()
+
+
 def collect_search_results(
     browser: webdriver.Chrome,
     keyword: str,
     max_results: int = 5,
+    search_engine: str = "bing",
 ) -> list[dict]:
     """
-    Google üzerinde verilen keyword ile arama yapar
+    Seçilen arama motorunda verilen keyword ile arama yapar
     ve organik sonuçları standart bir liste olarak
     döndürür.
     """
 
+    if search_engine not in SUPPORTED_SEARCH_ENGINES:
+        raise ValueError(
+            f"Unsupported search engine: {search_engine}"
+        )
+
     encoded_keyword = quote_plus(keyword)
 
-    search_url = (
-        "https://www.google.com/search"
-        f"?q={encoded_keyword}"
-    )
+    search_urls = {
+        "google": (
+            "https://www.google.com/search"
+            f"?q={encoded_keyword}"
+        ),
+        "bing": (
+            "https://www.bing.com/search"
+            f"?q={encoded_keyword}"
+        ),
+    }
+    result_selectors = {
+        "google": "h3",
+        "bing": "li.b_algo h2 a",
+    }
+    search_url = search_urls[search_engine]
+    result_selector = result_selectors[search_engine]
 
     print(
-        f"Searching keyword: {keyword}",
+        f"Searching {search_engine}: {keyword}",
         flush=True,
     )
 
@@ -163,45 +241,48 @@ def collect_search_results(
             EC.presence_of_element_located(
                 (
                     By.CSS_SELECTOR,
-                    "h3",
+                    result_selector,
                 )
             )
         )
 
     except TimeoutException as error:
         raise RuntimeError(
-            "Google sonuç başlıkları bulunamadı. "
+            f"{search_engine.title()} sonuç başlıkları bulunamadı. "
             "Consent veya CAPTCHA sayfası açılmış olabilir. "
             f"Current URL: {browser.current_url}"
         ) from error
 
-    heading_elements = (
+    result_elements = (
         browser.find_elements(
             By.CSS_SELECTOR,
-            "h3",
+            result_selector,
         )
     )
 
     collected_results = []
     seen_urls = set()
 
-    for heading in heading_elements:
-        title = heading.text.strip()
+    for result_element in result_elements:
+        title = result_element.text.strip()
 
         if not title:
             continue
 
-        link_elements = heading.find_elements(
-            By.XPATH,
-            "./ancestor::a[1]",
-        )
+        if search_engine == "google":
+            link_elements = result_element.find_elements(
+                By.XPATH,
+                "./ancestor::a[1]",
+            )
 
-        if not link_elements:
-            continue
+            if not link_elements:
+                continue
 
-        raw_url = link_elements[0].get_attribute(
-            "href"
-        )
+            link_element = link_elements[0]
+        else:
+            link_element = result_element
+
+        raw_url = link_element.get_attribute("href")
 
         if not raw_url:
             continue
@@ -219,9 +300,11 @@ def collect_search_results(
             result_url
         )
 
-        # Google'ın kendi navigasyon bağlantılarını
+        # Arama motorunun kendi navigasyon bağlantılarını
         # organik sonuç olarak kaydetme.
-        if domain.endswith("google.com"):
+        if domain.endswith(
+            ("google.com", "bing.com")
+        ):
             continue
 
         # Aynı URL birden fazla kez bulunursa
@@ -229,8 +312,10 @@ def collect_search_results(
         if result_url in seen_urls:
             continue
 
-        snippet = extract_snippet(
-            heading
+        snippet = (
+            extract_snippet(result_element)
+            if search_engine == "google"
+            else extract_bing_snippet(link_element)
         )
 
         result = {

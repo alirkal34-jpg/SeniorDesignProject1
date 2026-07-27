@@ -169,6 +169,12 @@ class BatchRunnerTests(unittest.TestCase):
             len(validated["results"]),
             1,
         )
+        collect_mock.assert_called_once_with(
+            browser=browser,
+            keyword="Apple iPhone fiyat",
+            max_results=1,
+            search_engine="bing",
+        )
         browser.quit.assert_called_once_with()
 
     def test_evaluation_batch_reuses_exact_keywords_for_all_methods(
