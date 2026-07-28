@@ -2,8 +2,10 @@ import json
 import sys
 import tempfile
 import unittest
+from io import BytesIO
 from pathlib import Path
 from unittest.mock import Mock, patch
+from urllib.error import HTTPError
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -17,6 +19,7 @@ import langgraph_flow as langgraph_module
 from keyword_generator import (
     DEFAULT_MODEL,
     FakeKeywordClient,
+    OpenRouterKeywordClient,
     generate_keywords,
     load_products,
     select_products,
@@ -43,6 +46,47 @@ class KeywordGeneratorTests(unittest.TestCase):
             DEFAULT_MODEL,
             "google/gemma-4-26b-a4b-it:free",
         )
+
+    def test_openrouter_retries_temporary_rate_limit(self):
+        rate_limit_error = HTTPError(
+            url="https://openrouter.ai/api/v1/chat/completions",
+            code=429,
+            msg="rate limited",
+            hdrs={"Retry-After": "1"},
+            fp=BytesIO(b'{"error":"rate limited"}'),
+        )
+        successful_response = Mock()
+        successful_response.__enter__ = Mock(
+            return_value=successful_response,
+        )
+        successful_response.__exit__ = Mock(
+            return_value=False,
+        )
+        successful_response.read.return_value = (
+            b'{"choices":[],"usage":{"cost":0}}'
+        )
+        client = OpenRouterKeywordClient(
+            api_key="test-key",
+            model=DEFAULT_MODEL,
+        )
+
+        with (
+            patch(
+                "keyword_generator.request.urlopen",
+                side_effect=[
+                    rate_limit_error,
+                    successful_response,
+                ],
+            ) as urlopen,
+            patch("keyword_generator.sleep") as sleep_mock,
+        ):
+            response = client._post_json(
+                {"messages": []},
+            )
+
+        self.assertEqual(response["choices"], [])
+        self.assertEqual(urlopen.call_count, 2)
+        sleep_mock.assert_called_once_with(1.0)
 
     def test_fake_keyword_client_keeps_product_ids(self):
         products = select_products(load_products(ROOT / "data" / "processed" / "processed_products.json"), limit=3)

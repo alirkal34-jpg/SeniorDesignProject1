@@ -1,0 +1,54 @@
+{
+  "product_id": "P038",
+  "keyword": "Google Pixel 9 Pro XL 256 GB fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 5.38,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-google-pixel-9-pro-xl",
+      "title": "Google Pixel 9 Pro XL Cep Telefonu Fiyatları - Sahibinden",
+      "snippet": "16 Tem 2026 · Google Pixel 9 Pro XL Cep Telefonu fiyatları ilan ve alışverişte ilk adres sahibinden.com'da!",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/en-ucuz-google-pixel-9-pro-xl-fiyati,663556317.html",
+      "title": "Google Pixel 9 Pro XL Fiyatları, Özellikleri ve Yorumları …",
+      "snippet": "En ucuz Google Pixel 9 Pro XL fiyatlarını Akakçe ile takip et! Google Pixel 9 Pro …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-google-pixel-9-pro-xl?a101170=1194860",
+      "title": "Google Pixel 9 Pro XL Cep Telefonu Fiyatları - Sahibinden",
+      "snippet": "3 Mar 2026 · Google Pixel 9 Pro XL Cep Telefonu fiyatları ilan ve alışverişte ilk adres sahibinden.com'da!",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/en-ucuz-google-pixel-9-fiyati,520876734.html",
+      "title": "Google Pixel 9 Fiyatları, Özellikleri ve Yorumları | En …",
+      "snippet": "En ucuz Google Pixel 9 fiyatlarını Akakçe ile takip et! Google Pixel 9 özelliklerini …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-google-pixel-9-pro-xl-fiyatlari,2378987871",
+      "title": "Google Pixel 9 Pro XL Fiyatları ve Modelleri | Cimri",
+      "snippet": "25 Kas 2025 · Google Pixel 9 Pro XL 512GB 16GB Ram için güncel teklifleri Cimri ile takip et! Son fiyat bilgisi 62.221,66 TL olarak …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    }
+  ]
+}

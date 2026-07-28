@@ -1,0 +1,54 @@
+{
+  "product_id": "P064",
+  "keyword": "Vivo X200 Pro 512 GB fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 4.34,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-vivo-x200-pro-fiyatlari,a2397764923",
+      "title": "Vivo X200 Pro Telefon Fiyatları & Modelleri | Cimri",
+      "snippet": "Bu nedenle Vivo X200 Pro fiyat, cihazın teknik detaylarına ve satıcının uyguladığı …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/vivo-x200-pro-512-gb-16gb-ram-akilli-telefon-titanyum-gri-vivo-turkiye-garantili-pm-HBC00007MWSGG",
+      "title": "Vivo X200 Pro 512 GB 16GB Ram Akıllı Telefon …",
+      "snippet": "Vivo X200 Pro 512 GB 16GB Ram Akıllı Telefon Titanyum Gri fiyatı ve 18 …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "epey.com",
+      "url": "https://www.epey.com/akilli-telefonlar/vivo-x200-pro.html",
+      "title": "Vivo X200 Pro Fiyatı ve Özellikleri - Epey",
+      "snippet": "14 Eki 2024 · Vivo X200 Pro [kodu] detaylı özelliklerini inceleyin, benzer ürünlerle …",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/vivo/x200-pro-16-512gb-akilli-telefon-titanyum-gri-p-895987838",
+      "title": "vivo X200 Pro 16/512gb Akıllı Telefon Titanyum Gri - Trendyol",
+      "snippet": "X200 Pro 16/512gb Akıllı Telefon Titanyum Gri yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/ilan/ikinci-el-ve-sifir-alisveris-cep-telefonu-aksesuar-cep-telefonu-erdaliletisim-vivo-200-pro-512-gb-16-ram-12-ay-garantili-kutu-yo-1330403790/detay",
+      "title": "512 GB Beyaz Vivo X200 Pro Cep Telefonu - 1330403790 - Sahibinden",
+      "snippet": "3 gün önce · ERDALİLETİŞİM VİVO 200 PRO 512 GB 16 RAM 12 AY GARANTİLİ KUTU YO - 512 GB Beyaz Vivo X200 Pro Cep …",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    }
+  ]
+}

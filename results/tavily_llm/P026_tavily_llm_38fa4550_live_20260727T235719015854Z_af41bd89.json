@@ -1,0 +1,53 @@
+{
+  "product_id": "P026",
+  "keyword": "Xiaomi 15 Ultra 512 GB fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 3.69,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "epey.com",
+      "url": "https://www.epey.com/akilli-telefonlar/xiaomi-15-ultra.html",
+      "title": "Xiaomi 15 Ultra Fiyatı ve Özellikleri",
+      "snippet": "Xiaomi 15 Ultra 512 GB 16 GB Ram (Xiaomi Türkiye Garantili) n11.com fiyatı 85.247,04 … 512 GB Bellek (RAM): 16 GB",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "donanimhaber.com",
+      "url": "https://www.donanimhaber.com/amp/xiaomi-15-ultra-tanitildi-iste-ozellikleri-ve-fiyati--188338",
+      "title": "Xiaomi 15 Ultra tanıtıldı: İşte özellikleri ve fiyatı",
+      "snippet": "... GB RAM ve 512 GB depolama modelinin fiyatı 961 dolar, 16 GB RAM ve 1 TB modelinin fiyatı ise 1071 dolar. Xiaomi ayrıca 16 GB + 1 TB",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    },
+    {
+      "domain": "mi.com",
+      "url": "https://www.mi.com/tr/product/xiaomi-15-ultra/buy",
+      "title": "Xiaomi 15 Ultra | Xiaomi Türkiye | Satın almak için en iyi ve en güncel fiyat",
+      "snippet": "Xiaomi 15 Ultra Gümüş Krom 16 GB+512 GBHarika .999 TLCurrent Price TL79999 Current Price TL6569 7.299 TL Piyasa fiyatı 7.299 TL",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-xiaomi-15-ultra-fiyatlari,a2372365895",
+      "title": "Xiaomi 15 Ultra 512GB 16GB Ram",
+      "snippet": "Xiaomi 15 Ultra 512GB 16GB Ram fiyatı, 27.07.2026 tarihinde 82.399,00 TL. fiyatı 76.165,80 TL.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/xiaomi/15-ultra-512-gb-siyah-xiaomi-turkiye-garantili-p-903855197",
+      "title": "Xiaomi 15 Ultra 512 GB, Siyah (Xiaomi Türkiye Garantili) - Fiyatı, Yorumları",
+      "snippet": "Xiaomi 15 Ultra 512 GB, Siyah (Xiaomi Türkiye Garantili) Özellikleri ... Kampanyalı Fiyat. Sepette. 559,90 TL. 599,90 TL. Xiaomi Mi 15 Ultra Kılıf Kamera",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

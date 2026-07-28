@@ -1,0 +1,53 @@
+{
+  "product_id": "P038",
+  "keyword": "Google Pixel 9 Pro XL 256 GB fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 8.34,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "us.smartprix.com",
+      "url": "https://us.smartprix.com/mobiles/google-pixel-9-pro-xl-16gb-ram-256gb-ppd1bmdcowxm",
+      "title": "Google Pixel 9 Pro XL (16GB RAM + 256GB) - Price in United States (Jul 2026), Specs, Reviews | Smartprix",
+      "snippet": "Google Pixel 9 Pro XL (16GB RAM + 256GB). Google Pixel 9 Pro XL (16GB RAM + 256GB) is a 5G Android 14 Smartphone powered by Google G4 with 16 GB RAM and 256 GB storage. ## Google Pixel 9 Pro XL (16GB RAM + 256GB) Price History. **$3,235**  •  View Prices  •  By Google. It has a 6.8 inches display with 120 Hz refresh rate. It features a 50 MP + 48 MP + 48 MP Triple rear camera and a 42 MP front camera. It packs a 5060 mAh Battery with 37W Fast Charging. Notable features include NFC, IP68 Rating, Wireless Charging, Reverse Wireless Charging and In-Display Fingerprint. Google Pixel 9 Pro XL (16GB RAM + 256GB) price in United States is $3,235. * 5060 mAh Battery with 37W Fast Charging. ## Google Pixel 9 Pro XL (16GB RAM + 256GB) Prices. You can check the price history of Google Pixel 9 Pro XL (16GB RAM + 256GB) below.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "donanimhaber.com",
+      "url": "https://www.donanimhaber.com/amp/google-pixel-9-pro-xl-tanitildi-iste-ozellikleri-ve-fiyati--180676",
+      "title": "Google Pixel 9 Pro XL tanıtıldı: İşte özellikleri ve fiyatı",
+      "snippet": "4 Eylül'de satışa çıkacak. Pixel 9 Pro, 999 dolar fiyatla satılacak. GB RAM Depolama: 128GB, 256GB, 512GB, 1TB Arka kamera: 50MP (birincil) +",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    },
+    {
+      "domain": "ebay.com",
+      "url": "https://www.ebay.com/p/3071466975",
+      "title": "Google Pixel 9 Pro XL - 256 GB - Hazel (Unlocked) for sale online | eBay",
+      "snippet": "# Google Pixel 9 Pro XL - 256 GB - Hazel (Unlocked). El comprador paga por la devolución del artículo. Si utilizas una etiqueta de envío de eBay, el monto se deducirá del importe del reembolso. ¡Se ha verificado que el gestor de arranque de este teléfono es completamente desbloqueable para permitir la instalación de software de enraizamiento/personalizado! Este artículo está DESBLOQUEADO DE FÁBRICA y es compatible con muchos operadores de todo el mundo. Google Pixel 9 Pro XL Desbloqueado de fábrica ATT TMobile Verizon Desbloqueable BL 7641537. ModelGoogle Pixel 9 Pro XL. Google Pixel 9 Pro XL 256GB Hazel Unlocked Good Conditionartículo 1 Google Pixel 9 Pro XL 256GB Hazel Unlocked Good Condition. Google Pixel 9 Pro XL Factory Unlocked ATT TMobile Verizon Unlockable BL 7641537. Google Pixel 9 Pro XL Factory Unlocked ATT TMobile Verizon Unlockable BL 7641537artículo 3 Google Pixel 9 Pro XL Factory Unlocked ATT TMobile Verizon Unlockable BL 7641537. Google Pixel 9 Pro XL 256GB Hazel Unlocked Good Condition.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "bestbuy.com",
+      "url": "https://www.bestbuy.com/product/google-pixel-9-pro-xl-256gb-unlocked-obsidian/J39TC879K3",
+      "title": "Google Pixel 9 Pro XL 256GB (Unlocked) Obsidian GA05904-US",
+      "snippet": "Powerhouse performance: Designed for the fastest performance on a Pixel, Pixel 9 Pro has 16 GB of RAM to power Google's most advanced AI. The fastest charging",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "amazon.com",
+      "url": "https://www.amazon.com/Google-Pixel-Pro-XL-Smartphone/dp/B0D7HSJ7ZP",
+      "title": "Amazon.com: Google Pixel 9 Pro XL - Unlocked Android Smartphone with Gemini, Triple Rear Camera System, 24-Hour Battery, and 6.8\" Super Actua Display - Obsidian - 128 GB : Cell Phones & Accessories",
+      "snippet": "## Skip to. *   Add to cart shift+alt+K. *   Product summary shift+alt+D. To move between items, use your keyboard's up or down arrows. Select the department you want to search in. Image 3: Cell Phones & AccessoriesExplore Trade-inCell PhonesAccessoriesCasesWearable TechnologyDeals. *   Find a List or Registry. *   Create Your Free Business Account. # Product summary presents key product information. ### Add to your order. *   Image 6  24/7 support when you need it. 2-Year Protection Plan $209.99. *   Product Eligibility: Plan must be purchased with a product or within 30 days of the product purchase. Cover all of your eligible devices:. Complete Protect: One plan covers all eligible past and future purchases (Best Value) $16.99/month. More details: Complete Protect: One plan covers all eligible past and future purchases (Best Value). *   Image 18: Google Pixel 9 Pro XL - Unlocked Android Smartphone with Gemini, Triple Rear Camera System, 24-Hour Battery, and 6.8&#34; Super Actua Display - Obsidian - 128 GB.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

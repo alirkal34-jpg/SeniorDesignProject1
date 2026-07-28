@@ -1,0 +1,53 @@
+{
+  "product_id": "P011",
+  "keyword": "Samsung Galaxy S25 Ultra 256 GB fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 3.76,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/en-ucuz-samsung-galaxy-s25-ultra-fiyati,651960345.html",
+      "title": "Samsung Galaxy S25 Ultra 256 GB",
+      "snippet": "En Ucuz Samsung Galaxy S25 Ultra 256 GB Fiyatları ; Teknosa 69.999 TL ; Turkcell 72.629 TL ; A101 74.999 TL ; MediaMarkt 74.999 TL ; Migros Sanal Market Ekstra ...Read more",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "mediamarkt.com.tr",
+      "url": "https://www.mediamarkt.com.tr/tr/product/_samsung-galaxy-s25-ultra-12gb256gb-akilli-telefon-titanyum-1245472.html",
+      "title": "SAMSUNG Galaxy S25 Ultra 5G 12/256GB Akıllı Telefon ...",
+      "snippet": "SAMSUNG Galaxy S25 Ultra 5G 12/256GB ・ ₺ 74.999, – ₺74999,00 KDV dahil ücretsiz kargo ・ 256 GB512 GB1 ・ 256 GB dahili depolama alanı, fotoğraf ve videoların",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "amazon.com",
+      "url": "https://www.amazon.com/SAMSUNG-S25-Ultra-Smartphone-Processor/dp/B0F39CGPQV",
+      "title": "Amazon.com: Samsung Galaxy S25 Ultra, 256GB, Titanium Black - Unlocked (Renewed) : Cell Phones & Accessories",
+      "snippet": "|  |  |\n --- |\n| Brand | Samsung |\n| Operating System | Android |\n| Ram Memory Installed Size | 12 GB |\n| CPU Model | Snapdragon |\n| CPU Speed | 3.5 GHz |\n| Memory Storage Capacity | 256 GB |\n| Screen Size | 6.9 inches |\n| Resolution | 1440 x 3120 |\n| Refresh Rate | 120 |\n| Model Name | Galaxy S25 Ultra |\n\n# About this item\n\n|  |\n\n|  |\n\n##### Amazon Music\n\n##### Amazon Ads\n\n##### 6pm\n\n##### AbeBooks\n\n##### ACX\n\n##### Sell on Amazon\n\n##### Veeqo\n\n##### Amazon Business\n\n##### Amazon Fresh [...] ## Skip to\n\n## Keyboard shortcuts\n\nCell Phones & Accessories\nInternational Kindle Paperwhite\n\nNo featured offers available\n\nWe feature offers with an Add to Cart button when an offer meets our high standards for: \n\n Quality Price,\n Reliable delivery option, and\n Seller who offers good customer service\n\n “No featured offers available” means no offers currently meet all of these expectations. Select See All Buying Options to shop available offers.\n\n### Sorry, there was a problem. [...] ### Sorry, there was a problem.\n\n#### Image Unavailable\n\nSamsung Galaxy S25 Ultra, 256GB, Titanium Black - Unlocked (Renewed)\n\n# Samsung Galaxy S25 Ultra, 256GB, Titanium Black - Unlocked (Renewed)",
+      "predicted_relevant": true,
+      "relevance_score": 0.8
+    },
+    {
+      "domain": "samsung.com",
+      "url": "https://www.samsung.com/us/smartphones/galaxy-s25-ultra/buy/galaxy-s25-ultra-256gb-unlocked-sku-sm-s938uzkaxaa",
+      "title": "Buy Galaxy S25 Ultra 256GB | Titanium Black Smartphone | Price & Deals | Samsung US",
+      "snippet": "# Galaxy S25 Ultra\n\nGalaxy S25 Ultra\n\nGalaxy S25 Edge\n\n256GB\n\n512GB\n\n1TB\n\nTitanium Jadegreen\n\nTitanium Jetblack\n\nTitanium Pinkgold\n\nTitanium Black\n\nTitanium Gray\n\nTitanium Silverblue\n\nTitanium Whitesilver",
+      "predicted_relevant": false,
+      "relevance_score": 0.2
+    },
+    {
+      "domain": "samsung.com",
+      "url": "https://www.samsung.com/us/smartphones/galaxy-s25-ultra/buy",
+      "title": "Buy Galaxy S25 Ultra 1TB | Titanium Silverblue Smartphone | Price & Deals | Samsung US",
+      "snippet": "# Galaxy S25 Ultra\n\nGalaxy S25 Ultra\n\nGalaxy S25 Edge\n\n256GB\n\n512GB\n\n1TB\n\nTitanium Jadegreen\n\nTitanium Jetblack\n\nTitanium Pinkgold\n\nTitanium Black\n\nTitanium Gray\n\nTitanium Silverblue\n\nTitanium Whitesilver",
+      "predicted_relevant": false,
+      "relevance_score": 0.2
+    }
+  ]
+}

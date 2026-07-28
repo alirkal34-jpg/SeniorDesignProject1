@@ -1,0 +1,54 @@
+{
+  "product_id": "P011",
+  "keyword": "Samsung Galaxy S25 Ultra 256 GB fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 5.48,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-samsung-galaxy-s25-ultra-256gb-12gb-ram-fiyatlari,a2432333010",
+      "title": "Samsung Galaxy S25 Ultra 256GB 12GB Ram Fiyatları | Cimri",
+      "snippet": "En ucuz Samsung Galaxy S25 Ultra 256GB 12GB Ram fiyatları 69.999,00 TL'den başlayan tekliflerle Cimri'de! Samsung Galaxy S25 …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/samsung-galaxy-s25-ultra-cep-telefonu-x-c103498-a292-v10621058",
+      "title": "Samsung Galaxy S25 Ultra Cep Telefonu Fiyatları Trendyol",
+      "snippet": "Samsung Galaxy S25 Ultra Cep Telefonu and sevdiğin markaların yeni sezon ürünleri ve kampanyaları Trendyol'da!🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/samsung-galaxy-s25-ultra-y-s367626",
+      "title": "Trendyol'da Samsung Galaxy S25 Ultra Satın Al",
+      "snippet": "Samsung Galaxy S25 Ultra, kullanıcıların ihtiyaçlarına göre farklı depolama seçenekleri sunar. 256 GB, 512 GB ve 1 TB depolama …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-samsung-galaxy-s25-ultra-256gb-12gb-ram-mavi-titanyum-fiyatlari,2432116719",
+      "title": "Samsung Galaxy S25 Ultra 256GB 12GB Ram Mavi Titanyum …",
+      "snippet": "En ucuz Samsung Galaxy S25 Ultra 256GB 12GB Ram Mavi Titanyum fiyatları 71.810,15 TL'den başlayan tekliflerle Cimri'de! …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/en-ucuz-samsung-galaxy-s25-ultra-256-gb-titanyum-yesil-fiyati,1044569774.html",
+      "title": "Samsung Galaxy S25 Ultra 256 GB Titanyum Yeşil Fiyatları, …",
+      "snippet": "En ucuz Samsung Galaxy S25 Ultra 256 GB Titanyum Yeşil fiyatları 72.634,00 TL'den başlayan seçeneklerle Akakçe'de! Samsung …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    }
+  ]
+}

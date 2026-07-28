@@ -1,0 +1,53 @@
+{
+  "product_id": "P046",
+  "keyword": "OnePlus 13 256 GB fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 12.67,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-oneplus-13",
+      "title": "OnePlus 13 Cep Telefonu Fiyatları",
+      "snippet": "ONEPLUS 13 512/16. 30.000 TL. Siirt, Merkez ; ONEPLUS 13 256GB GLOBAL. 20.000 TL. Yalova, Çiftlikköy ; Yıl sonuna kadar açık Global YD Oneplus13. 30.000 TL",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "oneplus.com",
+      "url": "https://www.oneplus.com/ca_en/oneplus-13",
+      "title": "Snapdragon 8 Elite Power & OxygenOS 15 - OnePlus 13",
+      "snippet": "OnePlus 13. 12 GB RAM + 256 GB ROM. Black Eclipse. CA$1,249.99.",
+      "predicted_relevant": true,
+      "relevance_score": 0.7
+    },
+    {
+      "domain": "oneplus.com",
+      "url": "https://www.oneplus.com/us/oneplus-13",
+      "title": "Get the new OnePlus 13 | OnePlus United States",
+      "snippet": "OnePlus 13 12 GB RAM + 256 GB ROM Black Eclipse $899.99. From $129.99 Up to 27% OFF / 24 Months",
+      "predicted_relevant": true,
+      "relevance_score": 0.7
+    },
+    {
+      "domain": "epey.com",
+      "url": "https://www.epey.com/akilli-telefonlar/oneplus-13.html",
+      "title": "OnePlus 13 (CPH2653) Fiyatı ve Özellikleri",
+      "snippet": "OnePlus 13 Ekran Boyutu: 6.82 512 GB Bellek (RAM): 16 GB … 100 W 5G: Var 94puan. Ürünün Outlet/2.El fiyatlarını inceleyebilirsiniz. 256/512/1TB Depolama",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "oneplus.com",
+      "url": "https://www.oneplus.com/global/13/specs",
+      "title": "OnePlus 13 Specs",
+      "snippet": "Image sharpener\n\nVideo color enhancer\n\nScreen color mode\n\nColor vision enhancement\n\nAuto brightness\n\nManual brightness\n\nScreen Color Temperature\n\nBright HDR video mode\n\nNight mode\n\nMulti-brightness color calibration\n\nPerformance\n\nOperating System: OxygenOS 15.0 based on Android™ 15\n\nPlatform: Snapdragon® 8 Elite Mobile Platform\n\nCPU: Qualcomm® Oryon™ CPU @4.32GHz\n\nGPU: Adreno™ 830\n\nRAM: 12GB/16GB LPDDR5X\n\nStorage: 256GB/512GB UFS 4.0\n\nBattery: 6,000 mAh (Dual-cell 3,000 mAh, non-removable) [...] Vibration: Haptic motor\n\nAvailable configurations: 12GB+256GB / 16GB+512GB\n\nCharge\n\n100W SUPERVOOC™\n\n50W AIRVOOC\n\nCamera\n\n##### Wide Camera\n\nSensor: Sony LYT-808\n\nSensor Size: 1/1.4\"\n\nMegapixels: 50\n\nPixel Size: 1.12 µm\n\nLens Quantity: 7P\n\nALC lens coating\n\nOptical Image Stabilization: Yes\n\nElectronic Image Stabilization: Yes\n\nFocal Length: 23 mm equivalent\n\nAperture: ƒ/1.6\n\nField of View: 85°\n\nAutofocus: Yes\n\n##### Telephoto Camera\n\nSensor: Sony LYT-600 with 3X optical zoom [...] {{searchData.order}}\n  {{searchData.account}}\n  {{searchData.achievement}}\n\n  \n  {{data.title}}\n\n{{isDtbMode ? searchData.personalMode : searchData.businessMode}}\n\n \n\n{{xsMenuData.leftTitle}}\n\n{{list.title}}\n\n \n\n{{xsMenuData.rightTitle}}\n\n {{subLink.text}}\n\n \n\nPhone  Flagship Series Nord Series\n\n## OnePlus 13\n\nMidnight Ocean\n\nArctic Dawn\n\nBlack Eclipse\n\nDimensions\n\nHeight: 162.9 mm\n\nWidth: 76.5 mm\n\nThickness: 8.5 mm (Arctic Dawn/Black Eclipse) 8.9 mm (Midnight Ocean)",
+      "predicted_relevant": false,
+      "relevance_score": 0.1
+    }
+  ]
+}

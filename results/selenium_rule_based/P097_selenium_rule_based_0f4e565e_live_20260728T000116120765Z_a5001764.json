@@ -1,0 +1,54 @@
+{
+  "product_id": "P097",
+  "keyword": "CMF by Nothing CMF Phone 1 256 GB fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 5.59,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-nothing-cmf-phone-1-256gb-8gb-ram-fiyatlari,a2367672588",
+      "title": "Nothing CMF Phone 1 256GB 8GB Ram Fiyatları | Cimri",
+      "snippet": "En ucuz Nothing CMF Phone 1 256GB 8GB Ram fiyatları 15.999,00 TL'den …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/cmf-by-nothing-cmf-phone-1-android-telefonlar-xc-60005201-b139418-t2370",
+      "title": "CMF by Nothing CMF Phone 1 Fiyatları 2026 | Özgün …",
+      "snippet": "CMF Phone 1 Türkiye fiyatı, sahip olduğu özelliklerle karşılaştırıldığında makul …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "epey.com",
+      "url": "https://www.epey.com/akilli-telefonlar/cmf-phone-1-256gb.html",
+      "title": "CMF Phone 1 (256 GB) Fiyatı ve Özellikleri - Epey",
+      "snippet": "CMF Phone 1 [kodu] detaylı özelliklerini inceleyin, benzer ürünlerle karşılaştırın, …",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/cmfbynothing/cep-telefonlari-c-371965?filtreler=dahilihafiza:256%E2%82%AC20GB",
+      "title": "CMF by Nothing 256 GB Cep Telefonu Fiyatları ve Modelleri",
+      "snippet": "CMF by Nothing 256 GB Cep Telefonları ve ürünleri uygun fiyat fırsatlarıyla burada. Tıkla, en ucuz CMF by Nothing 256 GB Cep …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/nothing/cmf-by-nothing-phone-1-8-256-gb-nothing-turkiye-garantili-p-939965583",
+      "title": "NOTHING CMF by Nothing Phone 1 8/256 GB (Nothing …",
+      "snippet": "CMF by Nothing Phone 1 8/256 GB (Nothing Türkiye Garantili) yorumlarını …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

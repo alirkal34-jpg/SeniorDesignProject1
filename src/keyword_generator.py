@@ -11,7 +11,7 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from time import perf_counter
+from time import perf_counter, sleep
 from typing import Any, Iterable, Protocol
 from urllib import error, request
 
@@ -21,6 +21,7 @@ DEFAULT_INPUT_PATH = ROOT_DIR / "data" / "processed" / "processed_products.json"
 DEFAULT_OUTPUT_PATH = ROOT_DIR / "data" / "processed" / "generated_keywords.json"
 DEFAULT_MODEL = "google/gemma-4-26b-a4b-it:free"
 OPENROUTER_BATCH_SIZE = 3
+OPENROUTER_MAX_ATTEMPTS = 4
 KEYWORD_PROMPT_VERSION = "keyword-generation-v1"
 
 
@@ -265,22 +266,45 @@ class OpenRouterKeywordClient:
                 "X-Title": "Senior Design Keyword Generator",
             },
         )
-        try:
-            with request.urlopen(req, timeout=60) as response:
-                response_data = json.loads(response.read().decode("utf-8"))
-                usage = response_data.get("usage", {})
-                self.last_usage = usage if isinstance(usage, dict) else {}
-                raw_cost = self.last_usage.get("cost", self.last_usage.get("total_cost", 0.0))
-                try:
-                    self.last_cost_usd = float(raw_cost or 0.0)
-                except (TypeError, ValueError):
-                    self.last_cost_usd = 0.0
-                return response_data
-        except error.HTTPError as exc:
-            detail = exc.read().decode("utf-8", errors="replace")
-            raise KeywordGenerationError(f"OpenRouter API error {exc.code}: {detail}") from exc
-        except error.URLError as exc:
-            raise KeywordGenerationError(f"OpenRouter request failed: {exc.reason}") from exc
+        for attempt in range(OPENROUTER_MAX_ATTEMPTS):
+            try:
+                with request.urlopen(req, timeout=60) as response:
+                    response_data = json.loads(response.read().decode("utf-8"))
+                    usage = response_data.get("usage", {})
+                    self.last_usage = usage if isinstance(usage, dict) else {}
+                    raw_cost = self.last_usage.get(
+                        "cost",
+                        self.last_usage.get("total_cost", 0.0),
+                    )
+                    try:
+                        self.last_cost_usd = float(raw_cost or 0.0)
+                    except (TypeError, ValueError):
+                        self.last_cost_usd = 0.0
+                    return response_data
+            except error.HTTPError as exc:
+                detail = exc.read().decode("utf-8", errors="replace")
+                can_retry = (
+                    exc.code == 429
+                    and attempt < OPENROUTER_MAX_ATTEMPTS - 1
+                )
+                if can_retry:
+                    retry_after = exc.headers.get("Retry-After", "")
+                    try:
+                        requested_delay = float(retry_after)
+                    except (TypeError, ValueError):
+                        requested_delay = 0.0
+                    sleep(max(requested_delay, float(2**attempt)))
+                    continue
+                raise KeywordGenerationError(
+                    f"OpenRouter API error {exc.code}: {detail}"
+                ) from exc
+            except error.URLError as exc:
+                raise KeywordGenerationError(
+                    f"OpenRouter request failed: {exc.reason}"
+                ) from exc
+        raise KeywordGenerationError(
+            "OpenRouter request exhausted its retry attempts."
+        )
 
 
 def make_client(provider: str) -> KeywordClient:

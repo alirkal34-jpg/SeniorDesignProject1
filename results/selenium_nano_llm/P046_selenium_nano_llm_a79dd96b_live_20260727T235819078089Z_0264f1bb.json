@@ -1,0 +1,54 @@
+{
+  "product_id": "P046",
+  "keyword": "OnePlus 13 256 GB fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 10.9,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-oneplus-13",
+      "title": "OnePlus 13 Cep Telefonu Fiyatları - Sahibinden",
+      "snippet": "28 Haz 2026 · OnePlus 13 Cep Telefonu fiyatları ilan ve alışverişte ilk adres sahibinden.com'da!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-modeller-oneplus-13?a10533=true",
+      "title": "OnePlus 13 Cep Telefonu Fiyatları & Modelleri sahibinden.com'da",
+      "snippet": "22 Ara 2024 · OnePlus 13 Cep Telefonu mi arıyorsunuz? OnePlus 13 Cep Telefonu fiyatları ve modelleri ücretsiz kargo seçenekleriyle sahibinden.com'da!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/en-ucuz-oneplus-13-512-gb-siyah-fiyati,1056653089.html",
+      "title": "OnePlus 13 512 GB Siyah Fiyatları, Özellikleri ve Yorumları | En …",
+      "snippet": "En ucuz OnePlus 13 512 GB Siyah fiyatları 59.998,99 TL'den başlayan seçeneklerle Akakçe'de! OnePlus 13 512 GB Siyah özelliklerini incele, 5 mağazadaki indirimleri gör!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/oneplus.html",
+      "title": "OnePlus Telefon Fiyatları ve Modelleri | En Ucuzu Akakçe",
+      "snippet": "OnePlus cep telefonu fiyatları cihazın teknik özelliklerine göre değişiklik gösterir. Dahili depolama, RAM kapasitesi cihazın maliyeti üzerinde belirleyici rol oynar.",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/oneplus-x-b110929",
+      "title": "Oneplus Fiyatları, Modelleri & İndirimleri 2026 - Trendyol",
+      "snippet": "Oneplus fiyat değerlendirmesi yapmak, aksesuar ve telefon alternatiflerini incelemek için Trendyol’dan destek alabilirsiniz. Oneplus yorumlarına da göz atabilirsiniz.",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    }
+  ]
+}

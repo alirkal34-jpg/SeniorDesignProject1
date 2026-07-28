@@ -1,0 +1,53 @@
+{
+  "product_id": "P074",
+  "keyword": "Realme GT 7 Pro 256 GB fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 10.41,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "amazon.com",
+      "url": "https://www.amazon.com/Realme-Dual-SIM-Factory-Unlocked-Smartphone/dp/B0FBX6GGBQ",
+      "title": "Amazon.com: Realme GT 7 Dual-SIM 256GB ROM + 12GB RAM (GSM Only | No CDMA) Factory Unlocked 5G Smartphone (Black) - International Version : Cell Phones & Accessories",
+      "snippet": "| Flash Memory Supported Size Maximum | 256 GB |\n| Material Features | Safe | [...] Brand realme\nOperating System Android 15.0\nRam Memory Installed Size 12 GB\nCPU Model Mediatek Dimensity 9400\nCPU Speed 3.4 GHz\nMemory Storage Capacity 256 GB\nScreen Size 6.78 inches\nResolution 1264 x 2780\nRefresh Rate 120\nModel Name Realme GT 7\n\nSee more)\n\n  \n\n# About this item [...] | RAM Memory Installed | 12 GB |\n| Processor Series | Mediatek Dimensity 9400 |\n| Processor Speed | 3.4 GHz |\n| Memory Storage Capacity | 256 GB |\n| Color | Black |\n| SIM Card Slot Count | Dual SIM |\n| Connector Type | USB Type C |\n| Form Factor | Slate |\n| Biometric Security Feature | Face Recognition |\n| Sim Card Size | Nano |\n| Water Resistance Level | Not Water Resistant |\n| Headphones Jack | 3.5 mm |\n| Compatible Devices | standard |\n| Additional Features | standard |",
+      "predicted_relevant": true,
+      "relevance_score": 0.95
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-realme-gt-7-pro",
+      "title": "Realme GT 7 Pro Cep Telefonu Fiyatları",
+      "snippet": "Realme GT 7 Pro Cep Telefonu Modelleri ; realme GT 7 pro. 33.800 TL. İstanbul, Arnavutköy ; Realme Gt 7 pro 512GB 12GB Ram. 23.000 TL. Diyarbakır, Yenişehir.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "m.gsmarena.com",
+      "url": "https://m.gsmarena.com/realme_gt_7_pro-ampp-13470.php",
+      "title": "Realme GT 7 Pro - Full phone specifications",
+      "snippet": "### OnePlus 13\n\n### Realme GT7 Pro Racing\n\n### Realme GT 6\n\n Realme GT 7 Pro 256GB 12GB RAM\n\n $ 826.00\n € 529.00\n\nShow all prices\n\n## More from Realme\n\n### 16 Pro 5G\n\n### C85 5G\n\n### 16 5G\n\n### Neo8 5G\n\n### GT8 Pro 5G (China)-14245.php)\n\n### 15 Pro 5G\n\n## User opinions and reviews\n\n KitKat\n\nI've had this phone since December 2024 I'm up to battery cycle 224 and still 98% battery capacity!\n\n Reply\n 20 Jul 2026\n D$j\n\n PwndByAChick\n0\n\nI got it in January\n\n Reply\n 05 May 2026\n pVM\n\n pandator [...] # Realme GT 7 Pro\n\n 6.78\" 1264x2780 pixels\n 50MP 4320p\n 12/16GB RAM Snapdragon 8 Elite\n 6500mAh 120W\n\n read our review\n 4.1%  \n   2,800,138 hits\n 378  \n   Fans\n\n Realme GT 7 Pro review\n\n  Read\n 256GB 12GB RAM   \n   $ 826.00   All  \n  prices\n Read opinions\n Compare\n Pictures\n Related phones\n\nAlso known as Realme GT7 Pro for China  \n Versions:  \n Global model with 6500 mAh battery  \n India-only model with 5800 mAh battery\n\n| Network | [...] | Misc |\n\n| Colors | Mars Orange, Galaxy Grey, White |\n| Models | RMX5010, RMX5011 |\n| Price | $ 826.00 / € 529.00 |\n\n| Tests |\n\n| Performance | AnTuTu: 2746604 (v10)  GeekBench: 9509 (v6)  3DMark: 6360 (Wild Life Extreme) |\n| Display | 2336 nits max brightness (measured) |\n| Loudspeaker | -25.3 LUFS (Very good) |\n| Battery (new) | Active use score 17:31h |\n|\n\n## Related\n\n### Realme GT 7 5G\n\n### Realme GT8 Pro 5G (China)-14245.php)\n\n### Realme GT 7T 5G\n\n### OnePlus 13",
+      "predicted_relevant": false,
+      "relevance_score": 0.3
+    },
+    {
+      "domain": "ebay.com",
+      "url": "https://www.ebay.com/shop/realme-gt7-pro?_nkw=realme+gt7+pro",
+      "title": "Realme Gt7 Pro",
+      "snippet": "Realme GT 7 Pro. Pre-Owned $453.96 to $613.70$477.85. Unlocked $849.90 or Best Offer … 7-(256GB Storage-8GB RAM)4K",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    },
+    {
+      "domain": "klarna.com",
+      "url": "https://www.klarna.com/us/shopping/pl/cl1/3388222658/Mobile-Phones/realme-GT-7-Pro-256GB-Galaxy-Grey",
+      "title": "Realme GT 7 Pro 256GB Galaxy Grey • See price »",
+      "snippet": "4.7\n\n$876.86\n\nSamsung Galaxy S25 Ultra 512GB Titanium Grey\n\n-28%\n\nSamsung Galaxy S25 Ultra 512GB Titanium Grey\n\n4.8\n\nSamsung Galaxy S24 Ultra 256GB Titanium Violet\n\nSamsung Galaxy S24 Ultra 256GB Titanium Violet\n\n4.7\n\nVivo X200 Pro 256GB White\n\nTrending\n\nVivo X200 Pro 256GB White [...] For shoppers\n For business\n\n# realme GT 7 Pro 256GB Galaxy Grey\n\nThe Realme GT 7 Pro 256GB in Galaxy Grey offers a 6.8-inch display and a Snapdragon processor designed to provide smooth performance.\n\nPrice$504.00\n\n·\n\nPopularity\n\n804\n\nin\n\nMobile Phones\n\nFrom 12 payments of $45.25/mo. with\n\nSunsky Logotype\n\nSunsky\n\nRealme GT7 Pro, 12GB+256GB, 6.78 inch Android 15 / Realme UI 6.0 Snapdragon 8 Elite Octa Core, NFC, Network: 5G, Support Google Play (Galaxy Grey)\n\n$10.00 shipping, 5-20 days\n\n$504.00\") [...] $504.00\")\n\nAdvertisement\n\n## Related products\n\nShow all\n\nWe have picked out a selection of products that might interest you.\n\nrealme GT7 Pro Smartphone 12GB 512GB\n\nrealme GT7 Pro Smartphone 12GB 512GB\n\n$615\n\nSamsung Galaxy S24 FE 128GB Blue\n\nTrending\n\nSamsung Galaxy S24 FE 128GB Blue\n\n4.6\n\n$474.99\n\nSamsung Galaxy S25 Ultra 256GB Titanium Gray\n\nSamsung Galaxy S25 Ultra 256GB Titanium Gray\n\n4.8\n\n$1,299.99\n\nSamsung Galaxy S25 256GB Icyblue\n\nSamsung Galaxy S25 256GB Icyblue\n\n4.7\n\n$876.86",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    }
+  ]
+}

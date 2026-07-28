@@ -1,0 +1,61 @@
+{
+  "product_id": "P074",
+  "keyword": "Realme GT 7 Pro 256 GB fiyat",
+  "method": "agentic_search",
+  "execution_mode": "live",
+  "provider": "openrouter+selenium+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "planner_model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "agentic-search-plan-v1+relevance-v1",
+  "search_queries": [
+    "Realme GT 7 Pro 256 GB fiyat",
+    "Realme GT 7 Pro 256 GB satın al",
+    "Realme GT 7 Pro 256 GB en ucuz"
+  ],
+  "search_errors": [],
+  "runtime_seconds": 35.19,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-realme-gt-7-pro",
+      "title": "Realme GT 7 Pro Cep Telefonu Fiyatları - Sahibinden",
+      "snippet": "1 Haz 2026 · Realme GT 7 Pro Cep Telefonu fiyatları ilan ve alışverişte ilk adres sahibinden.com'da!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-realme-gt7-pro-fiyatlari,a2404593275",
+      "title": "Realme GT7 Pro Cep Telefonu Fiyatları & Modelleri | Cimri",
+      "snippet": "Tek yerden tek seferde farklı mağazaların Realme GT7 Pro fiyat bilgisine …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/en-ucuz-realme-gt-7-pro-fiyati,684475765.html",
+      "title": "Realme GT 7 Pro 512 GB Fiyatları, Özellikleri ve Yorumları | En Ucuzu ...",
+      "snippet": "En ucuz Realme GT 7 Pro 512 GB fiyatları 49.999,00 TL'den başlayan seçeneklerle Akakçe'de! Realme GT 7 Pro 512 GB …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "epey.com",
+      "url": "https://www.epey.com/akilli-telefonlar/realme-gt-7-pro.html",
+      "title": "realme GT7 Pro (RMX5011) Fiyatı ve Özellikleri - Epey",
+      "snippet": "4 Kas 2024 · realme GT7 Pro RMX5011 detaylı özelliklerini inceleyin, benzer ürünlerle karşılaştırın, ürün yorumlarını okuyun ve en …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "vatanbilgisayar.com",
+      "url": "https://www.vatanbilgisayar.com/realme-gt7-pro-12-512gb-galaksi-grisi-akilli-telefon.html",
+      "title": "Realme GT7 Pro Fiyatı ve Özellikleri - Vatan Bilgisayar",
+      "snippet": "Realme GT7 Pro fiyatı, teknik özellikleri, modelleri, en ucuz fiyatlarla Vatan …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

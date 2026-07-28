@@ -1,0 +1,53 @@
+{
+  "product_id": "P064",
+  "keyword": "Vivo X200 Pro 512 GB fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 22.47,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "flipkart.com",
+      "url": "https://www.flipkart.com/vivo-x200-pro-5g-titanium-grey-512-gb/p/itm1e8383eef06a4",
+      "title": "vivo X200 Pro 5G (512 GB Storage, 16 GB RAM) Online at Best Price On Flipkart.com",
+      "snippet": "Notification Settings 24x7 Customer Care\n\n  24x7 Customer Care Advertise on Flipkart\n\n  Advertise on Flipkart\n\nHome\n\nMobiles & Accessories\n\n/\n\nMobiles\n\n/\n\nvivo Mobiles\n\n/\n\nX200 Pro 5G (Titanium Grey, 512 GB)\n\nKey Highlights\n\nKey Highlights\n\nKey Highlights\n\nKey Highlights\n\nKey Highlights\n\n+15\n\nVisit brand store\n\n# vivo X200 Pro 5G (Titanium Grey, 512 GB) (16 GB RAM)\n\n4.7\n\n| 1,147\n\n7%\n\n80,999\n\n₹74,999+₹220 Protect Promise Fee\n\nBuy at ₹71,249\n\nApply offers for maximum savings\n\n₹71,249 [...] INDIASAMSUNG DUOS 2XPERIA T2 ULTRA [...] INDIASAMSUNG DUOS 2XPERIA T2 ULTRA",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/vivo-x200-pro-512-gb-16gb-ram-akilli-telefon-titanyum-gri-vivo-turkiye-garantili-pm-HBC00007MWSGG",
+      "title": "Vivo X200 Pro 512 GB 16GB Ram Akıllı Telefon Titanyum Gri Fiyatı",
+      "snippet": "Kamera kalitesi rakipsiz olarak nitelendiriliyor ve şarj süresi oldukça tatmin edici. 16GB RAM ile hızlı performans sunuyor. Kullanıcılar, özelleştirme",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-vivo-x200-pro",
+      "title": "Vivo X200 Pro Cep Telefonu Fiyatları",
+      "snippet": "VİVO X200 PRO TERTEMİZ HATASIZ 1 YİL DAHA GARANTİLİ. 47.000 TL. Bursa, Yenişehir ; vivo x 200 pro çiziksiz tertemiz pazarlık yok. 23.500 TL. Ankara, Pursaklar.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/vivo/x200-pro-16-512gb-akilli-telefon-titanyum-gri-p-895987838",
+      "title": "vivo X200 Pro 16/512gb Akıllı Telefon Titanyum Gri - Fiyatı, Yorumları",
+      "snippet": "vivo X200 Pro 16/512gb Akıllı Telefon Titanyum Gri ; 1 Yıl Ek Garanti · 2.181 TL ; Kırılma ve Hırsızlık Koruması · 7.633 TL ; Hırsızlık Koruması · 2.908 TL.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "youtube.com",
+      "url": "https://www.youtube.com/watch?v=oF1KKiBwZio",
+      "title": "VIVO X200 PRO / Is It Really That Good? / Detailed Review",
+      "snippet": "00:00 - Giriş ve Genel Özellikler 2:33 - İşlemci ve GPU performansı 4:10 - Fiziksel Özellikler ve Ekran 06:14 - Şarj özellikleri ve",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    }
+  ]
+}

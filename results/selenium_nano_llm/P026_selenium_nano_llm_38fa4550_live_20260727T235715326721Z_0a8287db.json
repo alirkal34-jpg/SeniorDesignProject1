@@ -1,0 +1,54 @@
+{
+  "product_id": "P026",
+  "keyword": "Xiaomi 15 Ultra 512 GB fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 7.82,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-xiaomi-15-ultra-fiyatlari,a2372365895",
+      "title": "Xiaomi 15 Ultra Fiyatları & Xiaomi 15 Ultra Modelleri | Cimri",
+      "snippet": "Xiaomi 15 Ultra cep telefonu modelinin farklı depolama seçenekleri ile birlikte …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/en-ucuz-xiaomi-15-fiyati,594091693.html",
+      "title": "Xiaomi 15 512 GB Fiyatları, Özellikleri ve Yorumları | En Ucuzu Akakçe",
+      "snippet": "Bununla birlikte Xiaomi 15 fiyatı ülkemizde ve yurt dışında, farklı etiketlerle karşımıza çıkmıştır. Cihazın 512 GB depolama birimine …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-xiaomi-15-ultra",
+      "title": "Xiaomi 15 Ultra Cep Telefonu Fiyatları - Sahibinden",
+      "snippet": "6 gün önce · Xiaomi 15 Ultra Cep Telefonu fiyatları ilan ve alışverişte ilk adres sahibinden.com'da!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "epey.com",
+      "url": "https://www.epey.com/akilli-telefonlar/xiaomi-15-ultra.html",
+      "title": "Xiaomi 15 Ultra Fiyatı ve Özellikleri - Epey",
+      "snippet": "3 Mar 2025 · Xiaomi 15 Ultra [kodu] detaylı özelliklerini inceleyin, benzer ürünlerle …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-xiaomi-15-ultra-512gb-16gb-ram-beyaz-fiyatlari,2439752368",
+      "title": "Xiaomi 15 Ultra 512GB 16GB Ram Beyaz Fiyatları | Cimri",
+      "snippet": "En ucuz Xiaomi 15 Ultra 512GB 16GB Ram Beyaz fiyatları 82.399,00 TL'den …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

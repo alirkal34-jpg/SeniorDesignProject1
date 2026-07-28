@@ -1,0 +1,53 @@
+{
+  "product_id": "P001",
+  "keyword": "Apple iPhone 16 Pro Max 256 GB fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 4.99,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "ebay.com",
+      "url": "https://www.ebay.com/b/Apple-iPhone-16-Pro-Max/9355/bn_7122966045",
+      "title": "Apple iPhone 16 Pro Max for Sale | Shop New & Used Cell Phones",
+      "snippet": "Usado: R$ 4.045,35\n Apple iPhone 16 Pro Max - 256 GB - Natural Titanium (Unlocked)\n\n  ### Apple iPhone 16 Pro Max - 256 GB - Natural Titanium (Unlocked)\n\n  (7)\n\n  Novo: R$ 25.314,79\n\n  Usado: R$ 4.050,37\n Apple iPhone 16 Pro Max - 512 GB - White Titanium (Unlocked)\n\n  ### Apple iPhone 16 Pro Max - 512 GB - White Titanium (Unlocked)\n\n  (2)\n\n  Novo: R$ 25.314,79\n\n  Usado: R$ 6.075,55\n\n## Pesquisas relacionadas\n\n## Procurar produtos semelhantes\n\n Apple iPhone 17 Pro Max [...] ### Apple iPhone 16 Pro Max - 256GB - Preto titnio (AT&T) - Bom estado\n\n  Seminovo · Apple\n\n  R$ 3.202,10\n\n  Entrega internacional grátis\n\n  G⁣⁣⁣E⁣ ⁣⁣2⁣⁣V⁣⁣ ⁣⁣G⁣⁣⁣2⁣ ⁣⁣⁣⁣L⁣⁣8⁣ ⁣2⁣5⁣⁣ ⁣\n APPLE IPHONE 16 PRO MAX 256GB (DESBLOQUEADO DE FÁBRICA) ✅100% DE INTEGRIDADE DA BATERIA✅❖SELADO❖ - Imagem 1 de 4\n\n  ### APPLE IPHONE 16 PRO MAX 256GB (DESBLOQUEADO DE FÁBRICA) ✅100% DE INTEGRIDADE DA BATERIA✅❖SELADO❖\n\n  ✈️ FREE 2 DAYS ✈️│💯 SATISFACTION 💯│🔥 BEST PRICE 🔥\n\n  Novo em folha · Apple\n\n  R$ 5.286,17 [...] ### Apple iPhone 16 Pro Max - 256 GB - Black Titanium (Unlocked)\n\n  (17)\n\n  Novo: R$ 5.062,96\n\n  Usado: R$ 3.164,35\n\n  AGA\n Apple iPhone 16 Pro Max - 1 TB - Desert Titanium (Unlocked)\n\n  ### Apple iPhone 16 Pro Max - 1 TB - Desert Titanium (Unlocked)\n\n  Novo: R$ 5.062,96\n\n  Usado: R$ 4.303,46\n Apple iPhone 16 Pro Max - 512 GB - Desert Titanium (Unlocked)\n\n  ### Apple iPhone 16 Pro Max - 512 GB - Desert Titanium (Unlocked)\n\n  (5)\n\n  Novo: R$ 45.566,62",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    },
+    {
+      "domain": "epey.com",
+      "url": "https://www.epey.com/akilli-telefonlar/apple-iphone-16-pro-max.html",
+      "title": "Apple iPhone 16 Pro Max (256 GB) Fiyatı ve Özellikleri - Epey",
+      "snippet": "Epey Logo\nApple iPhone 16 Pro Max\nApple iPhone 16 Pro Max\nApple iPhone 16 Pro Max\nApple iPhone 16 Pro Max\nApple iPhone 16 Pro Max\nApple iPhone 16 Pro Max\n\n# Apple iPhone 16 Pro Max (256 GB)\n\n## Apple iPhone 16 Pro Max (256 GB) Fiyatları\n\nApple iPhone 16 Pro Max PTT AVM fiyatı\n\nSatıcı: MASTERFONE | İthalatçı Garantili | Renk: Bakır/Titanyum\n\n2 saat önce\n\nApple iPhone 16 Pro Max PTT AVM fiyatı\n\nSatıcı: BVBMARKET | İthalatçı Garantili | Renk: Bakır/Titanyum\n\n2 saat önce [...] 25 dk önce\n\nApple iPhone 16 Pro Max Bakır\nApple iPhone 16 Pro Max Titanyum\nApple iPhone 16 Pro Max Beyaz\nApple iPhone 16 Pro Max Siyah\n\n## Apple iPhone 16 Pro Max (256 GB) Fiyat Geçmişi\n\n## Apple iPhone 16 Pro Max Ürün Ailesi\n\nApple iPhone 16 Pro Max 256 GB Cep Telefonu\nApple iPhone 16 Pro Max 512 GB Cep Telefonu\nApple iPhone 16 Pro Max 1 TB Cep Telefonu\n\n## Apple iPhone 16 Pro Max (256 GB) Temel Özellikleri\n\n## Apple iPhone 16 Pro Max (256 GB) Özellikleri\n\n### EKRAN EKRAN\n\nEKRAN [...] 25 dk önce\n\nApple iPhone 16 Pro Max n11.com fiyatı\n\nSatıcı: CepHaneTeknoloji | Distribütör Garantili | Renk: Beyaz\n\n25 dk önce\n\nApple iPhone 16 Pro Max Turkcell Pasaj fiyatı\n\nSatıcı: Tuncerler - Turkcell Mağazası | Distribütör Garantili | Renk: Beyaz/Titanyum\n\n1 saat önce\n\nApple iPhone 16 Pro Max PTT AVM fiyatı\n\nSatıcı: BVBMARKET | İthalatçı Garantili | Renk: Titanyum\n\n2 saat önce\n\nApple iPhone 16 Pro Max PTT AVM fiyatı\n\nSatıcı: BVBMARKET | İthalatçı Garantili | Renk: Beyaz\n\n2 saat önce",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "amazon.com",
+      "url": "https://www.amazon.com/Apple-iPhone-16-Pro-Max/dp/B0DHJ896RY",
+      "title": "Apple iPhone 16 Pro Max, 256GB, Black Titanium - Unlocked (Renewed)",
+      "snippet": "|  |  |\n --- |\n| Brand | Apple |\n| Operating System | iOS 18 |\n| Ram Memory Installed Size | 8 GB |\n| CPU Model | Apple A18 Pro |\n| CPU Speed | 3.8 GHz |\n| Memory Storage Capacity | 256 GB |\n| Screen Size | 6.9 inches |\n| Resolution | 2868 × 1320 |\n| Refresh Rate | 120 hertz |\n| Model Name | iPhone 16 Pro Max |\n\n# About this item\n\n|  |\n\n|  |\n\n##### Amazon Music\n\n##### Amazon Ads\n\n##### 6pm\n\n##### AbeBooks\n\n##### ACX\n\n##### Sell on Amazon\n\n##### Veeqo\n\n##### Amazon Business\n\n##### Amazon Fresh [...] ## Skip to\n\n## Keyboard shortcuts\n\nCell Phones & Accessories\nInternational Kindle Paperwhite\n\nNo featured offers available\n\nWe feature offers with an Add to Cart button when an offer meets our high standards for: \n\n Quality Price,\n Reliable delivery option, and\n Seller who offers good customer service\n\n “No featured offers available” means no offers currently meet all of these expectations. Select See All Buying Options to shop available offers.\n\n### Sorry, there was a problem. [...] ### Sorry, there was a problem.\n\n#### Image Unavailable\n\nApple iPhone 16 Pro Max, 256GB, Black Titanium - Unlocked (Renewed)\n\n# Apple iPhone 16 Pro Max, 256GB, Black Titanium - Unlocked (Renewed)",
+      "predicted_relevant": true,
+      "relevance_score": 0.95
+    },
+    {
+      "domain": "apple.com",
+      "url": "https://www.apple.com/shop/buy-iphone/iphone-16",
+      "title": "Buy iPhone 16 and iPhone 16 Plus",
+      "snippet": "New customers: Receive credit with purchase of an iPhone 16 or iPhone 16 Plus (based upon the model and condition of your trade-in smartphone) of $899, $800 or $500 for customers on an Experience Beyond plan (excluding all 55, Military, First Responder plans) ($100+/mo. plan after AutoPay discount if applicable; plus taxes & fees) Max 4 promotions on any iPhone per account; $800 or $400 for customers on an Experience More plan (excluding all 55, Military, First Responder plans) ($85+/mo. plan [...] From $999\n\n6.5”\n\nSuper Retina XDR displayFootnote 2\n\nProMotion technology\n\nAlways-On display\n\nDynamic Island\n\nCase materials\n\nTitanium frame\n\nAction button\n\nCamera Control for faster access to photo and video tools\n\nA19 Pro chip\n\n5-core GPU with Neural Accelerators\n\nHardware-accelerated ray tracing\n\nBattery\n\nUp to 27 hours video playbackFootnote 8\n\nPerson in frame, arrows point in opposite direction\n\n18MP Center Stage front camera\n\nTap to zoom and rotate\n\nCenter Stage for photos [...] Existing customers: Receive credit with purchase of an iPhone 16 or iPhone 16 Plus (based upon the model and condition of your trade-in smartphone) of $899, $800 or $500 for customers on an Experience Beyond or Go5G Next plan (excluding all 55+, Military, & First Responder Savings plans) ($100+/mo. plan after AutoPay discount and plus taxes & fees if applicable) Max 4 promotions on any iPhone per account; $899, $600 or $300 for customers on an Experience Beyond or Go5G Next (with 55+, Military,",
+      "predicted_relevant": true,
+      "relevance_score": 0.95
+    },
+    {
+      "domain": "bestbuy.com",
+      "url": "https://www.bestbuy.com/site/searchpage.jsp?st=iphone+16+pro+max&id=pcat17071",
+      "title": "Best Buy International: Select your Country - Best Buy",
+      "snippet": "Les clients internationaux peuvent magasiner au www.bestbuy.com et faire livrer leurs commandes à n’importe quelle adresse ou n’importe quel magasin aux États-Unis. \nVoir les détails\n\nBest Buy Logo\n\n# Seleciona un país.\n\nCanada\n\n#### Canada\n\nEstados Unidos\n\n#### Estados Unidos\n\n### ¿COMPRANDO EN EE. UU.?\n\nClientes internacionales pueden comparer en www.bestbuy.com y enviar sus pedidos a cualquier domicilio o tienda en EE. UU. \nVer más detalles [...] Best Buy Logo\n\n# Choose a country.\n\nCanada\n\n#### Canada\n\nUnited States\n\n#### United States\n\n### Shopping in the U.S.?\n\nInternational customers can shop on www.bestbuy.com and have orders shipped to any U.S. address or U.S. store. \nSee More Details\n\nBest Buy Logo\n\n# Choisir un pays :\n\nCanada\n\n#### Canada\n\nUnited States\n\n#### United States\n\n### Vous magasinez aux É.-U.?",
+      "predicted_relevant": false,
+      "relevance_score": 0.1
+    }
+  ]
+}

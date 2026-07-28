@@ -1,0 +1,61 @@
+{
+  "product_id": "P084",
+  "keyword": "Motorola Edge 50 Ultra 512 GB fiyat",
+  "method": "agentic_search",
+  "execution_mode": "live",
+  "provider": "openrouter+selenium+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "planner_model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "agentic-search-plan-v1+relevance-v1",
+  "search_queries": [
+    "Motorola Edge 50 Ultra 512 GB fiyat",
+    "Motorola Edge 50 Ultra 512 GB satın al",
+    "Motorola Edge 50 Ultra 512 GB en ucuz"
+  ],
+  "search_errors": [],
+  "runtime_seconds": 14.4,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cep-telefonu/en-ucuz-motorola-edge-50-ultra-fiyati,637507356.html",
+      "title": "Motorola Edge 50 Ultra Fiyatları, Özellikleri ve …",
+      "snippet": "En ucuz Motorola Edge 50 Ultra fiyatlarını Akakçe ile takip et! Motorola Edge 50 …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/ilan/ikinci-el-ve-sifir-alisveris-cep-telefonu-aksesuar-cep-telefonu-motorola-edge-50-ultra-512gb-tertemiz-1299832435/detay",
+      "title": "512 GB Gri Motorola Edge 50 Ultra Cep Telefonu",
+      "snippet": "12 Şub 2026 · MOTOROLA EDGE 50 ULTRA 512GB TERTEMİZ - 512 GB Gri Motorola Edge 50 Ultra Cep Telefonu fiyatları ilan ve alışverişte ilk adres …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/ilan/ikinci-el-ve-sifir-alisveris-cep-telefonu-aksesuar-cep-telefonu-motorola-edge-50-ultra-1316594750/detay",
+      "title": "512 GB Gri Motorola Edge 50 Ultra Cep Telefonu - 1316594750",
+      "snippet": "13 May 2026 · Motorola edge 50 ultra - 512 GB Gri Motorola Edge 50 Ultra Cep Telefonu fiyatları ilan ve alışverişte ilk adres sahibinden.com'da!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "tr.kalvo.com",
+      "url": "https://tr.kalvo.com/motorola-edge-50-ultra-104190.html",
+      "title": "Motorola Edge 50 Ultra - Tüm teknik özellikler, fiyat ve ... - Kalvo",
+      "snippet": "Motorola Edge 50 Ultra için detaylı özellikleri, fiyatları ve incelemeleri görüntüle",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    },
+    {
+      "domain": "shiftdelete.net",
+      "url": "https://shiftdelete.net/urun-detay/motorola-edge-50-ultra",
+      "title": "Motorola Edge 50 Ultra Özellikleri ve Fiyatı",
+      "snippet": "Qualcomm’un Snapdragon 8s Gen 3 işlemcisinden güç alan Edge 50 Ultra, 12 …",
+      "predicted_relevant": true,
+      "relevance_score": 0.8
+    }
+  ]
+}
