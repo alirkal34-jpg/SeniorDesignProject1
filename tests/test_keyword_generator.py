@@ -28,7 +28,9 @@ from keyword_generator import (
 from keyword_loader import KeywordLoaderError, load_keywords
 from langgraph_flow import (
     build_comparison_langgraph,
+    build_end_to_end_langgraph,
     run_comparison_langgraph,
+    run_end_to_end_langgraph,
     run_langgraph_pipeline,
     run_pipeline_step_by_step,
 )
@@ -435,6 +437,40 @@ class KeywordGeneratorTests(unittest.TestCase):
                 "tavily_llm",
                 "agentic_search",
                 "result_aggregation",
+            }.issubset(graph.nodes)
+        )
+
+    def test_end_to_end_langgraph_starts_from_product_data(self):
+        state = run_end_to_end_langgraph(
+            product_id="P001",
+            keyword_provider="fake",
+            execution_mode="fake",
+            max_results=5,
+        )
+
+        output = state["output"]
+        self.assertTrue(state["completed"])
+        self.assertIsNone(state["error"])
+        self.assertEqual(output["product"]["product_id"], "P001")
+        keyword = output["keyword_generation"]["keyword"]
+        self.assertIn("iPhone 16 Pro Max", keyword)
+        self.assertEqual(
+            output["comparison"]["successful_method_count"],
+            4,
+        )
+        self.assertTrue(
+            output["comparison"]["all_methods_used_same_keyword"]
+        )
+
+    def test_end_to_end_langgraph_contains_required_nodes(self):
+        graph = build_end_to_end_langgraph().get_graph()
+
+        self.assertTrue(
+            {
+                "load_product",
+                "generate_keyword",
+                "compare_methods",
+                "aggregate",
             }.issubset(graph.nodes)
         )
 

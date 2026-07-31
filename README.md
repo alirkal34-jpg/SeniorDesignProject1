@@ -38,6 +38,10 @@ Completed and locally verified:
   review.
 - A final metrics report with 100% ground-truth coverage for the selected live
   evaluation run.
+- A human-readable four-method comparison report generated from the final
+  metrics JSON.
+- An end-to-end LangGraph that loads processed product data, generates one
+  structured keyword, and sends it unchanged through all four methods.
 
 All four methods now have retained live smoke-test evidence and a completed
 10-product live comparison. The first
@@ -63,6 +67,7 @@ first-task/
 |   `-- agentic_search/
 |-- src/
 |   |-- evaluation/
+|   |   |-- final_report.py
 |   |   |-- ground_truth.py
 |   |   |-- metrics.py
 |   |   `-- result_validator.py
@@ -218,6 +223,13 @@ Run the compiled four-method comparison graph without network calls:
 .\.venv\Scripts\python.exe src\langgraph_flow.py --flow comparison --execution-mode fake
 ```
 
+Run the complete product-data -> keyword -> four-method LangGraph without
+network calls:
+
+```powershell
+.\.venv\Scripts\python.exe src\langgraph_flow.py --flow end-to-end --product-id P001 --keyword-provider fake --execution-mode fake
+```
+
 Verify that the same fixed keyword reaches all four methods without making
 network calls:
 
@@ -282,12 +294,20 @@ OpenRouter model was free and `TAVILY_COST_PER_SEARCH_USD` was set to zero;
 this is experiment metadata, not a general claim that the providers are always
 free.
 
+The matching human-readable deliverable is
+`reports/final_evaluation_report.md`. Regenerate it after any metrics change:
+
+```powershell
+.\.venv\Scripts\python.exe src\evaluation\final_report.py
+```
+
 ## Validation, metrics, and tests
 
 ```powershell
 .\.venv\Scripts\python.exe src\evaluation\result_validator.py results
 .\.venv\Scripts\python.exe src\evaluation\ground_truth.py
 .\.venv\Scripts\python.exe src\evaluation\metrics.py
+.\.venv\Scripts\python.exe src\evaluation\final_report.py
 .\.venv\Scripts\python.exe -m unittest discover -s tests -p "test*.py" -v
 ```
 
@@ -324,6 +344,8 @@ and accuracy.
 - [x] Live provider/model/prompt/runtime/cost fields retained in result files.
 - [x] All four methods run live on the fixed 10-product evaluation subset.
 - [x] Final live metrics report with 100% label coverage.
+- [x] Human-readable runtime/cost/accuracy comparison report.
+- [x] Product-data-to-keyword-to-four-method end-to-end LangGraph.
 
 ### Requires local API keys or manual work
 

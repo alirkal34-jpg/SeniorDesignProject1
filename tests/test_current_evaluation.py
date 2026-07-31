@@ -11,6 +11,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
+from evaluation.final_report import render_report
 from evaluation.metrics import build_metrics_report
 
 
@@ -25,6 +26,11 @@ FINAL_REPORT_FILE = (
     PROJECT_ROOT
     / "reports"
     / "final_evaluation_metrics.json"
+)
+FINAL_MARKDOWN_REPORT_FILE = (
+    PROJECT_ROOT
+    / "reports"
+    / "final_evaluation_report.md"
 )
 
 
@@ -172,6 +178,20 @@ class CurrentEvaluationTests(unittest.TestCase):
                     "labeled_result_count"
                 ],
             )
+
+    def test_final_markdown_report_matches_metrics(
+        self,
+    ) -> None:
+        report_text = render_report(self.final_report)
+        self.assertEqual(
+            FINAL_MARKDOWN_REPORT_FILE.read_text(
+                encoding="utf-8"
+            ),
+            report_text,
+        )
+        self.assertIn("Tavily + NanoLLM", report_text)
+        self.assertIn("72.00%", report_text)
+        self.assertIn("67.84%", report_text)
 
 
 if __name__ == "__main__":

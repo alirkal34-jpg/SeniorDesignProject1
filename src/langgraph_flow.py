@@ -8,12 +8,20 @@ final result aggregation node. Both flows support deterministic API-free tests.
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from time import perf_counter
 from typing import Any, TypedDict
 
 from agentic_search import (
     AGENTIC_PLANNER_PROMPT_VERSION,
     AgenticSearch,
+)
+from keyword_generator import (
+    DEFAULT_INPUT_PATH,
+    KEYWORD_PROMPT_VERSION,
+    Product,
+    load_products,
+    make_client,
 )
 from nano_llm_evaluator import (
     METHOD_AGENTIC_SEARCH,
@@ -57,6 +65,24 @@ class ComparisonState(TypedDict, total=False):
     method_outputs: dict[str, dict[str, Any]]
     method_errors: list[dict[str, str]]
     output: dict[str, Any]
+    completed: bool
+
+
+class EndToEndState(TypedDict, total=False):
+    product_id: str
+    products_file: str
+    keyword_provider: str
+    execution_mode: str
+    max_results: int
+    product: dict[str, Any]
+    keyword: str
+    keyword_model: str
+    keyword_runtime_seconds: float
+    keyword_estimated_cost_usd: float
+    comparison_output: dict[str, Any]
+    started_at: float
+    output: dict[str, Any]
+    error: str | None
     completed: bool
 
 
@@ -592,6 +618,250 @@ def run_comparison_langgraph(
     )
 
 
+def _end_to_end_error(
+    state: EndToEndState,
+    stage: str,
+    exc: Exception,
+) -> EndToEndState:
+    new_state = dict(state)
+    new_state["error"] = f"{stage}: {exc}"
+    new_state["completed"] = False
+    logger.error("End-to-end stage %s failed: %s", stage, exc)
+    return new_state
+
+
+def load_product_node(
+    state: EndToEndState,
+) -> EndToEndState:
+    """Load one processed product as the workflow input."""
+
+    new_state = dict(state)
+    try:
+        product_id = state.get("product_id", "").strip()
+        if not product_id:
+            raise ValueError("product_id is required.")
+        products = load_products(
+            Path(
+                state.get(
+                    "products_file",
+                    str(DEFAULT_INPUT_PATH),
+                )
+            )
+        )
+        selected = next(
+            (
+                product
+                for product in products
+                if product.product_id == product_id
+            ),
+            None,
+        )
+        if selected is None:
+            raise ValueError(
+                f"Product {product_id} was not found in the processed dataset."
+            )
+        new_state["product"] = {
+            "product_id": selected.product_id,
+            "product_name": selected.product_name,
+            "brand": selected.brand,
+            "model": selected.model,
+            "category": selected.category,
+            "storage_gb": selected.storage_gb,
+            "ram_gb": selected.ram_gb,
+            "color": selected.color,
+        }
+    except Exception as exc:
+        return _end_to_end_error(new_state, "load_product", exc)
+    return new_state
+
+
+def generate_keyword_node(
+    state: EndToEndState,
+) -> EndToEndState:
+    """Generate one structured transactional keyword from product data."""
+
+    new_state = dict(state)
+    if state.get("error"):
+        return new_state
+    started_at = perf_counter()
+    try:
+        product_data = state["product"]
+        product = Product(
+            product_id=str(product_data["product_id"]),
+            product_name=str(product_data["product_name"]),
+            brand=str(product_data["brand"]),
+            model=str(product_data["model"]),
+            category=str(product_data["category"]),
+            storage_gb=product_data.get("storage_gb"),
+            ram_gb=product_data.get("ram_gb"),
+            color=product_data.get("color"),
+        )
+        provider = state.get("keyword_provider", "fake")
+        client = make_client(provider)
+        generated = client.generate_keywords([product])
+        if len(generated) != 1:
+            raise ValueError("Keyword generator must return exactly one keyword.")
+        new_state["keyword"] = generated[0].keyword
+        new_state["keyword_model"] = str(
+            getattr(client, "model", provider)
+        )
+        new_state["keyword_runtime_seconds"] = round(
+            perf_counter() - started_at,
+            4,
+        )
+        new_state["keyword_estimated_cost_usd"] = round(
+            float(getattr(client, "last_cost_usd", 0.0)),
+            8,
+        )
+    except Exception as exc:
+        return _end_to_end_error(new_state, "generate_keyword", exc)
+    return new_state
+
+
+def compare_methods_node(
+    state: EndToEndState,
+) -> EndToEndState:
+    """Pass the generated keyword unchanged through all four methods."""
+
+    new_state = dict(state)
+    if state.get("error"):
+        return new_state
+    try:
+        comparison_state = run_comparison_langgraph(
+            product_id=state["product_id"],
+            keyword=state["keyword"],
+            execution_mode=state.get("execution_mode", "fake"),
+            max_results=state.get("max_results", 5),
+        )
+        new_state["comparison_output"] = comparison_state.get(
+            "output",
+            {},
+        )
+        if not comparison_state.get("completed", False):
+            errors = new_state["comparison_output"].get("errors", [])
+            raise RuntimeError(
+                f"One or more comparison methods failed: {errors}"
+            )
+    except Exception as exc:
+        return _end_to_end_error(new_state, "compare_methods", exc)
+    return new_state
+
+
+def end_to_end_aggregate_node(
+    state: EndToEndState,
+) -> EndToEndState:
+    """Create the final product-to-comparison workflow record."""
+
+    new_state = dict(state)
+    comparison = state.get("comparison_output", {})
+    total_runtime = round(
+        max(
+            0.0,
+            perf_counter()
+            - state.get("started_at", perf_counter()),
+        ),
+        4,
+    )
+    total_cost = round(
+        float(state.get("keyword_estimated_cost_usd", 0.0))
+        + float(comparison.get("total_estimated_cost_usd", 0.0)),
+        8,
+    )
+    new_state["output"] = {
+        "product": state.get("product", {}),
+        "keyword_generation": {
+            "provider": state.get("keyword_provider", "fake"),
+            "model": state.get("keyword_model", ""),
+            "prompt_version": KEYWORD_PROMPT_VERSION,
+            "keyword": state.get("keyword", ""),
+            "runtime_seconds": state.get(
+                "keyword_runtime_seconds",
+                0.0,
+            ),
+            "estimated_cost_usd": state.get(
+                "keyword_estimated_cost_usd",
+                0.0,
+            ),
+        },
+        "comparison": comparison,
+        "total_runtime_seconds": total_runtime,
+        "total_estimated_cost_usd": total_cost,
+        "error": state.get("error"),
+    }
+    new_state["completed"] = (
+        not state.get("error")
+        and comparison.get("successful_method_count") == 4
+        and comparison.get("all_methods_used_same_keyword") is True
+    )
+    return new_state
+
+
+def end_to_end_initial_state(
+    product_id: str,
+    products_file: Path = DEFAULT_INPUT_PATH,
+    keyword_provider: str = "fake",
+    execution_mode: str = "fake",
+    max_results: int = 5,
+) -> EndToEndState:
+    return {
+        "product_id": product_id,
+        "products_file": str(products_file),
+        "keyword_provider": keyword_provider,
+        "execution_mode": execution_mode,
+        "max_results": min(max(1, max_results), 5),
+        "keyword_runtime_seconds": 0.0,
+        "keyword_estimated_cost_usd": 0.0,
+        "comparison_output": {},
+        "started_at": perf_counter(),
+        "error": None,
+        "completed": False,
+    }
+
+
+def build_end_to_end_langgraph():
+    """Compile product loading, keyword generation, and comparison nodes."""
+
+    try:
+        from langgraph.graph import END, START, StateGraph
+    except ImportError as exc:
+        raise RuntimeError(
+            "Install the requirements, including langgraph, to build the graph flow."
+        ) from exc
+
+    graph = StateGraph(EndToEndState)
+    graph.add_node("load_product", load_product_node)
+    graph.add_node("generate_keyword", generate_keyword_node)
+    graph.add_node("compare_methods", compare_methods_node)
+    graph.add_node("aggregate", end_to_end_aggregate_node)
+    graph.add_edge(START, "load_product")
+    graph.add_edge("load_product", "generate_keyword")
+    graph.add_edge("generate_keyword", "compare_methods")
+    graph.add_edge("compare_methods", "aggregate")
+    graph.add_edge("aggregate", END)
+    return graph.compile()
+
+
+def run_end_to_end_langgraph(
+    product_id: str,
+    products_file: Path = DEFAULT_INPUT_PATH,
+    keyword_provider: str = "fake",
+    execution_mode: str = "fake",
+    max_results: int = 5,
+) -> EndToEndState:
+    """Run product data through keyword generation and all four methods."""
+
+    graph = build_end_to_end_langgraph()
+    return graph.invoke(
+        end_to_end_initial_state(
+            product_id=product_id,
+            products_file=products_file,
+            keyword_provider=keyword_provider,
+            execution_mode=execution_mode,
+            max_results=max_results,
+        )
+    )
+
+
 if __name__ == "__main__":
     import argparse
     import json
@@ -601,7 +871,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--flow",
-        choices=["agentic", "comparison"],
+        choices=["agentic", "comparison", "end-to-end"],
         default="comparison",
     )
     parser.add_argument("--product-id", default="P001")
@@ -615,9 +885,27 @@ if __name__ == "__main__":
         default="fake",
     )
     parser.add_argument("--max-results", type=int, default=5)
+    parser.add_argument(
+        "--products",
+        type=Path,
+        default=DEFAULT_INPUT_PATH,
+    )
+    parser.add_argument(
+        "--keyword-provider",
+        choices=["fake", "openrouter"],
+        default="fake",
+    )
     args = parser.parse_args()
 
-    if args.flow == "comparison":
+    if args.flow == "end-to-end":
+        result = run_end_to_end_langgraph(
+            product_id=args.product_id,
+            products_file=args.products,
+            keyword_provider=args.keyword_provider,
+            execution_mode=args.execution_mode,
+            max_results=args.max_results,
+        )
+    elif args.flow == "comparison":
         result = run_comparison_langgraph(
             product_id=args.product_id,
             keyword=args.keyword,
