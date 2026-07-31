@@ -1,6 +1,6 @@
 # SeniorDesignProject1
 
-## Current progress (28-07-2026)
+## Current progress (31-07-2026)
 
 This repository contains the data pipeline and the first comparison prototype
 for four smartphone search-result evaluation methods.
@@ -31,9 +31,16 @@ Completed and locally verified:
 - A compiled comparison LangGraph with shared input, four method nodes, result
   aggregation, and per-method error isolation.
 - A shared result validator, human ground-truth loader, and metrics module.
-- A fixed 10-product evaluation subset and 15 manually confirmed shared labels.
+- A completed live evaluation on the fixed 10-product subset across all four
+  methods (40 experiments and 199 result rows).
+- 107 shared ground-truth records: 21 previously verified records plus 86
+  final-evaluation records accepted by the project owner after AI-assisted URL
+  review.
+- A final metrics report with 100% ground-truth coverage for the selected live
+  evaluation run.
 
-All four methods now have retained live smoke-test evidence. The first
+All four methods now have retained live smoke-test evidence and a completed
+10-product live comparison. The first
 Selenium + NanoLLM attempt was blocked by Google's CAPTCHA page, so the
 successful run used Bing through the same Selenium collector. The committed
 fake outputs must not be presented as measured real-provider results.
@@ -253,10 +260,27 @@ retailer page, marketplace listing, classified listing, or price-comparison
 page. Wrong model/capacity, accessories, news, and reviews are irrelevant.
 Being out of stock does not change the relevance label.
 
-The 15 manually confirmed labels currently match 20 committed result rows.
-Additional teammate result files are retained but are not silently treated as
-human-labeled data; the metrics report therefore shows partial ground-truth
-coverage until those new URLs are manually reviewed.
+The ground-truth file contains 107 shared labels. The 86 final-evaluation
+labels were prepared through AI-assisted URL review and explicitly accepted by
+the project owner on 31 July 2026. Their notes preserve this provenance; they
+must not be described as 86 independently and manually entered reviews.
+
+`reports/final_evaluation_metrics.json` selects the latest retained live result
+for every method/product pair in the fixed 10-product subset. This gives 40
+experiments and 199 result rows with 100% ground-truth coverage.
+
+| Method | Accuracy | Average runtime | Relevant-result ratio | Estimated cost |
+|---|---:|---:|---:|---:|
+| Agentic Search | 66.00% | 24.730 s | 100.00% | $0.00 |
+| Selenium + NanoLLM | 68.00% | 15.986 s | 98.00% | $0.00 |
+| Selenium + Rule-Based | 65.31% | 5.455 s | 83.67% | $0.00 |
+| Tavily + NanoLLM | 72.00% | 8.622 s | 82.00% | $0.00 |
+
+Overall accuracy is 67.84% (135 correct predictions out of 199 labeled
+results). The retained runs record zero estimated cost because the configured
+OpenRouter model was free and `TAVILY_COST_PER_SEARCH_USD` was set to zero;
+this is experiment metadata, not a general claim that the providers are always
+free.
 
 ## Validation, metrics, and tests
 
@@ -291,18 +315,18 @@ and accuracy.
 - [x] Valid/invalid JSON counts in the metrics report.
 - [x] Shared JSON schema including execution/provider/model/prompt/runtime/cost.
 - [x] API-free tests for all four pipelines.
-- [x] Metrics, evaluation subset, ground-truth loading, and preliminary labels.
+- [x] Metrics, evaluation subset, ground-truth loading, and 107 shared labels.
 - [x] Three-product real OpenRouter keyword smoke test and retained metadata.
 - [x] One-product live Tavily + NanoLLM experiment.
 - [x] One-product live LLM-planned Agentic Search experiment.
 - [x] One-product live Selenium + NanoLLM experiment using Selenium with Bing.
 - [x] Fixed free OpenRouter model for reproducible structured output.
 - [x] Live provider/model/prompt/runtime/cost fields retained in result files.
+- [x] All four methods run live on the fixed 10-product evaluation subset.
+- [x] Final live metrics report with 100% label coverage.
 
 ### Requires local API keys or manual work
 
 - [ ] Generate all 100 fixed keywords with the real provider if the final
   experiment requires LLM-generated rather than deterministic keywords.
-- [ ] Manually label the additional retained search-result URLs.
-- [ ] Run all four methods on the fixed 10-product subset.
 - [ ] Review this integration branch and merge it into `main`.

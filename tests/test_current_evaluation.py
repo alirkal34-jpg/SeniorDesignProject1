@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -20,6 +21,11 @@ GROUND_TRUTH_FILE = (
     / "labels"
     / "domain_ground_truth.csv"
 )
+FINAL_REPORT_FILE = (
+    PROJECT_ROOT
+    / "reports"
+    / "final_evaluation_metrics.json"
+)
 
 
 class CurrentEvaluationTests(unittest.TestCase):
@@ -31,21 +37,26 @@ class CurrentEvaluationTests(unittest.TestCase):
             input_path=RESULTS_DIRECTORY,
             ground_truth_path=GROUND_TRUTH_FILE,
         )
+        cls.final_report = json.loads(
+            FINAL_REPORT_FILE.read_text(
+                encoding="utf-8"
+            )
+        )
 
-    def test_human_labeled_baseline_is_preserved(
+    def test_approved_ground_truth_baseline_is_preserved(
         self,
     ) -> None:
         self.assertEqual(
             self.report["ground_truth_record_count"],
-            21,
+            107,
         )
-        self.assertGreaterEqual(
+        self.assertEqual(
             self.report["result_count"],
-            61,
+            260,
         )
-        self.assertGreaterEqual(
+        self.assertEqual(
             self.report["labeled_result_count"],
-            40,
+            239,
         )
         self.assertEqual(
             self.report[
@@ -72,11 +83,17 @@ class CurrentEvaluationTests(unittest.TestCase):
             self.report["accuracy"],
             expected_accuracy,
         )
+        rule_metrics = methods[
+            "selenium_rule_based"
+        ]
+        expected_rule_accuracy = round(
+            rule_metrics["correct_prediction_count"]
+            / rule_metrics["labeled_result_count"],
+            4,
+        )
         self.assertEqual(
-            methods[
-                "selenium_rule_based"
-            ]["accuracy"],
-            1.0,
+            rule_metrics["accuracy"],
+            expected_rule_accuracy,
         )
         nano_metrics = methods[
             "selenium_nano_llm"
@@ -94,10 +111,67 @@ class CurrentEvaluationTests(unittest.TestCase):
             self.report["false_negative_count"],
             1,
         )
+        self.assertEqual(self.report["accuracy"], 0.7197)
+
+    def test_final_live_evaluation_has_full_coverage(
+        self,
+    ) -> None:
         self.assertEqual(
-            self.report["false_positive_count"],
-            2,
+            self.final_report["product_count"],
+            10,
         )
+        self.assertEqual(
+            self.final_report["method_count"],
+            4,
+        )
+        self.assertEqual(
+            self.final_report["experiment_count"],
+            40,
+        )
+        self.assertEqual(
+            self.final_report["result_count"],
+            199,
+        )
+        self.assertEqual(
+            self.final_report[
+                "labeled_result_count"
+            ],
+            199,
+        )
+        self.assertEqual(
+            self.final_report[
+                "ground_truth_coverage_ratio"
+            ],
+            1.0,
+        )
+        self.assertEqual(
+            len(
+                self.final_report[
+                    "selected_result_files"
+                ]
+            ),
+            40,
+        )
+        for relative_path in self.final_report[
+            "selected_result_files"
+        ]:
+            self.assertTrue(
+                (PROJECT_ROOT / relative_path).is_file(),
+                relative_path,
+            )
+        for method_metrics in self.final_report[
+            "methods"
+        ].values():
+            self.assertEqual(
+                method_metrics["experiment_count"],
+                10,
+            )
+            self.assertEqual(
+                method_metrics["result_count"],
+                method_metrics[
+                    "labeled_result_count"
+                ],
+            )
 
 
 if __name__ == "__main__":
