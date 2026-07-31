@@ -22,21 +22,21 @@ It is the human-readable companion to `final_evaluation_metrics.json`.
 | Method | Runs | Results | Accuracy | Avg. runtime | Relevant ratio | Total estimated cost |
 |---|---:|---:|---:|---:|---:|---:|
 | Agentic Search | 10 | 50 | 66.00% | 24.730 s | 100.00% | $0.00000000 |
-| Selenium + NanoLLM | 10 | 50 | 68.00% | 15.986 s | 98.00% | $0.00000000 |
-| Selenium + Rule-Based | 10 | 49 | 65.31% | 5.455 s | 83.67% | $0.00000000 |
-| Tavily + NanoLLM | 10 | 50 | 72.00% | 8.622 s | 82.00% | $0.00000000 |
+| Selenium + NanoLLM | 10 | 50 | 66.00% | 15.986 s | 98.00% | $0.00000000 |
+| Selenium + Rule-Based | 10 | 49 | 69.39% | 5.455 s | 83.67% | $0.00000000 |
+| Tavily + NanoLLM | 10 | 50 | 74.00% | 8.622 s | 82.00% | $0.00000000 |
 
-Overall accuracy was **67.84%** (135 correct predictions out of 199 labeled results). The aggregate
+Overall accuracy was **68.84%** (137 correct predictions out of 199 labeled results). The aggregate
 confusion counts were:
 
-- True positives: 124
-- True negatives: 11
-- False positives: 57
-- False negatives: 7
+- True positives: 127
+- True negatives: 10
+- False positives: 54
+- False negatives: 8
 
 ## Interpretation
 
-- Highest measured accuracy: **Tavily + NanoLLM** at 72.00%.
+- Highest measured accuracy: **Tavily + NanoLLM** at 74.00%.
 - Lowest average runtime: **Selenium + Rule-Based** at 5.455 seconds.
 - Agentic Search marked every returned result relevant, which produced high recall behavior but also the largest false-positive tendency.
 - Relevant-result ratio is not accuracy; it only describes how often a method predicted relevance.
@@ -48,7 +48,7 @@ This does not mean the providers or future runs are always free.
 
 ## Limitations
 
-- The 86 final-evaluation labels were AI-assisted and then explicitly accepted by the project owner; they were not independently entered one URL at a time.
+- All 86 final-evaluation URLs were independently reviewed one by one by the project owner. Question-marked decisions were documented and adjudicated consistently against the frozen relevance rule.
 - The fixed 100-keyword file is deterministic; a separate three-product live OpenRouter smoke output proves the real keyword API path.
 - Selenium used Bing for the successful retained NanoLLM run after Google presented a CAPTCHA page.
 - One run per product/method is reported, so variance and confidence intervals are outside this task's current scope.
@@ -56,6 +56,7 @@ This does not mean the providers or future runs are always free.
 ## Reproduction
 
 ```powershell
+.\.venv\Scripts\python.exe src\evaluation\final_metrics.py
 .\.venv\Scripts\python.exe src\evaluation\final_report.py
 .\.venv\Scripts\python.exe -m unittest discover -s tests -p "test*.py" -v
 ```

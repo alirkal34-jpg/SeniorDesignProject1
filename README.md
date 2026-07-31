@@ -34,8 +34,9 @@ Completed and locally verified:
 - A completed live evaluation on the fixed 10-product subset across all four
   methods (40 experiments and 199 result rows).
 - 107 shared ground-truth records: 21 previously verified records plus 86
-  final-evaluation records accepted by the project owner after AI-assisted URL
-  review.
+  final-evaluation URLs individually reviewed by the project owner. The 35
+  question-marked decisions were adjudicated consistently against the frozen
+  relevance rule and retain an audit trail.
 - A final metrics report with 100% ground-truth coverage for the selected live
   evaluation run.
 - A human-readable four-method comparison report generated from the final
@@ -67,6 +68,7 @@ first-task/
 |   `-- agentic_search/
 |-- src/
 |   |-- evaluation/
+|   |   |-- final_metrics.py
 |   |   |-- final_report.py
 |   |   |-- ground_truth.py
 |   |   |-- metrics.py
@@ -272,10 +274,12 @@ retailer page, marketplace listing, classified listing, or price-comparison
 page. Wrong model/capacity, accessories, news, and reviews are irrelevant.
 Being out of stock does not change the relevance label.
 
-The ground-truth file contains 107 shared labels. The 86 final-evaluation
-labels were prepared through AI-assisted URL review and explicitly accepted by
-the project owner on 31 July 2026. Their notes preserve this provenance; they
-must not be described as 86 independently and manually entered reviews.
+The ground-truth file contains 107 shared labels. The project owner opened and
+reviewed all 86 final-evaluation URLs one by one on 31 July 2026. Of these, 51
+received an exact TRUE/FALSE decision directly and 35 were marked with a
+question mark; the latter were resolved consistently against the frozen rule.
+`data/labels/final_evaluation_human_labels.csv` preserves the original human
+decision, human note, final label, adjudication basis, and provenance.
 
 `reports/final_evaluation_metrics.json` selects the latest retained live result
 for every method/product pair in the fixed 10-product subset. This gives 40
@@ -284,11 +288,11 @@ experiments and 199 result rows with 100% ground-truth coverage.
 | Method | Accuracy | Average runtime | Relevant-result ratio | Estimated cost |
 |---|---:|---:|---:|---:|
 | Agentic Search | 66.00% | 24.730 s | 100.00% | $0.00 |
-| Selenium + NanoLLM | 68.00% | 15.986 s | 98.00% | $0.00 |
-| Selenium + Rule-Based | 65.31% | 5.455 s | 83.67% | $0.00 |
-| Tavily + NanoLLM | 72.00% | 8.622 s | 82.00% | $0.00 |
+| Selenium + NanoLLM | 66.00% | 15.986 s | 98.00% | $0.00 |
+| Selenium + Rule-Based | 69.39% | 5.455 s | 83.67% | $0.00 |
+| Tavily + NanoLLM | 74.00% | 8.622 s | 82.00% | $0.00 |
 
-Overall accuracy is 67.84% (135 correct predictions out of 199 labeled
+Overall accuracy is 68.84% (137 correct predictions out of 199 labeled
 results). The retained runs record zero estimated cost because the configured
 OpenRouter model was free and `TAVILY_COST_PER_SEARCH_USD` was set to zero;
 this is experiment metadata, not a general claim that the providers are always
@@ -298,6 +302,7 @@ The matching human-readable deliverable is
 `reports/final_evaluation_report.md`. Regenerate it after any metrics change:
 
 ```powershell
+.\.venv\Scripts\python.exe src\evaluation\final_metrics.py
 .\.venv\Scripts\python.exe src\evaluation\final_report.py
 ```
 
@@ -307,6 +312,7 @@ The matching human-readable deliverable is
 .\.venv\Scripts\python.exe src\evaluation\result_validator.py results
 .\.venv\Scripts\python.exe src\evaluation\ground_truth.py
 .\.venv\Scripts\python.exe src\evaluation\metrics.py
+.\.venv\Scripts\python.exe src\evaluation\final_metrics.py
 .\.venv\Scripts\python.exe src\evaluation\final_report.py
 .\.venv\Scripts\python.exe -m unittest discover -s tests -p "test*.py" -v
 ```
@@ -344,6 +350,8 @@ and accuracy.
 - [x] Live provider/model/prompt/runtime/cost fields retained in result files.
 - [x] All four methods run live on the fixed 10-product evaluation subset.
 - [x] Final live metrics report with 100% label coverage.
+- [x] Individual human review of all 86 final-evaluation URLs, with documented
+  adjudication for 35 question-marked decisions.
 - [x] Human-readable runtime/cost/accuracy comparison report.
 - [x] Product-data-to-keyword-to-four-method end-to-end LangGraph.
 
@@ -351,4 +359,5 @@ and accuracy.
 
 - [ ] Generate all 100 fixed keywords with the real provider if the final
   experiment requires LLM-generated rather than deterministic keywords.
-- [ ] Review this integration branch and merge it into `main`.
+- [ ] Repeat the live comparison if confidence intervals or run-to-run
+  variance are required for the final report.
