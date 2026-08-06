@@ -461,6 +461,43 @@ class KeywordGeneratorTests(unittest.TestCase):
         self.assertTrue(
             output["comparison"]["all_methods_used_same_keyword"]
         )
+        self.assertEqual(len(output["rankings"]), 4)
+        for method_ranking in output["rankings"]:
+            scores = [
+                result["relevance_score"]
+                for result in method_ranking["ranked_results"]
+            ]
+            self.assertEqual(scores, sorted(scores, reverse=True))
+            self.assertEqual(
+                [
+                    result["rank"]
+                    for result in method_ranking["ranked_results"]
+                ],
+                list(range(1, len(scores) + 1)),
+            )
+
+    def test_end_to_end_langgraph_saves_method_and_workflow_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output_directory = Path(directory)
+            state = run_end_to_end_langgraph(
+                product_id="P001",
+                keyword_provider="fake",
+                execution_mode="fake",
+                max_results=5,
+                save_outputs=True,
+                workflow_output_directory=output_directory / "workflow",
+            )
+
+            self.assertTrue(state["completed"])
+            self.assertEqual(len(state["saved_result_files"]), 4)
+            workflow_path = Path(state["workflow_output_path"])
+            self.assertTrue(workflow_path.is_file())
+            workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
+            self.assertEqual(
+                workflow["comparison"]["successful_method_count"],
+                4,
+            )
+            self.assertEqual(len(workflow["rankings"]), 4)
 
     def test_end_to_end_langgraph_contains_required_nodes(self):
         graph = build_end_to_end_langgraph().get_graph()
@@ -470,7 +507,9 @@ class KeywordGeneratorTests(unittest.TestCase):
                 "load_product",
                 "generate_keyword",
                 "compare_methods",
+                "rank_results",
                 "aggregate",
+                "persist_output",
             }.issubset(graph.nodes)
         )
 

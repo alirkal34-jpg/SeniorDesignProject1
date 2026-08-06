@@ -7,6 +7,8 @@ final result aggregation node. Both flows support deterministic API-free tests.
 
 from __future__ import annotations
 
+import hashlib
+import json
 import logging
 from pathlib import Path
 from time import perf_counter
@@ -28,6 +30,7 @@ from nano_llm_evaluator import (
     NANO_LLM_PROMPT_VERSION,
     make_nano_llm_evaluator,
 )
+from result_storage import create_run_id, create_unique_result_path
 from run_agentic_search import run_agentic_search
 from run_selenium_nano_llm import run_selenium_nano_llm
 from run_selenium_rule_based import run_selenium_rule_based
@@ -35,6 +38,11 @@ from run_tavily_llm import run_tavily_llm
 
 
 logger = logging.getLogger(__name__)
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+LANGGRAPH_RUNS_DIRECTORY = PROJECT_ROOT / "reports" / "langgraph_runs"
+LANGGRAPH_METHOD_RESULTS_DIRECTORY = (
+    LANGGRAPH_RUNS_DIRECTORY / "method_results"
+)
 
 
 class AgenticState(TypedDict, total=False):
@@ -80,6 +88,11 @@ class EndToEndState(TypedDict, total=False):
     keyword_runtime_seconds: float
     keyword_estimated_cost_usd: float
     comparison_output: dict[str, Any]
+    rankings: list[dict[str, Any]]
+    save_outputs: bool
+    workflow_output_directory: str
+    saved_result_files: list[str]
+    workflow_output_path: str
     started_at: float
     output: dict[str, Any]
     error: str | None
@@ -747,6 +760,45 @@ def compare_methods_node(
     return new_state
 
 
+def rank_results_node(
+    state: EndToEndState,
+) -> EndToEndState:
+    """Rank each method's results by relevance decision and score.
+
+    The original standardized method payloads remain unchanged. Rankings are
+    stored separately in the workflow record so those payloads can still be
+    validated with the shared result contract.
+    """
+
+    new_state = dict(state)
+    if state.get("error"):
+        new_state["rankings"] = []
+        return new_state
+
+    rankings: list[dict[str, Any]] = []
+    comparison = state.get("comparison_output", {})
+    for method_output in comparison.get("method_outputs", []):
+        sorted_results = sorted(
+            method_output.get("results", []),
+            key=lambda item: float(item.get("relevance_score", 0.0)),
+            reverse=True,
+        )
+        rankings.append(
+            {
+                "method": method_output.get("method", ""),
+                "ranked_results": [
+                    {
+                        "rank": rank,
+                        **dict(result),
+                    }
+                    for rank, result in enumerate(sorted_results, start=1)
+                ],
+            }
+        )
+    new_state["rankings"] = rankings
+    return new_state
+
+
 def end_to_end_aggregate_node(
     state: EndToEndState,
 ) -> EndToEndState:
@@ -784,6 +836,7 @@ def end_to_end_aggregate_node(
             ),
         },
         "comparison": comparison,
+        "rankings": state.get("rankings", []),
         "total_runtime_seconds": total_runtime,
         "total_estimated_cost_usd": total_cost,
         "error": state.get("error"),
@@ -796,12 +849,121 @@ def end_to_end_aggregate_node(
     return new_state
 
 
+def _project_relative(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(PROJECT_ROOT.resolve()).as_posix()
+    except ValueError:
+        return str(path.resolve())
+
+
+def save_task1_workflow_output(
+    output: dict[str, Any],
+    output_directory: Path = LANGGRAPH_RUNS_DIRECTORY,
+) -> Path:
+    """Persist one complete Task 1 LangGraph execution record."""
+
+    output_directory.mkdir(parents=True, exist_ok=True)
+    product_id = str(output.get("product", {}).get("product_id", "product"))
+    execution_mode = str(
+        output.get("comparison", {}).get("execution_mode", "unknown")
+    )
+    path = output_directory / (
+        f"{product_id}_task1_langgraph_{execution_mode}_{create_run_id()}.json"
+    )
+    persisted_output = dict(output)
+    persisted_output["workflow_output_path"] = _project_relative(path)
+    path.write_text(
+        json.dumps(persisted_output, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    return path
+
+
+def save_task1_method_output(
+    output: dict[str, Any],
+    output_directory: Path = LANGGRAPH_METHOD_RESULTS_DIRECTORY,
+) -> Path:
+    """Save one standard method payload outside the frozen result baseline."""
+
+    method = str(output.get("method", "")).strip()
+    if method not in {
+        "selenium_rule_based",
+        "selenium_nano_llm",
+        "tavily_llm",
+        "agentic_search",
+    }:
+        raise ValueError(f"Unsupported Task 1 method payload: {method!r}.")
+    method_directory = output_directory / method
+    method_directory.mkdir(parents=True, exist_ok=True)
+    keyword_digest = hashlib.sha256(
+        str(output.get("keyword", "")).encode("utf-8")
+    ).hexdigest()[:8]
+    path = create_unique_result_path(
+        directory=method_directory,
+        product_id=str(output.get("product_id", "product")),
+        method=method,
+        keyword_digest=keyword_digest,
+        execution_mode=str(output.get("execution_mode", "unknown")),
+    )
+    path.write_text(
+        json.dumps(output, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return path
+
+
+def persist_output_node(
+    state: EndToEndState,
+) -> EndToEndState:
+    """Save standard method payloads and the complete workflow evidence."""
+
+    new_state = dict(state)
+    if not state.get("save_outputs", False):
+        return new_state
+
+    output = dict(state.get("output", {}))
+    saved_result_files: list[str] = []
+    try:
+        comparison = output.get("comparison", {})
+        output_directory = Path(
+            state.get(
+                "workflow_output_directory",
+                str(LANGGRAPH_RUNS_DIRECTORY),
+            )
+        )
+        method_output_directory = output_directory / "method_results"
+        for method_output in comparison.get("method_outputs", []):
+            saved_result_files.append(
+                _project_relative(
+                    save_task1_method_output(
+                        method_output,
+                        method_output_directory,
+                    )
+                )
+            )
+
+        output["saved_result_files"] = saved_result_files
+        workflow_path = save_task1_workflow_output(output, output_directory)
+        output["workflow_output_path"] = _project_relative(workflow_path)
+        new_state["saved_result_files"] = saved_result_files
+        new_state["workflow_output_path"] = output["workflow_output_path"]
+        new_state["output"] = output
+    except Exception as exc:
+        new_state = _end_to_end_error(new_state, "persist_output", exc)
+        output["saved_result_files"] = saved_result_files
+        output["error"] = new_state.get("error")
+        new_state["output"] = output
+    return new_state
+
+
 def end_to_end_initial_state(
     product_id: str,
     products_file: Path = DEFAULT_INPUT_PATH,
     keyword_provider: str = "fake",
     execution_mode: str = "fake",
     max_results: int = 5,
+    save_outputs: bool = False,
+    workflow_output_directory: Path = LANGGRAPH_RUNS_DIRECTORY,
 ) -> EndToEndState:
     return {
         "product_id": product_id,
@@ -812,6 +974,10 @@ def end_to_end_initial_state(
         "keyword_runtime_seconds": 0.0,
         "keyword_estimated_cost_usd": 0.0,
         "comparison_output": {},
+        "rankings": [],
+        "save_outputs": save_outputs,
+        "workflow_output_directory": str(workflow_output_directory),
+        "saved_result_files": [],
         "started_at": perf_counter(),
         "error": None,
         "completed": False,
@@ -819,7 +985,7 @@ def end_to_end_initial_state(
 
 
 def build_end_to_end_langgraph():
-    """Compile product loading, keyword generation, and comparison nodes."""
+    """Compile the complete product-to-ranked-results Task 1 graph."""
 
     try:
         from langgraph.graph import END, START, StateGraph
@@ -832,12 +998,16 @@ def build_end_to_end_langgraph():
     graph.add_node("load_product", load_product_node)
     graph.add_node("generate_keyword", generate_keyword_node)
     graph.add_node("compare_methods", compare_methods_node)
+    graph.add_node("rank_results", rank_results_node)
     graph.add_node("aggregate", end_to_end_aggregate_node)
+    graph.add_node("persist_output", persist_output_node)
     graph.add_edge(START, "load_product")
     graph.add_edge("load_product", "generate_keyword")
     graph.add_edge("generate_keyword", "compare_methods")
-    graph.add_edge("compare_methods", "aggregate")
-    graph.add_edge("aggregate", END)
+    graph.add_edge("compare_methods", "rank_results")
+    graph.add_edge("rank_results", "aggregate")
+    graph.add_edge("aggregate", "persist_output")
+    graph.add_edge("persist_output", END)
     return graph.compile()
 
 
@@ -847,8 +1017,10 @@ def run_end_to_end_langgraph(
     keyword_provider: str = "fake",
     execution_mode: str = "fake",
     max_results: int = 5,
+    save_outputs: bool = False,
+    workflow_output_directory: Path = LANGGRAPH_RUNS_DIRECTORY,
 ) -> EndToEndState:
-    """Run product data through keyword generation and all four methods."""
+    """Run product data through generation, four methods, and ranking."""
 
     graph = build_end_to_end_langgraph()
     return graph.invoke(
@@ -858,6 +1030,8 @@ def run_end_to_end_langgraph(
             keyword_provider=keyword_provider,
             execution_mode=execution_mode,
             max_results=max_results,
+            save_outputs=save_outputs,
+            workflow_output_directory=workflow_output_directory,
         )
     )
 
@@ -867,7 +1041,7 @@ if __name__ == "__main__":
     import json
 
     parser = argparse.ArgumentParser(
-        description="Run an API-free LangGraph demonstration."
+        description="Run the Task 1 LangGraph orchestration pipeline."
     )
     parser.add_argument(
         "--flow",
@@ -895,7 +1069,23 @@ if __name__ == "__main__":
         choices=["fake", "openrouter"],
         default="fake",
     )
+    parser.add_argument(
+        "--save",
+        action="store_true",
+        help=(
+            "Save standard method JSON files and the complete end-to-end "
+            "workflow record. Supported by --flow end-to-end."
+        ),
+    )
+    parser.add_argument(
+        "--workflow-output-directory",
+        type=Path,
+        default=LANGGRAPH_RUNS_DIRECTORY,
+    )
     args = parser.parse_args()
+
+    if args.save and args.flow != "end-to-end":
+        parser.error("--save is supported only with --flow end-to-end.")
 
     if args.flow == "end-to-end":
         result = run_end_to_end_langgraph(
@@ -904,6 +1094,8 @@ if __name__ == "__main__":
             keyword_provider=args.keyword_provider,
             execution_mode=args.execution_mode,
             max_results=args.max_results,
+            save_outputs=args.save,
+            workflow_output_directory=args.workflow_output_directory,
         )
     elif args.flow == "comparison":
         result = run_comparison_langgraph(
@@ -931,3 +1123,5 @@ if __name__ == "__main__":
             max_results=args.max_results,
         )
     print(json.dumps(result, ensure_ascii=False, indent=2))
+    if not result.get("completed", False):
+        raise SystemExit(1)

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Interactive local dashboard for the Senior Design Project Task 1 pipeline."
+    >
+    <title>SmartSearch Evaluation Lab</title>
+    <link rel="stylesheet" href="/assets/styles.css">
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="SmartSearch home">
+        <span class="brand-mark">S</span>
+        <span>
+          <strong>SmartSearch</strong>
+          <small>Evaluation Lab</small>
+        </span>
+      </a>
+      <div class="header-meta">
+        <span class="system-dot" aria-hidden="true"></span>
+        <span>Local execution</span>
+        <span class="header-divider"></span>
+        <span>Task 1</span>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow"><span></span> Senior Design Project</div>
+        <h1>From raw product data<br>to measurable search quality.</h1>
+        <p class="hero-copy">
+          Run the complete smartphone evaluation pipeline from one controlled
+          interface. Every action uses the project’s real Python modules and
+          keeps the evidence visible.
+        </p>
+
+        <div class="hero-actions">
+          <button class="primary-button" id="start-safe-demo" type="button">
+            Run safe demo sequence
+            <span aria-hidden="true">→</span>
+          </button>
+          <a class="text-link" href="#pipeline">Explore the pipeline</a>
+        </div>
+
+        <div class="stat-grid" aria-label="Project statistics">
+          <article class="stat-card">
+            <span class="stat-value" id="stat-products">—</span>
+            <span class="stat-label">smartphones</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-value" id="stat-methods">—</span>
+            <span class="stat-label">search methods</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-value" id="stat-experiments">—</span>
+            <span class="stat-label">frozen live runs</span>
+          </article>
+          <article class="stat-card accent-stat">
+            <span class="stat-value" id="stat-accuracy">—</span>
+            <span class="stat-label">overall accuracy</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="method-strip" aria-label="Compared methods">
+        <span>Compared on identical keywords</span>
+        <div class="method-list">
+          <span>Selenium + Rule-Based</span>
+          <span>Selenium + NanoLLM</span>
+          <span>Tavily + NanoLLM</span>
+          <span>Agentic Search</span>
+        </div>
+      </section>
+
+      <section class="workspace" id="pipeline">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow"><span></span> Reproducible workflow</div>
+            <h2>Pipeline control room</h2>
+          </div>
+          <p>
+            Run one step at a time during the presentation. Live steps are
+            clearly marked and always require confirmation.
+          </p>
+        </div>
+
+        <div class="workspace-grid">
+          <div class="pipeline-column">
+            <div id="pipeline-steps" class="pipeline-steps" aria-live="polite">
+              <div class="loading-card">Loading pipeline…</div>
+            </div>
+          </div>
+
+          <aside class="evidence-panel" aria-label="Execution evidence">
+            <div class="panel-tabs" role="tablist">
+              <button
+                class="panel-tab active"
+                data-tab="console"
+                role="tab"
+                aria-selected="true"
+                type="button"
+              >Console</button>
+              <button
+                class="panel-tab"
+                data-tab="artifact"
+                role="tab"
+                aria-selected="false"
+                type="button"
+              >Artifact</button>
+            </div>
+
+            <div class="panel-content active" id="console-panel" role="tabpanel">
+              <div class="console-toolbar">
+                <div>
+                  <span class="console-status idle" id="console-status">Ready</span>
+                  <strong id="console-title">No step selected</strong>
+                </div>
+                <span id="console-duration">—</span>
+              </div>
+              <pre id="console-output"><code>Select a pipeline step to see its real-time output here.</code></pre>
+            </div>
+
+            <div class="panel-content" id="artifact-panel" role="tabpanel">
+              <div class="artifact-toolbar">
+                <div>
+                  <span class="file-type" id="artifact-type">FILE</span>
+                  <strong id="artifact-title">No artifact selected</strong>
+                </div>
+                <span id="artifact-size">—</span>
+              </div>
+              <pre id="artifact-output"><code>Generated CSV, JSON and Markdown files can be inspected here.</code></pre>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="protocol-section">
+        <div class="protocol-copy">
+          <div class="eyebrow light"><span></span> Frozen protocol</div>
+          <h2>A fair comparison by design.</h2>
+          <p>
+            The experiment controls the input and result count before comparing
+            accuracy, runtime, cost and relevance behavior.
+          </p>
+        </div>
+        <ol class="protocol-list">
+          <li><span>01</span><p><strong>10 fixed products</strong> sampled across distinct brands.</p></li>
+          <li><span>02</span><p><strong>One keyword per product</strong> reused by all four methods.</p></li>
+          <li><span>03</span><p><strong>Maximum five results</strong> with a 0.60 rule threshold.</p></li>
+          <li><span>04</span><p><strong>Human ground truth</strong> applied using one relevance rule.</p></li>
+        </ol>
+      </section>
+    </main>
+
+    <footer>
+      <span>Senior Design Project 1</span>
+      <span>Local dashboard · API keys remain private</span>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="/assets/app.js" defer></script>
+  </body>
+</html>

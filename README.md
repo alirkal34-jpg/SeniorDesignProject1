@@ -1,5 +1,26 @@
 # SeniorDesignProject1
 
+## Interactive presentation dashboard
+
+The project includes a local, presentation-focused web dashboard that runs the
+existing Python pipeline through an allowlisted set of actions. It displays
+live console output and lets the presenter inspect generated CSV, JSON and
+Markdown artifacts without typing each command manually. API keys remain in
+the local `.env` file and are never returned to the browser.
+
+Start the dashboard from the project root:
+
+```powershell
+.\.venv\Scripts\python.exe demo_dashboard.py
+```
+
+The browser opens at `http://127.0.0.1:8765`. Safe deterministic steps can be
+run as a sequence. The live Task 1 LangGraph action loads one product, generates
+a keyword with OpenRouter, sends it through all four real methods, ranks the
+results, and stores both standardized method JSON files and a complete workflow
+record. Live OpenRouter, Tavily and Selenium actions require explicit
+confirmation.
+
 ## Current progress (31-07-2026)
 
 This repository contains the data pipeline and the first comparison prototype
@@ -42,7 +63,10 @@ Completed and locally verified:
 - A human-readable four-method comparison report generated from the final
   metrics JSON.
 - An end-to-end LangGraph that loads processed product data, generates one
-  structured keyword, and sends it unchanged through all four methods.
+  structured keyword, sends it unchanged through all four methods, ranks the
+  results, and persists the complete workflow record.
+- A retained single-product live LangGraph execution using OpenRouter, Tavily,
+  Selenium/Bing, and all four comparison methods.
 
 All four methods now have retained live smoke-test evidence and a completed
 10-product live comparison. The first
@@ -217,7 +241,9 @@ from the separate Tavily + NanoLLM method. The older
 evidence. `src/langgraph_flow.py` implements the current process as a compiled
 four-node Agentic flow. It also provides a six-node comparison flow containing
 shared input, Selenium + Rule-Based, Selenium + NanoLLM, Tavily + NanoLLM,
-Agentic Search, and result aggregation nodes.
+Agentic Search, and result aggregation nodes. The complete Task 1 graph adds
+product loading, structured keyword generation, per-method result ranking,
+runtime/cost aggregation, and persistent workflow evidence.
 
 Run the compiled four-method comparison graph without network calls:
 
@@ -231,6 +257,18 @@ network calls:
 ```powershell
 .\.venv\Scripts\python.exe src\langgraph_flow.py --flow end-to-end --product-id P001 --keyword-provider fake --execution-mode fake
 ```
+
+Run and save one complete live Task 1 LangGraph execution:
+
+```powershell
+.\.venv\Scripts\python.exe src\langgraph_flow.py --flow end-to-end --product-id P001 --keyword-provider openrouter --execution-mode live --max-results 5 --save
+```
+
+The live command saves four standardized method payloads beneath
+`reports/langgraph_runs/method_results/` and the complete
+product-to-ranked-results workflow record beneath `reports/langgraph_runs/`.
+This keeps new demonstration runs separate from the frozen evaluation baseline
+under `results/`.
 
 Verify that the same fixed keyword reaches all four methods without making
 network calls:
@@ -354,6 +392,8 @@ and accuracy.
   adjudication for 35 question-marked decisions.
 - [x] Human-readable runtime/cost/accuracy comparison report.
 - [x] Product-data-to-keyword-to-four-method end-to-end LangGraph.
+- [x] One-product live end-to-end LangGraph run with four saved method payloads,
+  per-method rankings, runtime/cost aggregation, and workflow evidence.
 
 ### Requires local API keys or manual work
 
