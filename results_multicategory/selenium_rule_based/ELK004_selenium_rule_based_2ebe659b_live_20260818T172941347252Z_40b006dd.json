@@ -1,0 +1,54 @@
+{
+  "product_id": "ELK004",
+  "keyword": "Samsung Galaxy S25 FE 256 GB fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 5.31,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-samsung-galaxy-s25-fe-fiyatlari,a2405102761",
+      "title": "Samsung Galaxy S25 FE Cep Telefonu Fiyatları | Cimri",
+      "snippet": "Samsung S25 FE Türkiye fiyatı, donanım seviyeleri ve depolama seçeneklerine …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/samsung-galaxy-s25-fe-256-gb-8-gb-ram-samsung-turkiye-garantili-beyaz-pm-HBC00009S6B28",
+      "title": "Samsung Galaxy S25 Fe 256 GB 8 GB Ram …",
+      "snippet": "Samsung Galaxy S25 Fe 256 GB 8 GB Ram (Samsung Türkiye fiyatı ve 1048 kullanıcı değerlendirmesi …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "vatanbilgisayar.com",
+      "url": "https://www.vatanbilgisayar.com/samsung-galaxy-s25-fe-akilli-telefon.html",
+      "title": "Samsung Galaxy S25 FE 5G 8/256 Gb Akıllı Telefon Gece Siyahı",
+      "snippet": "Samsung Galaxy S25 FE 5G 8/256 Gb Akıllı Telefon Gece Siyahı 42.999 TL Dahili Hafıza 256 GB",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "n11.com",
+      "url": "https://www.n11.com/urun/samsung-galaxy-s25-fe-8-gb-256-gb-samsung-turkiye-garantili-100314990",
+      "title": "Samsung Galaxy S25 Fe 8 GB 256 GB (Samsung Türkiye Garantili)",
+      "snippet": "Samsung Galaxy S25 Fe 8 GB 256 GB (Samsung Türkiye Garantili) Lacivert 256 GB en iyi özellikleri ve gerçek kullanıcı yorumları …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/cep-telefonu-aksesuar-cep-telefonu-samsung-galaxy-s25-fe",
+      "title": "Samsung Galaxy S25 FE Cep Telefonu Fiyatları - Sahibinden",
+      "snippet": "5 gün önce · Favori Aramalarım Samsung Galaxy S25 FE Cep Telefonu Fiyatları listesine yeni bir ilan eklendiğinde size anında …",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    }
+  ]
+}

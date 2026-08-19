@@ -1,0 +1,54 @@
+{
+  "product_id": "PET002",
+  "keyword": "Enjoy Tavuklu 15 kg Yetişkin Kedi Maması fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 5.87,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/kedi-mamasi/en-ucuz-enjoy-tavuklu-15-kg-yetiskin-kuru-fiyati,5907259.html",
+      "title": "Enjoy Tavuklu 15 kg Yetişkin Kedi Maması - akakce.com",
+      "snippet": "Kedisi için kaliteli ve lezzetli kuru mama arayışında olan herkes tarafından tercih edilen Enjoy 15 kg tavuklu kedi maması fiyatlarını …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/kedi-mamasi/en-ucuz-enjoy-tavuklu-15-kg-1-kg-yetiskin-kuru-fiyati,791254487.html",
+      "title": "Enjoy Tavuklu 15 + 1 kg Yetişkin Kedi Maması - akakce.com",
+      "snippet": "En ucuz Enjoy Tavuklu 15 + 1 kg Yetişkin Kedi Maması kg fiyatı 68,74 TL'den başlayan seçeneklerle Akakçe'de! Enjoy Tavuklu 15 + …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/kuru-kedi-mamasi/en-ucuz-enjoy-tavuklu-15-kg-yetiskin-kedi-mamasi-fiyatlari,11146838",
+      "title": "Enjoy Tavuklu 15 kg Yetişkin Kedi Maması Fiyatları | Cimri",
+      "snippet": "",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/enjoy-tavuklu-kedi-mamasi-y-s306839",
+      "title": "Trendyol'da Enjoy Tavuklu Kedi Maması Satın Al",
+      "snippet": "Enjoy Tavuklu Kedi Maması, farklı ağırlıklarda paket seçenekleri sunar. 1 kg, 5 kg, 10 kg ve 15 kg gibi çeşitli boyutlarda bulunan bu …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/kuru-kedi-mamasi/en-ucuz-enjoy-tavuklu-1-5-kg-yetiskin-kedi-mamasi-fiyatlari,2255176254",
+      "title": "Enjoy Tavuklu 15 kg Yetişkin Kedi Maması Fiyatları - Cimri.com",
+      "snippet": "Enjoy Tavuklu 15 kg Yetişkin Kedi Maması ürününün 3 farklı mağaza içerisinden en ucuz teklifi 199.00'dir. Enjoy Tavuklu 15 kg …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    }
+  ]
+}

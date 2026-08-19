@@ -1,0 +1,53 @@
+{
+  "product_id": "ABO002",
+  "keyword": "Prima Premium Care 5 Numara Junior 74'lü Bebek Bezi fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 15.29,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/bebek-bezi/prima-5-numara.html",
+      "title": "Prima 5 Numara Fiyatları - Bebek Bezi",
+      "snippet": "Prima Premium Care 5 Numara Junior 74'lü Bebek Bezi · 949,00 TL +25 FİYAT 12,82 TL/adet Ürüne Git (+25) ; Prima Aktif 5 Numara Junior 46'lı 2 Adet Bebek Bezi · 799",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/bebek-bezi/en-ucuz-prima-premium-care-5-numara-junior-74-lu-firsat-paketi-fiyati,327169416.html",
+      "title": "Prima Premium Care 5 Numara Junior 74'lü Bebek Bezi",
+      "snippet": "Bu üründe 1 x 74 adet paket için kargo dahil en ucuz fiyat: Birim Fiyat En Ucuz 949,00 TL 14,16 TL/adet Diğer paket seçenekleri:.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/bebek-bezi/en-ucuz-prima-premium-care-no5-junior-74-adet-bebek-bezi-fiyatlari,197377447",
+      "title": "Prima Premium Care No:5 Junior 74 Adet Bebek Bezi",
+      "snippet": "10 satıcı arasındaki en ucuz Prima Premium Care No:5 Junior 74 Adet Bebek Bezi fiyatı, 17.08.2026 tarihinde 949,00 TL. Şu anki fiyat, son 3 ayın en yüksek",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "amazon.com.tr",
+      "url": "https://www.amazon.com.tr/Prima-Premium-Junior-F%C4%B1rsat-Paketi/dp/B07G8LNL5H",
+      "title": "Prima Bebek Bezi Premium Care 5 Numara 74 Adet Ultra ...",
+      "snippet": "Prima Bebek Bezi Premium Care 5 Numara 74 Adet Ultra Fırsat Paketi : Amazon.com.tr: Detaylar Fiyat (1.106,91 TLx) - 1.106,91 TL Ara",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/prima/bebek-bezi-premium-care-5-numara-74-adet-ultra-firsat-paketi-p-4179039",
+      "title": "Prima Bebek Bezi Premium Care 5 Numara 74 Adet Ultra ...",
+      "snippet": "Prima Bebek Bezi Premium Care 5 Numara 74 Adet Ultra Fırsat Paketi ; Daha Hızlı Teslimat yapan satıcı var! ; Ürünün Kampanyaları. 350 TL ve Üzeri Kargo Bedava (",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

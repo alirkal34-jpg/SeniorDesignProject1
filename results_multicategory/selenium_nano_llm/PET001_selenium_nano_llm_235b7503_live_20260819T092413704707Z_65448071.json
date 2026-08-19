@@ -1,0 +1,54 @@
+{
+  "product_id": "PET001",
+  "keyword": "Pro Plan Somonlu 10 kg Kısırlaştırılmış Yetişkin Kedi Maması fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 8.83,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/kedi-mamasi/pro-plan.html",
+      "title": "Pro Plan Kedi Maması Fiyatları | En Ucuzu Akakçe - akakce.com",
+      "snippet": "Zengin ve kediler için faydalı besin içeriğine sahip olan Pro Plan yavru kedi maması çeşitlerinin yanında yetişkin kediler içinde özel …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/kuru-kedi-mamasi/en-ucuz-pro-plan-sterilised-somonlu-10-kg-kisirlastirilmis-kedi-mamasi-fiyatlari,774958",
+      "title": "Pro Plan Sterilised Optirenal Somonlu 10 kg …",
+      "snippet": "Pro Plan Sterilised Optirenal Somonlu 10 kg kısırlaştırılmış kedi maması kullanımı …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/kedi-mamasi/en-ucuz-pro-plan-adult-salmon-rice-10-kg-somonlu-ve-pirincli-yetiskin-kuru-fiyati,4802435.html",
+      "title": "Pro Plan Vital Functions Adult Somonlu 10 kg Yetişkin Kedi Maması ...",
+      "snippet": "En ucuz Pro Plan Vital Functions Adult Somonlu 10 kg Yetişkin Kedi Maması kg fiyatı 274,50 TL'den başlayan seçeneklerle …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/pro-plan-kisirlastirilmis-kedi-mamasi-10-kg",
+      "title": "Pro Plan Kısırlaştırılmış 10 kg Kedi Maması - Cimri",
+      "snippet": "Pro Plan Kısırlaştırılmış Kedi Maması 10 kg kaliteli içeriği ve uygun fiyatıyla kısırlaştırılmış kedilerinizin sağlığını destekler. Siz de …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/pro-plan/kisirlastirilmis-somonlu-kedi-mamasi-10-kg-p-74116575",
+      "title": "Pro Plan Kısırlaştırılmış Somonlu Kedi Maması 10 Kg - Trendyol",
+      "snippet": "Kısırlaştırılmış Somonlu Kedi Maması 10 Kg yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

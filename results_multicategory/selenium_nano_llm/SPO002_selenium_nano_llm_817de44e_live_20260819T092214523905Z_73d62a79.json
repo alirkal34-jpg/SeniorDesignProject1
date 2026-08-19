@@ -1,0 +1,54 @@
+{
+  "product_id": "SPO002",
+  "keyword": "Quechua MH100 XXL 4 Kişilik Çadır fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 23.14,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "decathlon.com.tr",
+      "url": "https://www.decathlon.com.tr/p/kamp-cadiri-4-kisilik-xxl-boy-mh100/_/R-p-105650",
+      "title": "4 Kişilik Odalı Kamp Çadırı - MH100 XXL QUECHUA - Decathlon",
+      "snippet": "Pollü yapısı sayesinde kolayca kurulabilen bu çadır, kolaylık arayan 4 kampçı için tasarlandı. Member puanlarını indirim kuponlarına …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cadir/en-ucuz-quechua-mh100-4-kisilik-fiyati,159627624.html",
+      "title": "Quechua MH100 4 Kişilik Kamp Çadırı Fiyatları, Özellikleri ve …",
+      "snippet": "En ucuz Quechua MH100 4 Kişilik Kamp Çadırı fiyatları için 12 taksit ve indirimleri kaçırma! Quechua MH100 4 Kişilik Kamp Çadırı …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cadir/en-ucuz-decathlon-quechua-mh100-4-kisilik-xxl-kamp-cadiri-fiyatlari,2319910009",
+      "title": "Quechua MH100 4 Kişilik XXL Kamp Çadırı Fiyatları | Cimri",
+      "snippet": "2 satıcı arasındaki en ucuz Quechua MH100 4 Kişilik XXL Kamp Çadırı fiyatı, 16.08.2026 tarihinde 5.990,00 TL. Şu anki fiyat, son 3 …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/decathlon/quechua-4-kisilik-odali-kamp-cadiri-mh100-xxl-p-678682479",
+      "title": "Decathlon Quechua 4 Kişilik Odalı Kamp Çadırı - MH100 XXL - Fiyatı ...",
+      "snippet": "Quechua 4 Kişilik Odalı Kamp Çadırı - MH100 XXL yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/decathlon/quechua-kamp-cadiri-4-kisilik-mh100-p-666914095",
+      "title": "Decathlon Quechua Kamp Çadırı - 4 Kişilik - Mh100 - Trendyol",
+      "snippet": "Quechua Kamp Çadırı - 4 Kişilik - Mh100 yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

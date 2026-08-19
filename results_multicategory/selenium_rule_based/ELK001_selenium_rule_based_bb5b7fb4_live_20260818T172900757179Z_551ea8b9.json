@@ -1,0 +1,54 @@
+{
+  "product_id": "ELK001",
+  "keyword": "iPhone 17 256 GB Siyah fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 5.42,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-apple-iphone-17-256gb-siyah-fiyatlari,2508497796",
+      "title": "Apple iPhone 17 256GB Siyah Fiyatları | Cimri",
+      "snippet": "En ucuz Apple iPhone 17 256GB Siyah fiyatları 76.999,00 TL'den başlayan …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-apple-iphone-17-fiyatlari,a2393572193",
+      "title": "Apple iPhone 17 Fiyatları & Modelleri | Cimri",
+      "snippet": "O nedenle iPhone 17 modelini almadan önce fiyat karşılaştırması yapabilir veya …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "vatanbilgisayar.com",
+      "url": "https://www.vatanbilgisayar.com/iphone-17-akilli-telefon.html",
+      "title": "iPhone 17 Fiyatı ve Özellikleri - Vatan Bilgisayar",
+      "snippet": "iPhone 17 fiyatı, teknik özellikleri, modelleri ve renk seçenekleri ile Vatan Bilgisayar'da. iPhone 17'yi uygun kredi seçenekleri ile …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/apple-iphone-17-256-gb-siyah-p-HBCV00009Z3Y49",
+      "title": "Apple iPhone 17 256 GB Siyah Fiyatı - Taksit Seçenekleri",
+      "snippet": "Apple iPhone 17 256 GB Siyah en iyi fiyatla Hepsiburada'dan satın alın! Şimdi indirimli fiyatla online sipariş verin, ayağınıza gelsin!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/apple/iphone-17-256gb-siyah-p-985256842",
+      "title": "Apple iPhone 17 256GB Siyah - Fiyatı, Yorumları - Trendyol",
+      "snippet": "iPhone 17 256GB Siyah yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

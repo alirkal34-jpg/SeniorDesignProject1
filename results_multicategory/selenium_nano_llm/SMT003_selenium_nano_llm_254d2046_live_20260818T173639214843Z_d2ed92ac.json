@@ -1,0 +1,54 @@
+{
+  "product_id": "SMT003",
+  "keyword": "Haegs 20 lt Termos Soğutucu Sırt Çantası fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 11.58,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "haegs.com.tr",
+      "url": "https://www.haegs.com.tr/Haegs-Termal-Sirt-Cantasi-Yalitimli-Termos-Sogutucu-Canta-Erkek-Kadin-Buzluk-Canta-Sogutucu-Kamp-Plaj-Balikcilik-Ogle,urun",
+      "title": "Haegs Termal Sırt Çantası Yalıtımlı Termos Soğutucu …",
+      "snippet": "Bu yalıtımlı yemek taşıma çantası soğutucusuna sahip olmak, yiyecek, içecek, meyve vb. eşyalarınızı …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "haegs.com",
+      "url": "https://www.haegs.com/haegs-termal-sirt-cantasi-yalitimli-termos-sogutucu-canta-erkek-kadin-buzluk-canta-sogutucu-kamp-plaj-balikcilik-ogle-yemegi-piknik-beslenme-yemek-tasima-cantasi-duman-gri",
+      "title": "Haegs Termal Sırt Çantası Yalıtımlı Termos Soğutucu Çanta, Erkek …",
+      "snippet": "TEMEL OUTDOOR MALZEMESİ: Erkekler ve kadınlar için 20 Litre hacimli soğutucu sırt çantası. Sık sık uçakla seyahat eden veya …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/haegs-termal-sirt-cantasi-soguk-sicak-tutucu-yalitimli-canta-sogutucu-buzluk-canta-20l-duman-gri-pm-HBC00007B4V59",
+      "title": "Haegs Termal Sırt Çantası, Soğuk Sıcak Tutucu Yalıtımlı Fiyatı",
+      "snippet": "Haegs Termal Sırt Çantası, Soğuk Sıcak Tutucu Yalıtımlı en iyi fiyatla Hepsiburada'dan satın alın! Şimdi indirimli fiyatla sipariş verin, …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/haegs/termal-sirt-cantasi-yalitimli-sogutucu-erkek-kadin-buzluk-sogutucu-kamp-p-p-1166676067",
+      "title": "HAEGS Termal Sırt Çantası Yalıtımlı Soğutucu , Erkek ... - Trendyol",
+      "snippet": "Bu yalıtımlı yemek taşıma çantası soğutucusuna sahip olmak, yiyecek, içecek, meyve vb. eşyalarınızı düzenlemenize taze tutmanıza …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "ereyon.com.tr",
+      "url": "https://www.ereyon.com.tr/haegs-termal-sogutucu-sirt-cantasi-kamp-plaj-piknik-duman-gri",
+      "title": "Haegs Termal Sırt Çantası, Yalıtımlı Termos Soğutucu Çanta, Buzluk ...",
+      "snippet": "Outdoor aktivitelerinde yiyecek ve içeceklerinizi uzun süre taze tutmak için tasarlanan Haegs Termal Soğutucu Sırt Çantası 20L …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

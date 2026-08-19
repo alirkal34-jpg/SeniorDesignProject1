@@ -1,0 +1,61 @@
+{
+  "product_id": "PET001",
+  "keyword": "Pro Plan Somonlu 10 kg Kısırlaştırılmış Yetişkin Kedi Maması fiyat",
+  "method": "agentic_search",
+  "execution_mode": "live",
+  "provider": "openrouter+selenium+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "planner_model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "agentic-search-plan-v1+relevance-v1",
+  "search_queries": [
+    "Pro Plan Somonlu 10 kg Kısırlaştırılmış Yetişkin Kedi Maması fiyat",
+    "Pro Plan Somonlu 10 kg Kısırlaştırılmış Yetişkin Kedi Maması satın al",
+    "Pro Plan Somonlu 10 kg Kısırlaştırılmış Yetişkin Kedi Maması en ucuz"
+  ],
+  "search_errors": [],
+  "runtime_seconds": 24.32,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/kedi-mamasi/pro-plan.html",
+      "title": "Pro Plan Kedi Maması Fiyatları | En Ucuzu Akakçe - akakce.com",
+      "snippet": "Zengin ve kediler için faydalı besin içeriğine sahip olan Pro Plan yavru kedi maması çeşitlerinin yanında yetişkin kediler içinde özel …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/kuru-kedi-mamasi/en-ucuz-pro-plan-sterilised-somonlu-10-kg-kisirlastirilmis-kedi-mamasi-fiyatlari,774958",
+      "title": "Pro Plan Sterilised Optirenal Somonlu 10 kg Kısırlaştırılmış Kedi ...",
+      "snippet": "Pro Plan Sterilised Optirenal Somonlu 10 kg kısırlaştırılmış kedi maması kullanımı yetişkin kediler için uygundur. Eğer kedileriniz …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/kedi-mamasi/en-ucuz-pro-plan-adult-salmon-rice-10-kg-somonlu-ve-pirincli-yetiskin-kuru-fiyati,4802435.html",
+      "title": "Pro Plan Vital Functions Adult Somonlu 10 kg Yetişkin Kedi Maması ...",
+      "snippet": "En ucuz Pro Plan Vital Functions Adult Somonlu 10 kg Yetişkin Kedi Maması kg fiyatı 274,50 TL'den başlayan seçeneklerle …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/pro-plan-kisirlastirilmis-kedi-mamasi-10-kg",
+      "title": "Pro Plan Kısırlaştırılmış 10 kg Kedi Maması - Cimri",
+      "snippet": "Pro Plan Kısırlaştırılmış Kedi Maması 10 kg kaliteli içeriği ve uygun fiyatıyla kısırlaştırılmış kedilerinizin sağlığını destekler. Siz de …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/pro-plan/sterilised-kisirlastirilmis-somonlu-kedi-mamasi-10-kg-p-749840",
+      "title": "Pro Plan Sterilised Kısırlaştırılmış Somonlu Kedi Maması 10 KG",
+      "snippet": "Pro Plan Sterilised Kedi Maması, tüm kısır kedi türleri için uygundur. Kısırlaştırılmış kedilerin üriner sistem sağlığını destekleyen, …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

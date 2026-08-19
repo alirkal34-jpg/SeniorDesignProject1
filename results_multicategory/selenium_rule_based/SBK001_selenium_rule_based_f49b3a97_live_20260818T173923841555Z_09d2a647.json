@@ -1,0 +1,54 @@
+{
+  "product_id": "SBK001",
+  "keyword": "Vichy Dercos Energy Plus 400 ml Saç Dökülmesine Karşı Şampuan fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 5.8,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/vichy-dercos-energy-dokulme-karsiti-sampuan-400-ml-k5122-pm-sgdrmkd41001",
+      "title": "Vichy Dercos Energy+ Dökülme Karşıtı Şampuan 400 …",
+      "snippet": "Vichy Dercos Energy+ Dökülme Karşıtı Şampuan 400 ml K5122 en iyi fiyatla …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/vichy/dercos-energy-dokulme-karsiti-sampuan-400-ml-p-756801510",
+      "title": "Vichy Dercos Energy+ Dökülme Karşıtı Şampuan 400 ml - Trendyol",
+      "snippet": "Dercos Energy+ Dökülme Karşıtı Şampuan 400 ml yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/sampuan-ve-sac-kremi/en-ucuz-vichy-dercos-energy-400-ml-sampuan-fiyatlari,2169765877",
+      "title": "Vichy Dercos Energy+ 400 ML Saç Dökülmesine Karşı …",
+      "snippet": "5 satıcı arasındaki en ucuz Vichy Dercos Energy+ 400 ML Saç Dökülmesine Karşı Şampuan fiyatı, …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/sampuan/vichy.html",
+      "title": "Vichy Dercos Şampuan Fiyatları ve Yorumları | En Ucuzu Akakçe",
+      "snippet": "Vichy Dercos şampuan fiyat aralığı ürünlerin özellikleri doğrultusunda belirlenir. Uzman bakım sağlamak amacıyla geliştirilen …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "n11.com",
+      "url": "https://www.n11.com/urun/vichy-dercos-energy-sac-dokulmesine-karsi-sampuan-400-ml-2566391",
+      "title": "Vichy Dercos Energy+ Saç Dökülmesine Karşı Şampuan 400 ML",
+      "snippet": "7 Mar 2025 · Vichy Dercos Energy+ Saç Dökülmesine Karşı Şampuan 400 ML en iyi özellikleri ve gerçek kullanıcı yorumları uygun …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

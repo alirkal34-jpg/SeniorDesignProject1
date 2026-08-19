@@ -1,0 +1,54 @@
+{
+  "product_id": "ABO002",
+  "keyword": "Prima Premium Care 5 Numara Junior 74'lü Bebek Bezi fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 5.8,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/bebek-bezi/en-ucuz-prima-premium-care-5-numara-junior-74-lu-firsat-paketi-fiyati,327169416.html",
+      "title": "Prima Premium Care 5 Numara Junior 74'lü Bebek Bezi",
+      "snippet": "En ucuz Prima Premium Care 5 Numara Junior 74'lü Bebek Bezi adet fiyatı 12,84 TL'den başlayan seçeneklerle Akakçe'de! Prima …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/bebek-bezi/en-ucuz-prima-premium-care-no5-junior-74-adet-bebek-bezi-fiyatlari,197377447",
+      "title": "Prima Premium Care No:5 74 Adet Bebek Bez Fiyatları - Cimri.com",
+      "snippet": "13 satıcı arasındaki en ucuz Prima Premium Care No:5 Junior 74 Adet Bebek Bezi fiyatı, 02.07.2026 tarihinde 919,91 TL. Son 3 ay …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/prima/bebek-bezi-premium-care-5-beden-74-adet-junior-firsat-paketi-p-4179039",
+      "title": "Prima Bebek Bezi Premium Care 5 Beden 74 Adet …",
+      "snippet": "Yenidoğan bebeğinizin cildi için özel olarak tasarlanmış, tamamen ipeksi …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/bebek-bezi/5-numara.html",
+      "title": "5 Numara Bebek Bezi Fiyatları | En Ucuzu Akakçe - akakce.com",
+      "snippet": "En ucuz 5 Numara Bebek Bezi fiyatlarını Akakçe ile incele! Yüzlerce seçenek arasından en iyi 5 Numara Bebek Bezi fırsatlarını gör, …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/prima-premium-care-x-s57072",
+      "title": "Prima Premium Care Fiyatları, 273 Ürün Çeşidi",
+      "snippet": "Prima Premium Care, Hepsiburada.com sayfaların en uygun fiyatlarıyla yer alıyor. Aileler, uygun fiyatlarla Prima Premium Care …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

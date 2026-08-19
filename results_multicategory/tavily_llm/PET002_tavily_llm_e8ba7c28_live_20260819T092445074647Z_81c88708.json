@@ -1,0 +1,53 @@
+{
+  "product_id": "PET002",
+  "keyword": "Enjoy Tavuklu 15 kg Yetişkin Kedi Maması fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 8.73,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/kuru-kedi-mamasi/en-ucuz-enjoy-tavuklu-15-kg-yetiskin-kedi-mamasi-fiyatlari,11146838",
+      "title": "Enjoy Tavuklu 15 kg Yetişkin Kedi Maması Fiyatları",
+      "snippet": "En ucuz Enjoy Tavuklu 15 kg Yetişkin Kuru Kedi Maması fiyatları 1.259,06 TL'den başlayan tekliflerle Cimri'de! Enjoy Tavuklu 15 kg Yetişkin Kuru Kedi Maması",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/kedi-mamasi/en-ucuz-enjoy-tavuklu-15-kg-yetiskin-kuru-fiyati,5907259.html",
+      "title": "Enjoy Tavuklu 15 kg Yetişkin Kedi Maması",
+      "snippet": "Enjoy Tavuklu 15 kg Yetişkin Kedi Maması · 1 kg 135,00 TL/kg · 1 kg Açık 222,44 TL/kg · 2 kg 159,57 TL/kg · 2 kg Açık 190,00 TL/kg · 3 kg Açık 153,30 TL/kg · 4 kg",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "n11.com",
+      "url": "https://www.n11.com/evcil-hayvan-urunleri/kedi/kedi-mamasi?m=Enjoy",
+      "title": "Enjoy Kedi Maması - Yetişkin ve Yavru Kedi Maması - n11.com",
+      "snippet": "ÜCRETSİZ KARGO\n\nEnjoy Cat Food Tavuklu Yetişkin Kedi Maması 15 KG\n\nEnjoy Cat Food Tavuklu Yetişkin Kedi Maması 15 KG\n\nEnjoy Cat Food Tavuklu Yetişkin Kedi Maması 15 KG\n\n## Enjoy Cat Food Tavuklu Yetişkin Kedi Maması 15 KG\n\n(23130)\n\nSÜPER\n\n 10 günün en düşük fiyatı!\n\n1.244,51 TL\n\nSEPETTE\n\n### 1.199 TL\n\n79,93 TL / KG SQUARESQUARE\n\nÜCRETSİZ KARGO\n\nEnjoy Tavuklu Yetişkin Kedi Maması 2 x 15 KG\n\nEnjoy Tavuklu Yetişkin Kedi Maması 2 x 15 KG\n\nEnjoy Tavuklu Yetişkin Kedi Maması 2 x 15 KG [...] ## Enjoy Tavuklu Yetişkin Kedi Maması 2 x 15 KG\n\n(1123)\n\nSÜPER\n\n2.649 TL\n\nSEPETTE\n\n### 2.569,53 TL\n\n85,65 TL / KG ÜCRETSİZ KARGO\n\nEnjoy Somonlu Kedi Konservesi Sos İçinde Et Parçacıklı 400 Gr X24\n\n## Enjoy Somonlu Kedi Konservesi Sos İçinde Et Parçacıklı 400 Gr X24\n\n(42)\n\nSÜPER\n\n1.500 TL\n\nSEPETTE\n\n### 1.395 TL\n\n58,12 TL / Adet SQUARE\n\nÜCRETSİZ KARGO\n\nEnjoy Tavuklu Yetişkin Kedi Maması 10 KG\n\n## Enjoy Tavuklu Yetişkin Kedi Maması 10 KG\n\n(512)\n\nSÜPER\n\n979 TL\n\nSEPETTE\n\n### 949,63 TL [...] SÜPER\n\n1.299 TL\n\nSEPETTE\n\n### 1.260,03 TL\n\n126 TL / KG SQUARE\n\nÜCRETSİZ KARGO\n\nEnjoy Multicolor Renkli Gurme Yetişkin Kedi Maması 15 KG\n\n## Enjoy Multicolor Renkli Gurme Yetişkin Kedi Maması 15 KG\n\n(2006)\n\nSÜPER\n\n2.000 TL\n\nSEPETTE\n\n### 1.860 TL\n\n124 TL / KG SQUARE\n\nÜCRETSİZ KARGO\n\nEnjoy Tavuk Etli Yetişkin Kedi Maması 10 x 1 KG\n\n## Enjoy Tavuk Etli Yetişkin Kedi Maması 10 x 1 KG\n\n(35)\n\nSÜPER\n\n1.295 TL\n\nSEPETTE\n\n### 1.256,15 TL\n\n125,62 TL / KG ÜCRETSİZ KARGO",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "amazon.com.tr",
+      "url": "https://www.amazon.com.tr/Enjoy-Tavuk-Etli-Yeti%C5%9Fkin-Mamas%C4%B1/dp/B07J47WMJJ",
+      "title": "Enjoy Kuru Kedi Maması, Tavuklu, Yetişkin, 15 Kg Kahverengi : Amazon.com.tr: Evcil Hayvan Ürünleri",
+      "snippet": "| Dönem | Aylık Tutar | Vade Farkı | Toplam Tutar |\n ---  --- |\n| 2x ay | 637,00 TL | ücretsiz | 1.274,00 TL |\n| 3x ay | 424,66 TL | ücretsiz | 1.274,00 TL |\n| 4x ay | 354,23 TL\\ | 142,94 TL | 1.416,94 TL |\n| 5x ay | 288,81 TL\\ | 170,08 TL | 1.444,08 TL |\n| 6x ay | 233,56 TL\\ | 127,40 TL | 1.401,40 TL |\n| 9x ay | 162,78 TL\\ | 191,10 TL | 1.465,10 TL |\n| 12x ay | 129,52 TL\\ | 280,28 TL | 1.554,28 TL |\n\n### Satın alma seçenekleri ve eklentiler [...] | Dönem | Aylık Tutar | Vade Farkı | Toplam Tutar |\n ---  --- |\n| 2x ay | 637,00 TL | ücretsiz | 1.274,00 TL |\n| 3x ay | 456,51 TL\\ | 95,55 TL | 1.369,55 TL |\n| 6x ay | 233,56 TL\\ | 127,40 TL | 1.401,40 TL |\n| 9x ay | 162,78 TL\\ | 191,10 TL | 1.465,10 TL |\n| 12x ay | 129,52 TL\\ | 280,28 TL | 1.554,28 TL |\n| 4x ay | 354,23 TL\\ | 142,94 TL | 1.416,94 TL |\n| 5x ay | 288,81 TL\\ | 170,08 TL | 1.444,08 TL | [...] | Dönem | Aylık Tutar | Vade Farkı | Toplam Tutar |\n ---  --- |\n| 2x ay | 637,00 TL | ücretsiz | 1.274,00 TL |\n| 3x ay | 456,51 TL\\ | 95,55 TL | 1.369,55 TL |\n| 6x ay | 233,56 TL\\ | 127,40 TL | 1.401,40 TL |\n| 9x ay | 162,78 TL\\ | 191,10 TL | 1.465,10 TL |\n| 12x ay | 129,52 TL\\ | 280,28 TL | 1.554,28 TL |\n| 4x ay | 354,23 TL\\ | 142,94 TL | 1.416,94 TL |\n| 5x ay | 288,81 TL\\ | 170,08 TL | 1.444,08 TL |",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "instagram.com",
+      "url": "https://www.instagram.com/reel/DFqq4U7sNkH?hl=en",
+      "title": "Instagram",
+      "snippet": "turgutyem Edited•\n\n899 TL 💥 KAMPANYA  \nEnjoy Tavuklu Kedi Maması 15 KG  \n  \nPaletli alımlar için arayınız.  \nGel al fiyat.  \n  \n📞 Sipariş ve detaylı bilgi için:  \n☎️ 0534 567 63 14  \n📍 Turgutyem Pet Market  \n  \nGüvenilir mama, uygun fiyat! 🐾\n\nmithat.yilmazer09's profile picture\n\nmithat.yilmazer09\n\nPaketin acilisi icin again keseyimmi\n\nReply\n\nserkanereneren2's profile picture\n\nserkanereneren2\n\nkampanya devam ediyor mu\n\nReply\n\nlafcimeryem's profile picture\n\nlafcimeryem [...] lafcimeryem\n\nKargo varmı kendi maması almak istiyorum\n\nReply\n\ntdrkrczrk's profile picture\n\ntdrkrczrk\n\nFıat nedır\n\nReply\n\nelaaa_esiinn's profile picture\n\nelaaa\\_esiinn\n\nGüncel fiyat nedir\n\n1 like\n\nReply\n\nakfdogan's profile picture\n\nakfdogan\n\nKargonuz varmı acaba\n\n1 like\n\nReply\n\ngorkembalci25's profile picture\n\ngorkembalci25\n\n👍👍👍👍👍👍\n\nReply\n\nosmankizilagac64's profile picture\n\nosmankizilagac64\n\nMERHABA, MİCHO MARKA, 15 KG TAVUKLU KEDİ MAMASI VARMI ACABA?🤔\n\nReply\n\nkilinchatice45's profile picture [...] @turgutyem Mrb..sizden kucuk bir ricam olabilir mi? Lutfen geri cevirmeyin beni olur mu..🙏 ben mersin'de yaşiyorum ve bulundugum bolgede 20 ye yakın yavru ve yetiskin kedinin beslemesini/barinmasini kisitli imkanlarla elimden geldigince yapmaya calisiyorum..calismadigim icin ekonomik alım gücüm yok..eger mumkunati var ise bize 2 paket yenilir kalite ( eger varsa reflex) yavru kedi mamasi destegi verebilir misiniz..lutfen..havalar cok soguk ve onlari iyi mamalarla beslemem",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    }
+  ]
+}

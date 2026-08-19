@@ -1,0 +1,54 @@
+{
+  "product_id": "OBY001",
+  "keyword": "Shell Helix Ultra Professional AG 5W-30 5 lt Motor Yağı fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 5.33,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/motor-yagi/en-ucuz-shell-helix-ultra-professional-ag-5w-30-5-lt-fiyati,487109151.html",
+      "title": "Shell Helix Ultra Professional AG 5W-30 5 lt Motor Yağı",
+      "snippet": "En ucuz Shell Helix Ultra Professional AG 5W-30 5 lt Motor Yağı lt fiyatı 156,42 TL'den başlayan seçeneklerle Akakçe'de! Shell Helix …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/shell-helix-ultra-5w-30-motor-yagi-y-s276311",
+      "title": "️ Shell Helix Ultra 5W-30 Motor Yağı ile ... - Trendyol",
+      "snippet": "1 gün önce · Trendyol'da Shell Helix Ultra 5W-30 motor yağına uygun fiyatlarla sahip olmak mümkün. Bu platform, kaliteli ürünü …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/shell-5w-30-5-lt-motor-yagi-y-s113483",
+      "title": "Shell 5W 30 5 Lt Motor Yağı ile Araç Performansını Artırın!",
+      "snippet": "2 gün önce · Uygun fiyatlı ve kampanyalı seçeneklerle Shell 5W 30 5 Lt Motor Yağı’nı hızlı bir şekilde temin edebilirsiniz. Trendyol’un …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/motor-yagi/en-ucuz-shell-helix-ultra-professional-ag-5w-30-5-lt-motor-yagi-fiyatlari,2197664513",
+      "title": "Shell Helix Ultra Professional AG 5W-30 5 L Motor Yağı …",
+      "snippet": "En ucuz Shell Helix Ultra Professional AG 5W-30 5 L Motor Yağı fiyatları 1.329,00 …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/shell-5w30-motor-yagi-fiyati",
+      "title": "Shell 5w30 Motor Yağı Fiyatları | Cimri",
+      "snippet": "Shell Helix 5W-30 çeşitleri ve fiyatları için Cimri üzerinden karşılaştırma yapabilir ve bütçenize uygun ürünü bulabilirsiniz. Aracınızda …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    }
+  ]
+}

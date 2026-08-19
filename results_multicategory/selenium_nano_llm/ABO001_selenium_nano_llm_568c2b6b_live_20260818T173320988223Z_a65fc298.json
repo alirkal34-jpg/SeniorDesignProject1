@@ -1,0 +1,54 @@
+{
+  "product_id": "ABO001",
+  "keyword": "Molfix 6 Numara Extra Large 80'li Bebek Bezi fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v1",
+  "runtime_seconds": 22.53,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/bebek-bezi/en-ucuz-molfix-no6-xlarge-80-adet-bebek-bezi-fiyatlari,38640292",
+      "title": "Molfix ComfortFix No:6 Extra Large 80 Adet Bebek Bezi Fiyatları ve ...",
+      "snippet": "En ucuz Molfix No:6 XLarge 80 Adet Bebek Bezi fiyatları 539,99 TL'den başlayan tekliflerle Cimri'de! Molfix No:6 XLarge 80 Adet …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/molfix/bebek-bezi-c-60001048?filtreler=beden:6",
+      "title": "Molfix 6 Bebek Bezleri ve Fiyatları - Hepsiburada.com",
+      "snippet": "Molfix 6 numara bez fiyatları; ürünlerin tasarım şekline, tercih edilen teknoloji uygulamasına, paketteki adet sayısına ve …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "babymall.com.tr",
+      "url": "https://www.babymall.com.tr/molfix-bebek-bezi-6-beden-extra-large-15-kg-80li-mega-paket",
+      "title": "Molfix Bebek Bezi 6 Beden Extra Large 15+ Kg 80li Mega Paket",
+      "snippet": "20 Tem 2026 · Molfix Bebek Bezi 6 Beden Extra Large 15+ Kg 80li Mega Paket en uygun fiyatlarla babymall.com.tr'de! Ürünlerimizi …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "a101.com.tr",
+      "url": "https://www.a101.com.tr/anne-bebek-oyuncak/molfix-cocuk-bezi-no-6-extra-large-80-adet_p-23001597",
+      "title": "Molfix Çocuk Bezi No:6 Extra Large 80 Adet - a101.com.tr",
+      "snippet": "Molfix Çocuk Bezi No:6 Extra Large 80 Adet ürününü A101 güvencesiyle en uygun fiyata satın almak için hemen tıklayın!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/molfix-6",
+      "title": "MolfiX 6 Numara Bebek Bezi Fiyatları & Modelleri | Cimri",
+      "snippet": "Molfix 6 numara bebek bezlerinin fiyatları, birçok farklı faktöre bağlı olarak değişiklik gösterebilir. İlk olarak, paket boyutu ve türü, …",
+      "predicted_relevant": true,
+      "relevance_score": 0.9
+    }
+  ]
+}
