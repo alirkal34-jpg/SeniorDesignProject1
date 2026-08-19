@@ -682,6 +682,8 @@ def load_product_node(
             "storage_gb": selected.storage_gb,
             "ram_gb": selected.ram_gb,
             "color": selected.color,
+            "category_group": selected.category_group,
+            "attributes": selected.attributes,
         }
     except Exception as exc:
         return _end_to_end_error(new_state, "load_product", exc)
@@ -708,6 +710,8 @@ def generate_keyword_node(
             storage_gb=product_data.get("storage_gb"),
             ram_gb=product_data.get("ram_gb"),
             color=product_data.get("color"),
+            category_group=str(product_data.get("category_group") or ""),
+            attributes=product_data.get("attributes") or {},
         )
         provider = state.get("keyword_provider", "fake")
         client = make_client(provider)

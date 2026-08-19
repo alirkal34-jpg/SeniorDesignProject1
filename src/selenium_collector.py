@@ -47,6 +47,10 @@ def normalize_result_url(url: str) -> str:
     Google yönlendirme URL'si varsa gerçek hedef
     URL'yi çıkarır. Normal bir URL geldiyse
     değiştirmeden döndürür.
+    scheme: kullanılan protokol
+    netloc: domain
+    path: domain’den sonraki yol
+    query: ? işaretinden sonraki parametreler
     """
 
     parsed_url = urlparse(url)

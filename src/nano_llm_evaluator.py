@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -16,6 +17,7 @@ from keyword_generator import (
     DEFAULT_MODEL,
     KeywordGenerationError,
     OpenRouterKeywordClient,
+    load_api_keys,
     load_env_file,
 )
 
@@ -25,6 +27,9 @@ METHOD_AGENTIC_SEARCH = "agentic_search"
 METHOD_SELENIUM_NANO_LLM = "selenium_nano_llm"
 METHOD_SELENIUM_RULE_BASED = "selenium_rule_based"
 NANO_LLM_PROMPT_VERSION = "relevance-v1"
+EVALUATION_MAX_ATTEMPTS = 3
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -34,16 +39,47 @@ class NanoLLMEvaluation:
 
 
 class FakeNanoLLMEvaluator:
+    # Substrings that mark a result as e-commerce for the deterministic
+    # scorer. The list covers every category group in the taxonomy, not only
+    # consumer electronics. Ambiguous short names are written as full domains
+    # so ordinary words cannot match them by accident.
     ecommerce_domains = (
+        "a101",
         "akakce",
         "amazon",
+        "bauhaus",
+        "bkmkitap",
+        "boyner",
+        "carrefoursa",
+        "ciceksepeti",
         "cimri",
+        "decathlon",
+        "defacto",
+        "dr.com.tr",
+        "ebebek",
+        "flo.com.tr",
+        "getir",
+        "gratis",
         "hepsiburada",
+        "idefix",
+        "ikea",
+        "kitapyurdu",
+        "koctas",
+        "koton",
+        "lcw.com",
         "mediamarkt",
+        "migros",
         "n11",
+        "pazarama",
+        "petlebi",
+        "rossmann",
+        "sokmarket",
         "teknosa",
+        "tekzen",
+        "toyzzshop",
         "trendyol",
         "vatan",
+        "watsons",
     )
 
     def evaluate_result(self, keyword: str, result: dict[str, Any]) -> NanoLLMEvaluation:
@@ -142,13 +178,41 @@ class OpenRouterNanoLLMEvaluator(OpenRouterKeywordClient):
             },
         }
 
-        response_data = self._post_json(payload)
-        try:
-            content = response_data["choices"][0]["message"]["content"]
-            parsed = json.loads(content)
-            evaluations = validate_evaluation_output(parsed, expected_count=len(results))
-        except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
-            raise KeywordGenerationError(f"Could not parse NanoLLM evaluator response: {exc}") from exc
+        # The free model does not always honour its own JSON schema, so an
+        # unusable answer is retried instead of failing the whole experiment.
+        # This mirrors the retry the keyword client already performs.
+        last_error: KeywordGenerationError | None = None
+        evaluations: list[NanoLLMEvaluation] | None = None
+
+        for attempt in range(EVALUATION_MAX_ATTEMPTS):
+            response_data = self._post_json(payload)
+            try:
+                content = response_data["choices"][0]["message"]["content"]
+                parsed = json.loads(content)
+                evaluations = validate_evaluation_output(
+                    parsed,
+                    expected_count=len(results),
+                )
+                break
+            except KeywordGenerationError as exc:
+                last_error = exc
+            except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
+                last_error = KeywordGenerationError(
+                    f"Could not parse NanoLLM evaluator response: {exc}"
+                )
+
+            if attempt < EVALUATION_MAX_ATTEMPTS - 1:
+                logger.warning(
+                    "NanoLLM evaluator attempt %d/%d failed: %s",
+                    attempt + 1,
+                    EVALUATION_MAX_ATTEMPTS,
+                    last_error,
+                )
+
+        if evaluations is None:
+            raise last_error or KeywordGenerationError(
+                "NanoLLM evaluator returned no usable response."
+            )
 
         evaluated_results = []
         for result, evaluation in zip(results, evaluations):
@@ -157,6 +221,33 @@ class OpenRouterNanoLLMEvaluator(OpenRouterKeywordClient):
             evaluated["relevance_score"] = evaluation.relevance_score
             evaluated_results.append(evaluated)
         return evaluated_results
+
+
+def coerce_relevance_flag(value: Any) -> bool | None:
+    """Normalize a relevance flag, or return None when it is not a flag.
+
+    The configured free model occasionally answers with the string "true" or
+    the integer 1 even though the JSON schema declares a boolean. Those are
+    unambiguous spellings of the same answer, so they are accepted. Anything
+    genuinely ambiguous - "maybe", 0.5, null - is still rejected.
+    """
+
+    if isinstance(value, bool):
+        return value
+
+    if isinstance(value, int) and value in (0, 1):
+        return bool(value)
+
+    if isinstance(value, str):
+        normalized = value.strip().casefold()
+
+        if normalized in {"true", "1"}:
+            return True
+
+        if normalized in {"false", "0"}:
+            return False
+
+    return None
 
 
 def validate_evaluation_output(raw_output: Any, expected_count: int) -> list[NanoLLMEvaluation]:
@@ -171,10 +262,15 @@ def validate_evaluation_output(raw_output: Any, expected_count: int) -> list[Nan
     for index, item in enumerate(raw_output):
         if not isinstance(item, dict):
             raise KeywordGenerationError(f"Evaluation row {index} must be an object.")
-        predicted_relevant = item.get("predicted_relevant")
+        predicted_relevant = coerce_relevance_flag(
+            item.get("predicted_relevant")
+        )
         relevance_score = item.get("relevance_score")
-        if not isinstance(predicted_relevant, bool):
-            raise KeywordGenerationError(f"predicted_relevant at row {index} must be boolean.")
+        if predicted_relevant is None:
+            raise KeywordGenerationError(
+                f"predicted_relevant at row {index} must be boolean, got "
+                f"{item.get('predicted_relevant')!r}."
+            )
         if not isinstance(relevance_score, (int, float)) or not 0 <= float(relevance_score) <= 1:
             raise KeywordGenerationError(f"relevance_score at row {index} must be between 0 and 1.")
         evaluations.append(
@@ -194,7 +290,7 @@ def make_nano_llm_evaluator(provider: str = "fake"):
         import os
 
         return OpenRouterNanoLLMEvaluator(
-            api_key=os.environ.get("OPENROUTER_API_KEY", ""),
+            api_keys=load_api_keys(),
             model=os.environ.get("NANO_LLM_MODEL", DEFAULT_MODEL),
         )
     raise ValueError(f"Unsupported provider: {provider}")

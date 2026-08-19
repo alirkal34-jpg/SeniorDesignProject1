@@ -1,0 +1,23 @@
+{
+  "acquisition_mode": "synthetic",
+  "source": "offline-product-catalog",
+  "generated_at_utc": "2026-08-18T12:10:01.479392+00:00",
+  "product_count": 500,
+  "collected_this_run": 500,
+  "carried_over_from_previous_run": 0,
+  "category_group_count": 10,
+  "products_per_category_group": {
+    "elektronik_cep_telefonu": 50,
+    "ev_yasam_ofis_kirtasiye": 50,
+    "anne_bebek_oyuncak": 50,
+    "saat_moda_taki_ayakkabi": 50,
+    "kitap_muzik_hobi": 50,
+    "spor_outdoor": 50,
+    "saglik_bakim_kozmetik": 50,
+    "oto_bahce_yapi_market": 50,
+    "petshop": 50,
+    "supermarket": 50
+  },
+  "runtime_seconds": 0.0,
+  "warning": "Synthetic dataset generated offline. Realistic in structure but not measured market data. Do not report it as scraped results."
+}

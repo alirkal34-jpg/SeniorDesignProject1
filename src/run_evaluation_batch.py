@@ -8,9 +8,12 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 from pathlib import Path
 from typing import Any, Callable
+
+from result_storage import create_unique_result_path
 
 from keyword_loader import DEFAULT_KEYWORDS_FILE, load_keywords
 from run_agentic_search import run_agentic_search, save_result as save_agentic
@@ -122,6 +125,66 @@ def _run_method(
     raise ValueError(f"Unsupported evaluation method: {method}")
 
 
+def save_to_directory(
+    output: dict[str, Any],
+    results_root: Path,
+) -> Path:
+    """Save one payload beneath a caller-chosen results root.
+
+    The per-method ``save_result`` helpers always write into ``results/``,
+    which holds the frozen smartphone baseline. New experiments - the
+    multi-category runs in particular - must be kept out of that directory so
+    the committed evaluation stays reproducible.
+    """
+
+    method = str(output["method"])
+    method_directory = results_root / method
+    method_directory.mkdir(parents=True, exist_ok=True)
+    keyword_digest = hashlib.sha256(
+        str(output["keyword"]).encode("utf-8")
+    ).hexdigest()[:8]
+    output_path = create_unique_result_path(
+        directory=method_directory,
+        product_id=str(output["product_id"]),
+        method=method,
+        keyword_digest=keyword_digest,
+        execution_mode=str(output.get("execution_mode", "unknown")),
+    )
+    output_path.write_text(
+        json.dumps(output, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return output_path
+
+
+def find_completed_runs(results_directory: Path | None) -> set[tuple[str, str]]:
+    """Return the (product_id, method) pairs that already have a result file.
+
+    Provider free tiers cap how many model requests a day allows, so a batch
+    can stop half way through. Knowing what is already on disk lets the next
+    session spend its quota only on what is missing.
+    """
+
+    completed: set[tuple[str, str]] = set()
+
+    if results_directory is None or not results_directory.is_dir():
+        return completed
+
+    for method in METHODS:
+        method_directory = results_directory / method
+
+        if not method_directory.is_dir():
+            continue
+
+        for path in method_directory.glob("*.json"):
+            product_id = path.name.split("_", 1)[0]
+
+            if product_id:
+                completed.add((product_id, method))
+
+    return completed
+
+
 def run_evaluation_batch(
     subset_file: Path = DEFAULT_SUBSET_FILE,
     keywords_file: Path = DEFAULT_KEYWORDS_FILE,
@@ -131,6 +194,8 @@ def run_evaluation_batch(
     max_results: int = 5,
     save: bool = False,
     allow_live_batch: bool = False,
+    results_directory: Path | None = None,
+    skip_existing: bool = False,
 ) -> dict[str, Any]:
     if execution_mode not in {"fake", "live"}:
         raise ValueError("execution_mode must be 'fake' or 'live'.")
@@ -150,9 +215,22 @@ def run_evaluation_batch(
     )
     outputs: list[dict[str, Any]] = []
     errors: list[dict[str, str]] = []
+    completed = (
+        find_completed_runs(results_directory) if skip_existing else set()
+    )
+    skipped: list[dict[str, str]] = []
 
     for record in records:
         for method in methods:
+            if (record["product_id"], method) in completed:
+                skipped.append(
+                    {
+                        "product_id": record["product_id"],
+                        "method": method,
+                    }
+                )
+                continue
+
             try:
                 output, saver = _run_method(
                     method=method,
@@ -161,7 +239,14 @@ def run_evaluation_batch(
                     execution_mode=execution_mode,
                     max_results=max_results,
                 )
-                output_path = str(saver(output)) if save else None
+                if not save:
+                    output_path = None
+                elif results_directory is not None:
+                    output_path = str(
+                        save_to_directory(output, results_directory)
+                    )
+                else:
+                    output_path = str(saver(output))
                 outputs.append(
                     {
                         "product_id": record["product_id"],
@@ -187,6 +272,8 @@ def run_evaluation_batch(
         "method_count": len(methods),
         "successful_count": len(outputs),
         "failed_count": len(errors),
+        "skipped_count": len(skipped),
+        "skipped": skipped,
         "outputs": outputs,
         "errors": errors,
     }
@@ -204,7 +291,29 @@ def main() -> None:
     parser.add_argument("--max-results", type=int, default=5)
     parser.add_argument("--save", action="store_true")
     parser.add_argument("--allow-live-batch", action="store_true")
+    parser.add_argument(
+        "--results-directory",
+        type=Path,
+        default=None,
+        help=(
+            "Save results beneath this directory instead of results/. Use it "
+            "for every new experiment so the frozen smartphone baseline in "
+            "results/ stays untouched."
+        ),
+    )
+    parser.add_argument(
+        "--skip-existing",
+        action="store_true",
+        help=(
+            "Skip product/method pairs that already have a result file in "
+            "--results-directory. Use it to continue a batch that stopped on "
+            "a provider daily limit without spending quota on finished work."
+        ),
+    )
     args = parser.parse_args()
+
+    if args.skip_existing and args.results_directory is None:
+        parser.error("--skip-existing requires --results-directory.")
 
     summary = run_evaluation_batch(
         subset_file=args.subset,
@@ -215,6 +324,8 @@ def main() -> None:
         max_results=args.max_results,
         save=args.save,
         allow_live_batch=args.allow_live_batch,
+        results_directory=args.results_directory,
+        skip_existing=args.skip_existing,
     )
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     if summary["failed_count"]:

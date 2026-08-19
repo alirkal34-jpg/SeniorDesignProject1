@@ -1,0 +1,11 @@
+category_group,display_name_tr,product_id_prefix,expected_product_count,required_attributes,optional_attributes,numeric_attribute_ranges
+elektronik_cep_telefonu,"Elektronik, Cep Telefonu",ELK,50,,storage_gb;ram_gb,storage_gb:8:2048;ram_gb:1:64
+ev_yasam_ofis_kirtasiye,"Ev, Yaşam, Ofis, Kırtasiye",EVY,50,,room_or_use,
+anne_bebek_oyuncak,"Anne, Bebek, Oyuncak",ABO,50,,age_range,
+saat_moda_taki_ayakkabi,"Saat, Moda, Takı, Ayakkabı",SMT,50,,size_label;color,
+kitap_muzik_hobi,"Kitap, Müzik, Hobi",KMH,50,,creator,
+spor_outdoor,"Spor, Outdoor",SPO,50,,discipline,
+saglik_bakim_kozmetik,"Sağlık, Bakım, Kozmetik",SBK,50,,volume_ml,volume_ml:5:5000
+oto_bahce_yapi_market,"Oto, Bahçe, Yapı Market",OBY,50,,power_or_volume,
+petshop,Petshop,PET,50,,animal_type;weight_kg,weight_kg:0.05:30
+supermarket,Süpermarket,SPM,50,,net_weight_g,net_weight_g:5:25000

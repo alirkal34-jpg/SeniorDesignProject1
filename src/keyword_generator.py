@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from time import perf_counter, sleep
 from typing import Any, Iterable, Protocol
@@ -34,11 +34,29 @@ class Product:
     product_id: str
     product_name: str
     brand: str
-    model: str
     category: str
+    # Structured smartphone datasets carry an explicit model column. The
+    # ten-category dataset does not: its product_name already contains brand,
+    # model and variant, and the remaining specs live in ``attributes``.
+    model: str = ""
     storage_gb: int | None = None
     ram_gb: int | None = None
     color: str | None = None
+    category_group: str = ""
+    attributes: dict[str, Any] = field(default_factory=dict)
+
+    def variant_label(self) -> str:
+        """Return the shopping-relevant variant, whichever dataset supplied it."""
+
+        label = str(self.attributes.get("variant_label", "") or "").strip()
+
+        if label:
+            return label
+
+        if self.storage_gb:
+            return f"{self.storage_gb} GB"
+
+        return ""
 
 
 @dataclass(frozen=True)
@@ -87,9 +105,29 @@ def load_products(path: Path = DEFAULT_INPUT_PATH) -> list[Product]:
                 storage_gb=item.get("storage_gb"),
                 ram_gb=item.get("ram_gb"),
                 color=item.get("color"),
+                category_group=str(item.get("category_group") or ""),
+                attributes=parse_attributes(item.get("attributes")),
             )
         )
     return products
+
+
+def parse_attributes(raw_attributes: Any) -> dict[str, Any]:
+    """Read the attributes column, which may be a JSON string or a mapping."""
+
+    if isinstance(raw_attributes, dict):
+        return raw_attributes
+
+    if isinstance(raw_attributes, str) and raw_attributes.strip():
+        try:
+            parsed = json.loads(raw_attributes)
+        except ValueError:
+            return {}
+
+        if isinstance(parsed, dict):
+            return parsed
+
+    return {}
 
 
 def select_products(products: Iterable[Product], limit: int = 3) -> list[Product]:
@@ -143,15 +181,89 @@ class FakeKeywordClient:
     def generate_keywords(self, products: list[Product]) -> list[KeywordItem]:
         raw_items = []
         for product in products:
-            storage = f" {product.storage_gb} GB" if product.storage_gb else ""
-            model = product.model.strip()
-            if model.casefold().startswith(product.brand.strip().casefold()):
-                name = f"{model}{storage}"
-            else:
-                name = f"{product.brand} {model}{storage}"
-            name = name.replace("+", " Plus")
-            raw_items.append({"product_id": product.product_id, "keyword": f"{name} fiyat"})
+            raw_items.append(
+                {
+                    "product_id": product.product_id,
+                    "keyword": f"{self.build_name(product)} fiyat",
+                }
+            )
         return validate_keyword_output(raw_items, {product.product_id for product in products})
+
+    @staticmethod
+    def build_name(product: Product) -> str:
+        """Assemble the searchable product name for one product.
+
+        Datasets with an explicit model column are composed from brand, model
+        and variant, avoiding a repeated brand. Attribute-driven datasets keep
+        their product_name, which already contains all three parts.
+        """
+
+        model = product.model.strip()
+
+        if not model:
+            return product.product_name.strip().replace("+", " Plus")
+
+        variant = product.variant_label()
+        variant_segment = f" {variant}" if variant else ""
+
+        if model.casefold().startswith(product.brand.strip().casefold()):
+            name = f"{model}{variant_segment}"
+        else:
+            name = f"{product.brand} {model}{variant_segment}"
+
+        return name.replace("+", " Plus")
+
+
+def load_api_keys(
+    prefix: str = "OPENROUTER_API_KEY",
+) -> list[str]:
+    """Collect every configured OpenRouter key, in priority order.
+
+    ``OPENROUTER_API_KEY`` is used first, then ``OPENROUTER_API_KEY_2``,
+    ``_3`` and so on. Each key carries its own free-tier daily allowance, so
+    a second key doubles how much of an experiment fits into one session.
+    """
+
+    keys: list[str] = []
+    primary = os.environ.get(prefix, "").strip()
+
+    if primary:
+        keys.append(primary)
+
+    index = 2
+
+    while True:
+        value = os.environ.get(f"{prefix}_{index}", "").strip()
+
+        if not value:
+            break
+
+        if value not in keys:
+            keys.append(value)
+
+        index += 1
+
+    return keys
+
+
+def looks_like_daily_limit(detail: str) -> bool:
+    """Return True when a 429 means the key's daily allowance is spent.
+
+    A per-minute limit clears by waiting; a daily one does not, so the key is
+    set aside for the rest of the run instead of being retried.
+    """
+
+    lowered = detail.casefold()
+
+    return any(
+        marker in lowered
+        for marker in (
+            "free-models-per-day",
+            "openrouter_free_tier_daily",
+            "per-day",
+            "daily limit",
+        )
+    )
 
 
 class OpenRouterKeywordClient:
@@ -159,13 +271,47 @@ class OpenRouterKeywordClient:
 
     api_url = "https://openrouter.ai/api/v1/chat/completions"
 
-    def __init__(self, api_key: str, model: str) -> None:
-        if not api_key:
+    def __init__(
+        self,
+        api_key: str = "",
+        model: str = "",
+        api_keys: list[str] | None = None,
+    ) -> None:
+        keys: list[str] = []
+
+        if api_key and api_key.strip():
+            keys.append(api_key.strip())
+
+        for value in api_keys or []:
+            cleaned = str(value).strip()
+
+            if cleaned and cleaned not in keys:
+                keys.append(cleaned)
+
+        if not keys:
             raise KeywordGenerationError("OPENROUTER_API_KEY is not set.")
-        self.api_key = api_key
+
+        self.api_keys = keys
+        self.api_key = keys[0]
+        self._key_index = 0
+        # Keys whose daily allowance ran out during this run.
+        self.exhausted_keys: set[str] = set()
         self.model = model
         self.last_usage: dict[str, Any] = {}
         self.last_cost_usd = 0.0
+
+    def _switch_to_unused_key(self, tried: set[str]) -> bool:
+        """Move to a key not yet tried for this request. False when none left."""
+
+        for _ in range(len(self.api_keys)):
+            self._key_index = (self._key_index + 1) % len(self.api_keys)
+            candidate = self.api_keys[self._key_index]
+
+            if candidate not in tried and candidate not in self.exhausted_keys:
+                self.api_key = candidate
+                return True
+
+        return False
 
     def generate_keywords(self, products: list[Product]) -> list[KeywordItem]:
         expected_ids = {product.product_id for product in products}
@@ -181,7 +327,9 @@ class OpenRouterKeywordClient:
                         f"Return exactly one keyword object for each of these product IDs: {sorted(expected_ids)}. "
                         "Use every product ID exactly once; never duplicate or omit an ID. "
                         "Return only valid JSON matching the schema. Each keyword must include "
-                        "brand, model, important variant such as storage, and buying intent such as fiyat."
+                        "the brand, the product name, the distinguishing variant supplied in "
+                        "variant_label (storage, volume, weight, size or edition, depending on the "
+                        "category), and buying intent such as fiyat."
                     ),
                 },
                 {
@@ -193,9 +341,10 @@ class OpenRouterKeywordClient:
                                 "product_name": p.product_name,
                                 "brand": p.brand,
                                 "model": p.model,
-                                "storage_gb": p.storage_gb,
-                                "ram_gb": p.ram_gb,
-                                "color": p.color,
+                                "category": p.category,
+                                "category_group": p.category_group,
+                                "variant_label": p.variant_label(),
+                                "attributes": p.attributes,
                             }
                             for p in products
                         ],
@@ -253,8 +402,7 @@ class OpenRouterKeywordClient:
                 continue
         raise last_error or KeywordGenerationError("OpenRouter returned no usable keyword response.")
 
-    def _post_json(self, payload: dict[str, Any]) -> dict[str, Any]:
-        body = json.dumps(payload).encode("utf-8")
+    def _send(self, body: bytes) -> dict[str, Any]:
         req = request.Request(
             self.api_url,
             data=body,
@@ -266,45 +414,73 @@ class OpenRouterKeywordClient:
                 "X-Title": "Senior Design Keyword Generator",
             },
         )
-        for attempt in range(OPENROUTER_MAX_ATTEMPTS):
+
+        with request.urlopen(req, timeout=60) as response:
+            response_data = json.loads(response.read().decode("utf-8"))
+            usage = response_data.get("usage", {})
+            self.last_usage = usage if isinstance(usage, dict) else {}
+            raw_cost = self.last_usage.get(
+                "cost",
+                self.last_usage.get("total_cost", 0.0),
+            )
             try:
-                with request.urlopen(req, timeout=60) as response:
-                    response_data = json.loads(response.read().decode("utf-8"))
-                    usage = response_data.get("usage", {})
-                    self.last_usage = usage if isinstance(usage, dict) else {}
-                    raw_cost = self.last_usage.get(
-                        "cost",
-                        self.last_usage.get("total_cost", 0.0),
-                    )
-                    try:
-                        self.last_cost_usd = float(raw_cost or 0.0)
-                    except (TypeError, ValueError):
-                        self.last_cost_usd = 0.0
-                    return response_data
+                self.last_cost_usd = float(raw_cost or 0.0)
+            except (TypeError, ValueError):
+                self.last_cost_usd = 0.0
+            return response_data
+
+    def _post_json(self, payload: dict[str, Any]) -> dict[str, Any]:
+        """Send one request, rotating keys and backing off on rate limits.
+
+        A 429 is answered by switching to a key that has not been tried for
+        this request. Waiting only helps a per-minute limit, whereas another
+        key has its own allowance, so rotation is attempted first.
+        """
+
+        body = json.dumps(payload).encode("utf-8")
+        tried: set[str] = set()
+        backoff_attempt = 0
+
+        while True:
+            tried.add(self.api_key)
+
+            try:
+                return self._send(body)
             except error.HTTPError as exc:
                 detail = exc.read().decode("utf-8", errors="replace")
-                can_retry = (
-                    exc.code == 429
-                    and attempt < OPENROUTER_MAX_ATTEMPTS - 1
-                )
-                if can_retry:
-                    retry_after = exc.headers.get("Retry-After", "")
-                    try:
-                        requested_delay = float(retry_after)
-                    except (TypeError, ValueError):
-                        requested_delay = 0.0
-                    sleep(max(requested_delay, float(2**attempt)))
+
+                if exc.code != 429:
+                    raise KeywordGenerationError(
+                        f"OpenRouter API error {exc.code}: {detail}"
+                    ) from exc
+
+                if looks_like_daily_limit(detail):
+                    self.exhausted_keys.add(self.api_key)
+
+                if self._switch_to_unused_key(tried):
                     continue
-                raise KeywordGenerationError(
-                    f"OpenRouter API error {exc.code}: {detail}"
-                ) from exc
+
+                if backoff_attempt >= OPENROUTER_MAX_ATTEMPTS - 1:
+                    raise KeywordGenerationError(
+                        f"OpenRouter API error {exc.code}: {detail}"
+                    ) from exc
+
+                retry_after = exc.headers.get("Retry-After", "")
+
+                try:
+                    requested_delay = float(retry_after)
+                except (TypeError, ValueError):
+                    requested_delay = 0.0
+
+                sleep(max(requested_delay, float(2**backoff_attempt)))
+                backoff_attempt += 1
+                # After waiting, a per-minute limit may have cleared, so keys
+                # become eligible again unless their daily quota is spent.
+                tried = set()
             except error.URLError as exc:
                 raise KeywordGenerationError(
                     f"OpenRouter request failed: {exc.reason}"
                 ) from exc
-        raise KeywordGenerationError(
-            "OpenRouter request exhausted its retry attempts."
-        )
 
 
 def make_client(provider: str) -> KeywordClient:
@@ -313,7 +489,7 @@ def make_client(provider: str) -> KeywordClient:
         return FakeKeywordClient()
     if provider == "openrouter":
         return OpenRouterKeywordClient(
-            api_key=os.environ.get("OPENROUTER_API_KEY", ""),
+            api_keys=load_api_keys(),
             model=os.environ.get("NANO_LLM_MODEL", DEFAULT_MODEL),
         )
     raise ValueError(f"Unsupported provider: {provider}")

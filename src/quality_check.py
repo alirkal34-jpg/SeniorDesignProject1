@@ -1,6 +1,35 @@
+"""Dataset-level quality checks for the processed product data.
+
+Row-level rules (missing values, numeric ranges, per-category attributes) are
+already applied by the DataProcessor. This module checks properties that only
+make sense for the dataset as a whole: identifier coverage, duplicate product
+variants, source-URL completeness and - for the ten-category dataset - whether
+every category group reached its expected product count.
+
+Two quality profiles are supported:
+
+SMARTPHONE_QUALITY
+    The frozen 100-product smartphone dataset with identifiers P001-P100.
+
+MULTICATEGORY_QUALITY
+    The ten-category dataset. Expected identifiers and per-category counts are
+    read from ``data/reference/product_categories.csv`` instead of being
+    hard-coded, so adding or resizing a category needs no code change.
+"""
+
+from __future__ import annotations
+
+import argparse
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import pandas as pd
+
+from category_taxonomy import (
+    CategoryGroup,
+    DEFAULT_TAXONOMY_FILE,
+    load_category_groups,
+)
 
 
 # ==================================================
@@ -21,6 +50,155 @@ PROCESSED_FILE = (
     / "processed_products.csv"
 )
 
+PROCESSED_MULTICATEGORY_FILE = (
+    PROJECT_ROOT
+    / "data"
+    / "processed"
+    / "processed_products_multicategory.csv"
+)
+
+
+# ==================================================
+# Quality profiles
+# ==================================================
+
+@dataclass(frozen=True)
+class QualityProfile:
+    """Dataset-level expectations for one processed dataset."""
+
+    name: str
+    processed_file: Path
+    expected_columns: list[str]
+    # Columns that together identify one product variant. Two rows sharing all
+    # of them are the same product under different IDs.
+    variant_columns: list[str]
+    # Every identifier the dataset is allowed to contain, built from the
+    # taxonomy target. Anything outside this set is an unexpected identifier.
+    expected_product_ids: set[str]
+    # Minimum row count per category group; empty for single-category data.
+    expected_category_counts: dict[str, int]
+    # The taxonomy target, shown next to the minimum when they differ.
+    category_targets: dict[str, int] = field(default_factory=dict)
+    # Identifiers that must be present. Equals expected_product_ids unless a
+    # lower per-category floor was requested.
+    required_product_ids: set[str] = field(default_factory=set)
+
+    def __post_init__(self) -> None:
+        if not self.required_product_ids:
+            object.__setattr__(
+                self,
+                "required_product_ids",
+                set(self.expected_product_ids),
+            )
+
+    @property
+    def expected_row_count(self) -> int:
+        return len(self.required_product_ids)
+
+
+def build_smartphone_quality_profile() -> QualityProfile:
+    """The frozen P001-P100 smartphone dataset contract."""
+
+    return QualityProfile(
+        name="smartphone",
+        processed_file=PROCESSED_FILE,
+        expected_columns=[
+            "product_id",
+            "product_name",
+            "brand",
+            "model",
+            "category",
+            "storage_gb",
+            "ram_gb",
+            "display_size_inch",
+            "battery_mah",
+            "color",
+            "operating_system",
+            "source_url",
+        ],
+        variant_columns=[
+            "brand",
+            "model",
+            "storage_gb",
+            "ram_gb",
+            "color",
+        ],
+        expected_product_ids={
+            f"P{number:03d}"
+            for number in range(1, 101)
+        },
+        expected_category_counts={},
+    )
+
+
+def build_multicategory_quality_profile(
+    groups: list[CategoryGroup] | None = None,
+    taxonomy_file: Path = DEFAULT_TAXONOMY_FILE,
+    minimum_per_category: int | None = None,
+) -> QualityProfile:
+    """Derive the ten-category contract from the taxonomy reference file.
+
+    ``minimum_per_category`` lowers the per-category floor below the taxonomy
+    target. A listing site does not always publish fifty products that carry a
+    usable specification - fashion is the clear case - so the gate can be run
+    against the number actually reachable while the report still shows the
+    target next to it.
+    """
+
+    if groups is None:
+        groups = load_category_groups(taxonomy_file)
+
+    def floor_for(group: CategoryGroup) -> int:
+        if minimum_per_category is None:
+            return group.expected_product_count
+
+        return min(minimum_per_category, group.expected_product_count)
+
+    # Allowed identifiers always run up to the taxonomy target, so a complete
+    # category is never reported as holding unexpected identifiers.
+    expected_product_ids = {
+        group.product_id(number)
+        for group in groups
+        for number in range(1, group.expected_product_count + 1)
+    }
+    # Required identifiers stop at the floor, so a category that the site
+    # cannot fill is not reported as missing the rest.
+    required_product_ids = {
+        group.product_id(number)
+        for group in groups
+        for number in range(1, floor_for(group) + 1)
+    }
+
+    return QualityProfile(
+        name="multicategory",
+        processed_file=PROCESSED_MULTICATEGORY_FILE,
+        expected_columns=[
+            "product_id",
+            "product_name",
+            "brand",
+            "category",
+            "category_group",
+            "source_url",
+            "attributes",
+        ],
+        # Product names already encode brand, model and variant, and the
+        # remaining specs live in the attributes JSON.
+        variant_columns=["brand", "product_name", "attributes"],
+        expected_product_ids=expected_product_ids,
+        required_product_ids=required_product_ids,
+        expected_category_counts={
+            group.category_group: floor_for(group)
+            for group in groups
+        },
+        category_targets={
+            group.category_group: group.expected_product_count
+            for group in groups
+        },
+    )
+
+
+SMARTPHONE_QUALITY = build_smartphone_quality_profile()
+
 
 # ==================================================
 # Processed data loading
@@ -31,7 +209,7 @@ def load_processed_data(
 ) -> pd.DataFrame:
     """
     DataProcessor tarafından oluşturulan
-    processed_products.csv dosyasını yükler.
+    processed CSV dosyasını yükler.
     """
 
     if not file_path.exists():
@@ -56,6 +234,7 @@ def load_processed_data(
 
 def check_dataset_quality(
     df: pd.DataFrame,
+    profile: QualityProfile = SMARTPHONE_QUALITY,
 ) -> bool:
     """
     İşlenmiş veri setinin tamamına uygulanan
@@ -66,26 +245,10 @@ def check_dataset_quality(
     tarafından yapıldığı için burada tekrarlanmaz.
     """
 
-    # Processed dataset içinde bulunması gereken sütunlar.
-    expected_columns = [
-        "product_id",
-        "product_name",
-        "brand",
-        "model",
-        "category",
-        "storage_gb",
-        "ram_gb",
-        "display_size_inch",
-        "battery_mah",
-        "color",
-        "operating_system",
-        "source_url",
-    ]
-
     # Beklenen sütunlardan hangileri DataFrame'de yok?
     missing_columns = [
         column
-        for column in expected_columns
+        for column in profile.expected_columns
         if column not in df.columns
     ]
 
@@ -95,13 +258,6 @@ def check_dataset_quality(
             f"içeriyor: {missing_columns}"
         )
 
-    # P001, P002, ..., P100 değerlerinden oluşan
-    # beklenen product_id kümesi.
-    expected_product_ids = {
-        f"P{number:03d}"
-        for number in range(1, 101)
-    }
-
     # CSV dosyasında gerçekten bulunan product_id'ler.
     actual_product_ids = set(
         df["product_id"]
@@ -110,17 +266,16 @@ def check_dataset_quality(
         .str.strip()
     )
 
-    # Beklenen ancak CSV'de bulunmayan ID'ler.
+    # Zorunlu olup CSV'de bulunmayan ID'ler.
     missing_product_ids = (
-        expected_product_ids
+        profile.required_product_ids
         - actual_product_ids
     )
 
-    # CSV'de bulunan ancak P001-P100 aralığında
-    # olmayan ID'ler.
+    # CSV'de bulunan ancak beklenen aralıkta olmayan ID'ler.
     unexpected_product_ids = (
         actual_product_ids
-        - expected_product_ids
+        - profile.expected_product_ids
     )
 
     # Aynı product_id birden fazla satırda
@@ -133,19 +288,10 @@ def check_dataset_quality(
     ]
 
     # ID değerleri farklı olsa bile aynı ürün
-    # varyantının tekrar edip etmediğini kontrol
-    # etmek için kullanılacak sütunlar.
-    product_variant_columns = [
-        "brand",
-        "model",
-        "storage_gb",
-        "ram_gb",
-        "color",
-    ]
-
+    # varyantının tekrar edip etmediğini kontrol eder.
     duplicate_product_rows = df[
         df.duplicated(
-            subset=product_variant_columns,
+            subset=profile.variant_columns,
             keep=False,
         )
     ]
@@ -178,17 +324,25 @@ def check_dataset_quality(
         .nunique()
     )
 
+    # Kategori bazlı ürün sayıları yalnızca çok kategorili
+    # veri setinde kontrol edilir.
+    category_count_problems = find_category_count_problems(
+        df=df,
+        profile=profile,
+    )
+
     # Dataset'in bütün kalite koşullarını geçip
     # geçmediğini belirleyen tek bir boolean değer.
     dataset_passed = (
-        total_rows == 100
-        and unique_product_ids == 100
+        total_rows >= profile.expected_row_count
+        and unique_product_ids == total_rows
         and not missing_product_ids
         and not unexpected_product_ids
         and duplicate_id_rows.empty
         and duplicate_product_rows.empty
         and missing_source_url_count == 0
         and invalid_source_url_rows.empty
+        and not category_count_problems
     )
 
     # ==================================================
@@ -198,7 +352,14 @@ def check_dataset_quality(
     print()
     print("=== DATASET QUALITY REPORT ===")
 
+    print(f"Dataset profile: {profile.name}")
+
     print(f"Total rows: {total_rows}")
+
+    print(
+        f"Expected rows: "
+        f"{profile.expected_row_count}"
+    )
 
     print(
         f"Unique product IDs: "
@@ -235,6 +396,12 @@ def check_dataset_quality(
         f"{len(invalid_source_url_rows)}"
     )
 
+    if profile.expected_category_counts:
+        print(
+            "Category groups with wrong counts: "
+            f"{len(category_count_problems)}"
+        )
+
     # Sorun varsa yalnızca sayısını değil,
     # ilgili kayıtları da göster.
     if missing_product_ids:
@@ -268,15 +435,7 @@ def check_dataset_quality(
 
         print(
             duplicate_product_rows[
-                [
-                    "product_id",
-                    "product_name",
-                    "brand",
-                    "model",
-                    "storage_gb",
-                    "ram_gb",
-                    "color",
-                ]
+                ["product_id", "product_name", *profile.variant_columns]
             ].to_string(index=False)
         )
 
@@ -292,6 +451,28 @@ def check_dataset_quality(
             ].to_string(index=False)
         )
 
+    if profile.expected_category_counts:
+        print()
+        print("Products per category group:")
+
+        actual_per_group = (
+            df["category_group"]
+            .fillna("")
+            .astype(str)
+            .str.strip()
+            .value_counts()
+            .to_dict()
+        )
+
+        for category_group in sorted(profile.expected_category_counts):
+            actual = int(actual_per_group.get(category_group, 0))
+            target = profile.category_targets.get(
+                category_group,
+                profile.expected_category_counts[category_group],
+            )
+            marker = "  " if actual >= target else " <- below target"
+            print(f"  {category_group:28s} {actual:3d}/{target}{marker}")
+
     print()
 
     if dataset_passed:
@@ -306,6 +487,57 @@ def check_dataset_quality(
     return dataset_passed
 
 
+def find_category_count_problems(
+    df: pd.DataFrame,
+    profile: QualityProfile,
+) -> list[tuple[str, int, int]]:
+    """
+    Beklenen ürün sayısını tutturamayan kategori
+    gruplarını (grup, beklenen, bulunan) olarak döndürür.
+    """
+
+    if not profile.expected_category_counts:
+        return []
+
+    if "category_group" not in df.columns:
+        raise ValueError(
+            "Processed dataset eksik sütun içeriyor: ['category_group']"
+        )
+
+    actual_counts = (
+        df["category_group"]
+        .fillna("")
+        .astype(str)
+        .str.strip()
+        .value_counts()
+        .to_dict()
+    )
+
+    problems: list[tuple[str, int, int]] = []
+
+    for category_group, expected in sorted(
+        profile.expected_category_counts.items()
+    ):
+        actual = int(actual_counts.get(category_group, 0))
+
+        # A category may exceed its target; only a shortfall is a problem.
+        if actual < expected:
+            problems.append((category_group, expected, actual))
+
+    # Taksonomide tanımlı olmayan bir kategori grubu da bir sorundur.
+    for category_group in sorted(actual_counts):
+        if category_group not in profile.expected_category_counts:
+            problems.append(
+                (
+                    category_group,
+                    0,
+                    int(actual_counts[category_group]),
+                )
+            )
+
+    return problems
+
+
 # ==================================================
 # Program entry point
 # ==================================================
@@ -316,13 +548,50 @@ def main() -> None:
     kalite kontrolünü çalıştırır.
     """
 
+    parser = argparse.ArgumentParser(
+        description="Run dataset-level quality checks on processed products."
+    )
+    parser.add_argument(
+        "--dataset",
+        choices=["smartphone", "multicategory"],
+        default="smartphone",
+    )
+    parser.add_argument(
+        "--taxonomy",
+        type=Path,
+        default=DEFAULT_TAXONOMY_FILE,
+    )
+    parser.add_argument(
+        "--min-per-category",
+        type=int,
+        default=None,
+        help=(
+            "Per-category floor for the gate. Defaults to the taxonomy "
+            "target. The report always shows actual counts against the "
+            "target regardless."
+        ),
+    )
+    args = parser.parse_args()
+
+    if args.dataset == "multicategory":
+        profile = build_multicategory_quality_profile(
+            taxonomy_file=args.taxonomy,
+            minimum_per_category=args.min_per_category,
+        )
+    else:
+        profile = SMARTPHONE_QUALITY
+
     processed_df = load_processed_data(
-        PROCESSED_FILE
+        profile.processed_file
     )
 
-    check_dataset_quality(
-        processed_df
+    passed = check_dataset_quality(
+        processed_df,
+        profile,
     )
+
+    if not passed:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

@@ -7,3 +7,9 @@ __pycache__/
 .env
 .env.*
 !.env.example
+
+# Working scratch: scrape logs, saved pages, one-off inspection output.
+tmp/
+outputs/
+# Excel lock files, created while a review workbook is open.
+~$*

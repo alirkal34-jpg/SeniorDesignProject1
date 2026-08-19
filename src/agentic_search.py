@@ -15,6 +15,7 @@ from keyword_generator import (
     DEFAULT_MODEL,
     KeywordGenerationError,
     OpenRouterKeywordClient,
+    load_api_keys,
     load_env_file,
 )
 from selenium_collector import (
@@ -149,7 +150,7 @@ def make_query_planner(provider: str = "openrouter") -> QueryPlanner:
         return FakeQueryPlanner()
     if provider == "openrouter":
         return OpenRouterQueryPlanner(
-            api_key=os.environ.get("OPENROUTER_API_KEY", ""),
+            api_keys=load_api_keys(),
             model=os.environ.get("AGENTIC_PLANNER_MODEL", DEFAULT_MODEL),
         )
     raise ValueError(f"Unsupported agentic planner provider: {provider}")

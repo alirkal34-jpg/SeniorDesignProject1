@@ -13,6 +13,7 @@ from keyword_generator import (
     DEFAULT_MODEL,
     KeywordGenerationError,
     OpenRouterKeywordClient,
+    load_api_keys,
     load_env_file,
 )
 
@@ -186,7 +187,7 @@ def make_result_payload(
         import os
 
         evaluator = OpenRouterRelevanceEvaluator(
-            api_key=os.environ.get("OPENROUTER_API_KEY", ""),
+            api_keys=load_api_keys(),
             model=os.environ.get("NANO_LLM_MODEL", DEFAULT_MODEL),
         )
         model = evaluator.model
