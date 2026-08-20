@@ -5,7 +5,7 @@
   "execution_mode": "live",
   "provider": "openrouter+selenium+openrouter",
   "search_engine": "bing",
-  "model": "google/gemma-4-26b-a4b-it:free",
+  "model": "google/gemma-4-26b-a4b-it",
   "planner_model": "google/gemma-4-26b-a4b-it:free",
   "prompt_version": "relevance-v2-aligned",
   "search_queries": [
@@ -38,8 +38,8 @@
       "url": "https://www.hepsiburada.com/calvin-klein-kadin-ck-must-capraz-kamera-canta-pm-HBC000032VPMX",
       "title": "Calvin Klein Kadın Ck Must Çapraz Kamera Çanta Fiyatı",
       "snippet": "Calvin Klein Kadın Ck Must Çapraz Kamera Çanta en iyi fiyatla Hepsiburada'dan satın alın! Şimdi indirimli fiyatla sipariş verin, …",
-      "predicted_relevant": false,
-      "relevance_score": 0.0
+      "predicted_relevant": true,
+      "relevance_score": 1.0
     },
     {
       "domain": "n11.com",
@@ -54,9 +54,9 @@
       "url": "https://www.trendyol.com/calvin-klein/kadin-ck-must-capraz-canta-p-290577610",
       "title": "Calvin Klein Kadın Ck Must Çapraz Çanta - Fiyatı, Yorumları",
       "snippet": "Kampanya fiyatından satılmak üzere 10 adetten fazla stok sunulmuştur. Bir ürün, birden fazla satıcı tarafından satılabilir.",
-      "predicted_relevant": false,
-      "relevance_score": 0.0
+      "predicted_relevant": true,
+      "relevance_score": 1.0
     }
   ],
-  "rejudged_provider": "Google AI Studio"
+  "rejudged_provider": "Google"
 }

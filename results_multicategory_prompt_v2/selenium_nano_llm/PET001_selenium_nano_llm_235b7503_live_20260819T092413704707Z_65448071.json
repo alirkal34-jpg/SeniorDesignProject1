@@ -5,7 +5,7 @@
   "execution_mode": "live",
   "provider": "selenium:bing+openrouter",
   "search_engine": "bing",
-  "model": "google/gemma-4-26b-a4b-it:free",
+  "model": "google/gemma-4-26b-a4b-it",
   "prompt_version": "relevance-v2-aligned",
   "runtime_seconds": 8.83,
   "estimated_cost_usd": 0.0,
@@ -31,8 +31,8 @@
       "url": "https://www.akakce.com/kedi-mamasi/en-ucuz-pro-plan-adult-salmon-rice-10-kg-somonlu-ve-pirincli-yetiskin-kuru-fiyati,4802435.html",
       "title": "Pro Plan Vital Functions Adult Somonlu 10 kg Yetişkin Kedi Maması ...",
       "snippet": "En ucuz Pro Plan Vital Functions Adult Somonlu 10 kg Yetişkin Kedi Maması kg fiyatı 274,50 TL'den başlayan seçeneklerle …",
-      "predicted_relevant": true,
-      "relevance_score": 1.0
+      "predicted_relevant": false,
+      "relevance_score": 0.0
     },
     {
       "domain": "cimri.com",
@@ -40,7 +40,7 @@
       "title": "Pro Plan Kısırlaştırılmış 10 kg Kedi Maması - Cimri",
       "snippet": "Pro Plan Kısırlaştırılmış Kedi Maması 10 kg kaliteli içeriği ve uygun fiyatıyla kısırlaştırılmış kedilerinizin sağlığını destekler. Siz de …",
       "predicted_relevant": false,
-      "relevance_score": 0.3
+      "relevance_score": 0.0
     },
     {
       "domain": "trendyol.com",
@@ -51,5 +51,5 @@
       "relevance_score": 1.0
     }
   ],
-  "rejudged_provider": "Google AI Studio"
+  "rejudged_provider": "Google"
 }

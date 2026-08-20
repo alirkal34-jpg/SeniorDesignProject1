@@ -5,7 +5,7 @@
   "execution_mode": "live",
   "provider": "openrouter+selenium+openrouter",
   "search_engine": "bing",
-  "model": "google/gemma-4-26b-a4b-it:free",
+  "model": "google/gemma-4-26b-a4b-it",
   "planner_model": "google/gemma-4-26b-a4b-it:free",
   "prompt_version": "relevance-v2-aligned",
   "search_queries": [
@@ -54,9 +54,9 @@
       "url": "https://www.hepsiburada.com/nehir-tencere-setleri-tencereler-xc-22535-b18742",
       "title": "Nehir Tencere Setleri Tencereler ve Fiyatları - Hepsiburada.com",
       "snippet": "14 Ara 2016 · Nehir Silver 6 Parça Paslanmaz Çelik Mini Tencere Seti (12-14-16 Cm) 4,2(179) Sepete özel 4.585,88 TL % 57",
-      "predicted_relevant": false,
-      "relevance_score": 0.0
+      "predicted_relevant": true,
+      "relevance_score": 1.0
     }
   ],
-  "rejudged_provider": "Google AI Studio"
+  "rejudged_provider": "Google"
 }

@@ -5,7 +5,7 @@
   "execution_mode": "live",
   "provider": "selenium:bing+openrouter",
   "search_engine": "bing",
-  "model": "google/gemma-4-26b-a4b-it:free",
+  "model": "google/gemma-4-26b-a4b-it",
   "prompt_version": "relevance-v2-aligned",
   "runtime_seconds": 19.95,
   "estimated_cost_usd": 0.0,
@@ -24,7 +24,7 @@
       "title": "️ Shell Helix Ultra 5W-30 Motor Yağı ile ... - Trendyol",
       "snippet": "2 gün önce · Trendyol'da Shell Helix Ultra 5W-30 motor yağına uygun fiyatlarla sahip olmak mümkün. Bu platform, kaliteli ürünü …",
       "predicted_relevant": false,
-      "relevance_score": 0.5
+      "relevance_score": 0.0
     },
     {
       "domain": "trendyol.com",
@@ -32,7 +32,7 @@
       "title": "Shell 5W 30 5 Lt Motor Yağı ile Araç Performansını Artırın!",
       "snippet": "9 saat önce · Uygun fiyatlı ve kampanyalı seçeneklerle Shell 5W 30 5 Lt Motor Yağı’nı hızlı bir şekilde temin edebilirsiniz. …",
       "predicted_relevant": false,
-      "relevance_score": 0.5
+      "relevance_score": 0.0
     },
     {
       "domain": "cimri.com",
@@ -48,8 +48,8 @@
       "title": "Shell 5w30 Motor Yağı Fiyatları | Cimri",
       "snippet": "Shell Helix 5W-30 çeşitleri ve fiyatları için Cimri üzerinden karşılaştırma yapabilir ve bütçenize uygun ürünü bulabilirsiniz. Aracınızda …",
       "predicted_relevant": false,
-      "relevance_score": 0.2
+      "relevance_score": 0.0
     }
   ],
-  "rejudged_provider": "Google AI Studio"
+  "rejudged_provider": "Google"
 }

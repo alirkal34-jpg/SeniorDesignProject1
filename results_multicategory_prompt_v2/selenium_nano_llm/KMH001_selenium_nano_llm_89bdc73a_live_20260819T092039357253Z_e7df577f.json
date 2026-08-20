@@ -5,7 +5,7 @@
   "execution_mode": "live",
   "provider": "selenium:bing+openrouter",
   "search_engine": "bing",
-  "model": "google/gemma-4-26b-a4b-it:free",
+  "model": "google/gemma-4-26b-a4b-it",
   "prompt_version": "relevance-v2-aligned",
   "runtime_seconds": 12.06,
   "estimated_cost_usd": 0.0,
@@ -51,5 +51,5 @@
       "relevance_score": 1.0
     }
   ],
-  "rejudged_provider": "Google AI Studio"
+  "rejudged_provider": "Google"
 }

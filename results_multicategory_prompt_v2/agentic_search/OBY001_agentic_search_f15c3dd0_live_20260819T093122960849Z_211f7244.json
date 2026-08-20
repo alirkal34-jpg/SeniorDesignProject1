@@ -5,7 +5,7 @@
   "execution_mode": "live",
   "provider": "openrouter+selenium+openrouter",
   "search_engine": "bing",
-  "model": "google/gemma-4-26b-a4b-it:free",
+  "model": "google/gemma-4-26b-a4b-it",
   "planner_model": "google/gemma-4-26b-a4b-it:free",
   "prompt_version": "relevance-v2-aligned",
   "search_queries": [
@@ -31,7 +31,7 @@
       "title": "️ Shell Helix Ultra 5W-30 Motor Yağı ile ... - Trendyol",
       "snippet": "2 gün önce · Trendyol'da Shell Helix Ultra 5W-30 motor yağına uygun fiyatlarla sahip olmak mümkün. Bu platform, kaliteli ürünü …",
       "predicted_relevant": false,
-      "relevance_score": 0.5
+      "relevance_score": 0.0
     },
     {
       "domain": "cimri.com",
@@ -58,5 +58,5 @@
       "relevance_score": 1.0
     }
   ],
-  "rejudged_provider": "Google AI Studio"
+  "rejudged_provider": "Google"
 }

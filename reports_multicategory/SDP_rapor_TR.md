@@ -25,7 +25,7 @@ Bu projede, yapılandırılmış ürün verisinden işlemsel (transactional) niy
 
 Sistem, Akakçe üzerinden toplanan 10 kategori grubuna ait 489 gerçek ürün üzerinde kurulmuştur. Değerlendirme, her kategoriden iki farklı markaya ait ikişer ürün seçilerek oluşturulan 20 ürünlük bir alt kümede yürütülmüştür: 20 ürün × 4 yöntem = 80 canlı çalıştırma, 399 arama sonucu ve 46 farklı alan adı. Sonuçların uygunluğu, yöntem tahminleri gizlenmiş bir çalışma kitabı üzerinden elle etiketlenmiş; 194 benzersiz URL için insan etiketi elde edilmiş ve bu etiketler 399 sonucun tamamını kapsamıştır (kapsam oranı %100).
 
-Ölçülen genel doğruluk %76,19'dur. İlk ölçümde asıl bulgu doğruluk sıralamasında değil sınıflandırma davranışındaydı: Selenium + NanoLLM 100 sonucun 100'üne "uygun" demiş, özgüllüğü 0,000 ve dengeli doğruluğu 0,500 çıkmıştır; Agentic Search 99'una "uygun" demiştir. Yürütülen hata analizi bu davranışın nedenini ortaya koymuştur: değerlendirici modele verilen istem ile insan etiketleme kuralı arasında bir tanım uyuşmazlığı bulunmaktadır — istem kategori sayfalarını uygun sayarken kural saymamaktadır. İstem kuralla hizalanıp aynı sonuçlar yeniden yargılandığında, hiçbir arama tekrarlanmadan ve etiketler değişmeden, Selenium + NanoLLM'in özgüllüğü 0,000'den 0,846'ya, genel doğruluk %76,19'dan %83,21'e çıkmıştır. Dil modeli kullanmayan kural tabanlı yöntem kontrol grubu olarak hiç değişmemiştir. Kategori kırılımında telefon kategorisi dört yöntem ortalamasında %100 doğrulukla en kolay kategori çıkmış, diğer dokuz grup %73,52 ortalamada kalmıştır.
+Ölçülen genel doğruluk %76,19'dur. İlk ölçümde asıl bulgu doğruluk sıralamasında değil sınıflandırma davranışındaydı: Selenium + NanoLLM 100 sonucun 100'üne "uygun" demiş, özgüllüğü 0,000 ve dengeli doğruluğu 0,500 çıkmıştır; Agentic Search 99'una "uygun" demiştir. Yürütülen hata analizi bu davranışın nedenini ortaya koymuştur: değerlendirici modele verilen istem ile insan etiketleme kuralı arasında bir tanım uyuşmazlığı bulunmaktadır — istem kategori sayfalarını uygun sayarken kural saymamaktadır. İstem kuralla hizalanıp aynı sonuçlar yeniden yargılandığında, hiçbir arama tekrarlanmadan ve etiketler değişmeden, Selenium + NanoLLM'in özgüllüğü 0,000'den 0,846'ya, genel doğruluk %76,19'dan %82,46'ya çıkmıştır. Dil modeli kullanmayan kural tabanlı yöntem kontrol grubu olarak hiç değişmemiştir. Kategori kırılımında telefon kategorisi dört yöntem ortalamasında %100 doğrulukla en kolay kategori çıkmış, diğer dokuz grup %73,52 ortalamada kalmıştır.
 
 **Keywords:** e-commerce search relevance, transactional query generation, LLM-as-a-judge, prompt-criterion alignment, agentic search, LangGraph, human relevance judgments, balanced accuracy
 
@@ -44,7 +44,7 @@ E-ticaret arama motorlarında bir sorgunun döndürdüğü sayfaların gerçekte
 
 Projenin veri katmanı, Akakçe üzerinden toplanan 10 kategori grubuna ait 489 üründen oluşmaktadır; kategori taksonomisi tek bir başvuru dosyasında tanımlanmış ve veri doğrulama bu taksonomiden türetilmiştir. Değerlendirme katmanı, dört yöntemi LangGraph çizgesi üzerinde sırayla çalıştırmakta, her yöntemin çıktısını ortak bir JSON şemasına yazmakta ve bu çıktıları insan etiketleriyle eşleştirerek doğruluk, kesinlik, duyarlılık, özgüllük ve dengeli doğruluk hesaplamaktadır.
 
-20 ürünlük değerlendirme alt kümesinde 80 canlı çalıştırma hatasız tamamlanmış, 399 sonuç üretilmiş ve bu sonuçların tamamı 194 benzersiz URL üzerinden elle etiketlenmiştir. Genel doğruluk %76,19 ölçülmüştür. Yöntemlerin üçünün doğruluğu, "her sonuca uygun de" biçimindeki önemsiz sınıflandırıcının doğruluğunu geçememiş veya çok az geçmiştir; bu nedenle raporda doğruluğun yanına özgüllük ve dengeli doğruluk da konulmuştur. Bu davranışın kaynağı hata analiziyle izole edilmiştir: değerlendirici istemi ile etiketleme kuralı aynı ölçütü farklı tanımlamaktaydı. İstem hizalandığında özgüllük 0,000'den 0,846'ya, genel doğruluk %83,21'e yükselmiş, kontrol grubu olan kural tabanlı yöntem ise hiç değişmemiştir. Danışman geri bildiriminde dile getirilen "tek kategori yeterli değil" eleştirisi ölçümle doğrulanmıştır: telefon kategorisi dört yöntem ortalamasında %100, diğer dokuz kategori %73,52 doğruluk vermiştir.
+20 ürünlük değerlendirme alt kümesinde 80 canlı çalıştırma hatasız tamamlanmış, 399 sonuç üretilmiş ve bu sonuçların tamamı 194 benzersiz URL üzerinden elle etiketlenmiştir. Genel doğruluk %76,19 ölçülmüştür. Yöntemlerin üçünün doğruluğu, "her sonuca uygun de" biçimindeki önemsiz sınıflandırıcının doğruluğunu geçememiş veya çok az geçmiştir; bu nedenle raporda doğruluğun yanına özgüllük ve dengeli doğruluk da konulmuştur. Bu davranışın kaynağı hata analiziyle izole edilmiştir: değerlendirici istemi ile etiketleme kuralı aynı ölçütü farklı tanımlamaktaydı. İstem hizalandığında özgüllük 0,000'den 0,846'ya, genel doğruluk %82,46'ya yükselmiş, kontrol grubu olan kural tabanlı yöntem ise hiç değişmemiştir. Danışman geri bildiriminde dile getirilen "tek kategori yeterli değil" eleştirisi ölçümle doğrulanmıştır: telefon kategorisi dört yöntem ortalamasında %100, diğer dokuz kategori %73,52 doğruluk vermiştir.
 
 **Anahtar Kelimeler:** e-ticaret arama uygunluğu, işlemsel sorgu üretimi, dil modeliyle değerlendirme, istem-ölçüt hizalaması, etmen tabanlı arama, LangGraph, insan uygunluk yargıları, dengeli doğruluk
 
@@ -922,31 +922,35 @@ Bu uyuşmazlık nedeniyle mevcut sayılar tek başına iki olasılığı ayırt 
 
 | Yöntem | Doğruluk | Özgüllük | Dengeli doğruluk | "Uygun" deme oranı |
 |---|---|---|---|---|
-| Selenium + NanoLLM | 0,740 → **0,890** | 0,000 → **0,846** | 0,500 → 0,876 | 1,000 → 0,710 |
-| Agentic Search | 0,780 → **0,880** | 0,043 → **0,826** | 0,522 → 0,861 | 0,990 → 0,730 |
+| Agentic Search | 0,780 → **0,890** | 0,043 → **0,783** | 0,522 → 0,852 | 0,990 → 0,760 |
+| Selenium + NanoLLM | 0,740 → **0,850** | 0,000 → **0,846** | 0,500 → 0,849 | 1,000 → 0,670 |
 | Tavily + NanoLLM | 0,820 → **0,850** | 0,393 → **0,750** | 0,690 → 0,820 | 0,880 → 0,710 |
 | Selenium + Kural Tabanlı *(kontrol)* | 0,707 → 0,707 | 0,125 → 0,125 | 0,509 → 0,509 | 0,889 → 0,889 |
 
-Genel doğruluk **%76,19 → %83,21** olmuştur. Karışıklık sayıları yöntem bazında şöyle değişmiştir:
+Genel doğruluk **%76,19 → %82,46** olmuştur. Karışıklık sayıları yöntem bazında şöyle değişmiştir:
 
 | Yöntem | TP | TN | FP | FN |
 |---|---|---|---|---|
-| Selenium + NanoLLM | 74 → 67 | **0 → 22** | 26 → 4 | 0 → 7 |
-| Agentic Search | 77 → 69 | 1 → 19 | 22 → 4 | 0 → 8 |
+| Selenium + NanoLLM | 74 → 63 | **0 → 22** | 26 → 4 | 0 → 11 |
+| Agentic Search | 77 → 71 | 1 → 18 | 22 → 5 | 0 → 6 |
 | Tavily + NanoLLM | 71 → 64 | 11 → 21 | 17 → 7 | 1 → 8 |
 | Selenium + Kural Tabanlı | 67 → 67 | 3 → 3 | 21 → 21 | 8 → 8 |
 
 **Bulgu 6: Düşük özgüllük model yetersizliğinden değil, ölçüt uyuşmazlığından kaynaklanmaktadır.** Selenium + NanoLLM'in özgüllüğü 0,000'den 0,846'ya çıkmıştır; yöntem, uygun olmayan 26 sonuçtan hiçbirini reddedemezken 22'sini reddeder hale gelmiştir. Kontrol grubu olan kural tabanlı yöntemin hiç değişmemesi, farkın tek kaynağının istem olduğunu doğrulamaktadır.
 
-Önemsiz sınıflandırıcı taban çizgisiyle fark da buna paralel değişmiştir: Selenium + NanoLLM +0,0 puandan +15,0 puana, Agentic Search +1,0 puandan +11,0 puana, Tavily + NanoLLM +10,0 puandan +13,0 puana çıkmıştır. Yani ilk ölçümde iki yöntem "her şeye uygun de" davranışından ayırt edilemezken, hizalama sonrasında üçü de taban çizgisini net biçimde geçmektedir.
+Önemsiz sınıflandırıcı taban çizgisiyle fark da buna paralel değişmiştir: Selenium + NanoLLM +0,0 puandan +11,0 puana, Agentic Search +1,0 puandan +12,0 puana, Tavily + NanoLLM +10,0 puandan +13,0 puana çıkmıştır. Yani ilk ölçümde iki yöntem "her şeye uygun de" davranışından ayırt edilemezken, hizalama sonrasında üçü de taban çizgisini net biçimde geçmektedir.
 
-**Bulgu 7: Hizalama farkın tamamını açıklamamaktadır.** Yanlış negatifler her üç yöntemde de sıfıra yakın değerlerden 7-8'e yükselmiştir; yeni istem bazı geçerli ürün sayfalarını da reddetmektedir. Tamamlanmış olan Agentic Search verisi üzerinde yapılan satır bazlı inceleme, değişen 26 karardan 18'inin insan etiketiyle uyumlu, 8'inin uyumsuz olduğunu göstermektedir. Doğru yöne dönen kararlar beklendiği gibi kategori sayfalarında yoğunlaşmaktadır (`hepsiburada.com/molfix/bebek-bezi-c-60001048?filtreler=beden:6`, `tefal.com.tr/tava-ve-tencereler/ingenio/`, `akakce.com/kedi-mamasi/pro-plan.html`). Dolayısıyla küçük modelin kendi sınırları hizalama sonrasında da görünür kalmaktadır.
+**Bulgu 7: Hizalama farkın tamamını açıklamamaktadır.** Yanlış negatifler sıfıra yakın değerlerden 6-11 aralığına yükselmiştir; yeni istem bazı geçerli ürün sayfalarını da reddetmektedir. Üç yöntemde toplam **73 karar değişmiş**, bunların **49'u insan etiketiyle uyumlu, 24'ü uyumsuz** yöne gitmiştir (Selenium + NanoLLM 22/11, Agentic Search 17/6, Tavily + NanoLLM 10/7). Yani hizalama net kazanç sağlamakta, ancak modelin her yeni reddi doğru değildir. Doğru yöne dönen kararlar beklendiği gibi kategori sayfalarında yoğunlaşmaktadır (`hepsiburada.com/molfix/bebek-bezi-c-60001048?filtreler=beden:6`, `tefal.com.tr/tava-ve-tencereler/ingenio/`, `akakce.com/kedi-mamasi/pro-plan.html`). Dolayısıyla küçük modelin kendi sınırları hizalama sonrasında da görünür kalmaktadır.
 
 **Bu bulgunun anlamı.** Sonuç, "küçük dil modelleri uygunluk yargısı veremez" biçiminde bir model değerlendirmesi değildir. Ölçülen şey, **değerlendirme tanımının hassasiyetidir**: aynı model, ölçütü tarif eden metindeki tek bir kelime yüzünden ya tesadüf düzeyinde ya da kullanılabilir bir sınıflandırıcı gibi davranmaktadır. Bu, dil modeliyle uygunluk yargısı üzerine yapılan çalışmalarda [3], [6] istem tasarımının neden ayrı bir değişken olarak raporlanması gerektiğini somutlaştırmaktadır.
 
 Buradan doğan tasarım önerisi açıktır: **ölçüt tek bir yerde tanımlanmalı**, hem insan etiketleme yönergesi hem de model istemi bu tek kaynaktan türetilmelidir. Mevcut kodda iki metin bağımsız durmakta ve bu, uyuşmazlığın tekrar oluşmasına açık bir kapı bırakmaktadır.
 
-**Geçerlilik notu.** Yeniden değerlendirilen 60 dosyanın 34'ü sağlayıcının ücretsiz uç noktasından (`google/gemma-4-26b-a4b-it:free`, Google AI Studio), 26'sı ise ücretsiz havuzun kesintiye uğraması nedeniyle aynı modelin ücretli uç noktasından (`google/gemma-4-26b-a4b-it`, Google) üretilmiştir. Her dosya kendisini üreten uç noktayı üst verisinde kaydetmektedir. Bu bölünme yöntem sınırıyla çakıştığı için **yöntemler arası v2 karşılaştırması geçicidir**. Buna karşılık Bulgu 6'nın çekirdeği bu ayrımdan etkilenmemektedir: Agentic Search'ün 20 dosyasının tamamı ücretsiz uç noktadan gelmiştir ve tek başına 0,043 → 0,826 özgüllük değişimini göstermektedir. **[EKSİK VERİ: 26 dosya ücretsiz uç noktada yeniden üretildikten sonra Tablo 12 güncellenmelidir.]**
+**Geçerlilik notu.** Yeniden değerlendirme sırasında sağlayıcının ücretsiz ortak havuzu kesintiye uğramış ve ilk turda dosyaların bir bölümü ücretli uç noktadan üretilmek zorunda kalınmıştır. Bu bölünme yöntem sınırıyla çakıştığı için karıştırıcı değişken oluşturmuş, dolayısıyla **60 dosyanın tamamı tek bir uç noktada (`google/gemma-4-26b-a4b-it`, Google) yeniden üretilmiştir**. Tablo 12'deki değerler bu tekleştirilmiş kümeden hesaplanmıştır ve her dosya kendisini üreten model ile sağlayıcıyı üst verisinde kaydetmektedir.
+
+Bu düzeltmenin gerekliliği ölçümle görülmüştür: karışık uç noktalı kümede Selenium + NanoLLM 0,890 doğrulukla önde görünürken, tekleştirilmiş kümede Agentic Search 0,890 ile öne geçmiştir. Özgüllükteki büyük değişim (0,000 → 0,846) ise her iki kümede de aynı kalmıştır; yani Bulgu 6 uç nokta seçiminden bağımsızdır, yöntemler arası ince sıralama ise değildir.
+
+Orijinal 80 koşumun ücretsiz uç noktada yürütülmüş olması, v1 ile v2 arasında ikinci bir farklılık kaynağıdır. Kontrol grubunun (kural tabanlı yöntem, dil modeli kullanmaz) hiç değişmemesi bu kaynağın sonucu açıklayamayacağını göstermektedir, ancak tam kesinlik için orijinal koşumların da aynı uç noktada tekrarlanması gerekirdi.
 
 **Ölçüm sınırlılıkları.**
 
@@ -954,7 +958,7 @@ Buradan doğan tasarım önerisi açıktır: **ölçüt tek bir yerde tanımlanm
 - Kategori başına iki ürün, yöntemleri aynı zeminde karşılaştırmak için yeterlidir ancak bir kategoriyi karakterize etmek için azdır.
 - Etiketleme iki değerlendirici arasında bölünmüştür (134 ve 61 satır), ancak ikinci çalışma kitabı birincinin kapsadığı URL'leri dışladığından iki kümenin kesişimi sıfırdır. Hiçbir URL iki kez etiketlenmediği için değerlendiriciler arası anlaşma katsayısı (Cohen kappa) hesaplanamamaktadır. Bu katsayının hesaplanabilmesi, aynı URL alt kümesinin her iki değerlendirici tarafından bağımsız etiketlenmesini gerektirir.
 - Anahtar kelimeler deterministik modda üretilmiştir. Canlı modelle karşılaştırma yapılmış (Tablo 3a) ve deterministik üretecin ürün adındaki bilgiyi daha eksiksiz koruduğu ölçülmüştür; ancak canlı anahtar kelimelerle tam bir değerlendirme koşumu yapılmamıştır.
-- Bölüm 6.1'deki yeniden değerlendirme iki farklı sağlayıcı uç noktasından üretilmiştir (34 ücretsiz, 26 ücretli). Bölünme yöntem sınırıyla çakıştığından yöntemler arası v2 karşılaştırması geçicidir.
+- Bölüm 6.1'deki yeniden değerlendirme tek bir sağlayıcı uç noktasında tekleştirilmiştir, ancak orijinal 80 koşum ücretsiz uç noktada yürütülmüştür. Kontrol grubunun hiç değişmemesi bu farkın sonucu açıklayamayacağını gösterse de, tam kesinlik orijinal koşumların da aynı uç noktada tekrarlanmasını gerektirirdi.
 - Maliyetler 0,00 USD olarak raporlanmıştır; bu, kullanılan modelin ücretsiz katmanda olmasından ve arama maliyetinin sıfır kaydedilmesinden kaynaklanmaktadır ve gelecekteki koşumların ücretsiz olacağı anlamına gelmez.
 
 ---
@@ -1057,7 +1061,8 @@ Proje iki kişilik bir ekiple yürütülmüştür: Ali Rubar Kal ve Atahan Bulut
 .\.venv\Scripts\python.exe src\evaluation\multicategory_report.py
 
 # 5b. Hata analizi: ayni sonuclari hizalanmis istemle yeniden yargila (Bolum 6.1)
-.\.venv\Scripts\python.exe src\evaluationerun_with_aligned_prompt.py
+.\.venv\Scripts\python.exe src\evaluation
+erun_with_aligned_prompt.py
 .\.venv\Scripts\python.exe src\evaluationuild_manifest.py `
   --results-directory results_multicategory_prompt_v2 `
   --output data\evaluationinal_evaluation_manifest_prompt_v2.json

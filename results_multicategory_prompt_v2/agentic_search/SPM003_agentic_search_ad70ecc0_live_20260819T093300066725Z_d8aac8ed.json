@@ -5,7 +5,7 @@
   "execution_mode": "live",
   "provider": "openrouter+selenium+openrouter",
   "search_engine": "bing",
-  "model": "google/gemma-4-26b-a4b-it:free",
+  "model": "google/gemma-4-26b-a4b-it",
   "planner_model": "google/gemma-4-26b-a4b-it:free",
   "prompt_version": "relevance-v2-aligned",
   "search_queries": [
@@ -31,7 +31,7 @@
       "title": "Lotus Biscoff Karamelize Bisküvi 250 g 6 Adet - Trendyol",
       "snippet": "5 gün önce · Lotus Biscoff 250 G . x 6 ADET Eşsiz karamelize tada sahip lezzetli bir çıtır kurabiye. Lotus Biscoff, 1932'den beri aynı …",
       "predicted_relevant": false,
-      "relevance_score": 0.2
+      "relevance_score": 0.0
     },
     {
       "domain": "trendyol.com",
@@ -58,5 +58,5 @@
       "relevance_score": 1.0
     }
   ],
-  "rejudged_provider": "Google AI Studio"
+  "rejudged_provider": "Google"
 }

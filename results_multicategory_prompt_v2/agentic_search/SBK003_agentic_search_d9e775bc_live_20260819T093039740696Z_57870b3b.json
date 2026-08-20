@@ -5,7 +5,7 @@
   "execution_mode": "live",
   "provider": "openrouter+selenium+openrouter",
   "search_engine": "bing",
-  "model": "google/gemma-4-26b-a4b-it:free",
+  "model": "google/gemma-4-26b-a4b-it",
   "planner_model": "google/gemma-4-26b-a4b-it:free",
   "prompt_version": "relevance-v2-aligned",
   "search_queries": [
@@ -31,7 +31,7 @@
       "title": "Bioxcin Forte Şampuan ile Saç Dökülmesine Son Ver!",
       "snippet": "Saç dökülmesine karşı güçlü formülü sayesinde Bioxcin Forte, saçlarınıza ihtiyaç duyduğu bakımı sunar. Ürün fiyatları, satın alınacak …",
       "predicted_relevant": false,
-      "relevance_score": 0.2
+      "relevance_score": 0.0
     },
     {
       "domain": "trendyol.com",
@@ -39,7 +39,7 @@
       "title": "Bioxcin Saç Dökülmesine Karşı Şampuanı Deneyin! - Trendyol",
       "snippet": "3 gün önce · Yıpranan ve cansız yapılar için ideal olan Bioxcin saç dökülmesine karşı şampuan satın alabilirsiniz. Beğeni kazanan …",
       "predicted_relevant": false,
-      "relevance_score": 0.2
+      "relevance_score": 0.0
     },
     {
       "domain": "cimri.com",
@@ -55,8 +55,8 @@
       "title": "Bioxcin Forte Ürünleri & Bioxcin Forte Şampuan Fiyatları | Cimri",
       "snippet": "Bioxcin Forte, saç dökülmesine karşı etkili çözüm arayışında olanlar için önerilen bir markadır. Ürünün fiyatları, piyasada geniş bir …",
       "predicted_relevant": false,
-      "relevance_score": 0.1
+      "relevance_score": 0.0
     }
   ],
-  "rejudged_provider": "Google AI Studio"
+  "rejudged_provider": "Google"
 }

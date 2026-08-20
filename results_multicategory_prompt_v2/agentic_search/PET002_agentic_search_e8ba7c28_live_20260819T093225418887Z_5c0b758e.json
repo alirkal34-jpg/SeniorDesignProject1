@@ -5,7 +5,7 @@
   "execution_mode": "live",
   "provider": "openrouter+selenium+openrouter",
   "search_engine": "bing",
-  "model": "google/gemma-4-26b-a4b-it:free",
+  "model": "google/gemma-4-26b-a4b-it",
   "planner_model": "google/gemma-4-26b-a4b-it:free",
   "prompt_version": "relevance-v2-aligned",
   "search_queries": [
@@ -30,8 +30,8 @@
       "url": "https://www.akakce.com/kedi-mamasi/en-ucuz-enjoy-tavuklu-15-kg-1-kg-yetiskin-kuru-fiyati,791254487.html",
       "title": "Enjoy Tavuklu 15 + 1 kg Yetişkin Kedi Maması - akakce.com",
       "snippet": "En ucuz Enjoy Tavuklu 15 + 1 kg Yetişkin Kedi Maması kg fiyatı 68,74 TL'den başlayan seçeneklerle Akakçe'de! Enjoy Tavuklu 15 + …",
-      "predicted_relevant": false,
-      "relevance_score": 0.0
+      "predicted_relevant": true,
+      "relevance_score": 1.0
     },
     {
       "domain": "cimri.com",
@@ -58,5 +58,5 @@
       "relevance_score": 1.0
     }
   ],
-  "rejudged_provider": "Google AI Studio"
+  "rejudged_provider": "Google"
 }
