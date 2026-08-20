@@ -23,6 +23,7 @@ from evaluation.category_metrics import (  # noqa: E402
     CategoryMetricsError,
     build_category_report,
     load_category_by_product,
+    relative_to_project,
     render_markdown,
     score_predictions,
 )
@@ -335,6 +336,20 @@ class CategoryReportTests(unittest.TestCase):
             "agentic_search",
             report["category_groups"]["petshop"]["methods"],
         )
+
+    def test_a_relative_manifest_path_is_accepted(self) -> None:
+        # Running the script from a shell gives a relative path, which used
+        # to crash the report before the path was resolved.
+        import os
+
+        manifest_path = self.build_fixture()
+        previous = Path.cwd()
+        os.chdir(self.root)
+        self.addCleanup(os.chdir, previous)
+
+        report = build_category_report(Path("data") / manifest_path.name)
+
+        self.assertIn("manifest.json", report["manifest_file"])
 
     def test_manifest_without_result_files_is_refused(self) -> None:
         manifest_path = self.build_fixture()

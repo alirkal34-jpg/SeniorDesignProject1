@@ -63,6 +63,18 @@ class CategoryMetricsError(ValueError):
     """Raised when the per-category report cannot be built."""
 
 
+def relative_to_project(file_path: Path) -> str:
+    """Render a path the way the report stores it, however it was given."""
+
+    resolved = Path(file_path).resolve()
+
+    try:
+        return str(resolved.relative_to(PROJECT_ROOT)).replace("\\", "/")
+    except ValueError:
+        # A manifest kept outside the project still deserves a readable name.
+        return str(resolved).replace("\\", "/")
+
+
 def load_category_by_product(subset_path: Path) -> dict[str, str]:
     """Map every evaluated product to the category group it belongs to."""
 
@@ -283,9 +295,10 @@ def build_category_report(
         }
 
     return {
-        "manifest_file": str(
-            manifest_path.relative_to(PROJECT_ROOT)
-        ).replace("\\", "/"),
+        # The path may arrive relative, from a shell run inside the project,
+        # or absolute from the default. Resolve it before making it relative
+        # so a plain `--manifest data/...` does not crash the report.
+        "manifest_file": relative_to_project(manifest_path),
         "evaluation_subset_file": manifest["evaluation_subset_file"],
         "ground_truth_file": manifest["ground_truth_file"],
         "product_count": len(category_by_product),
