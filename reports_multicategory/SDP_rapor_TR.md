@@ -1,0 +1,1088 @@
+# ÜRÜN VERİSİNDEN ANAHTAR KELİME ÜRETİMİ VE ARAMA SONUÇLARININ E-TİCARET UYGUNLUĞUNUN DÖRT YÖNTEMLE KARŞILAŞTIRILMASI
+
+**Senior Design Project** — **[EKSİK VERİ: Şablon dosyası COMP492 / Senior Design Project II diyor, oysa proje bağlamında COMP 491 belirtilmişti. Lütfen doğru ders kodunu ve dönemi giriniz.]**
+
+**Öğrenciler:** Ali Rubar Kal, Atahan Bulut
+**Danışman:** **[EKSİK VERİ: Lütfen danışmanın unvanı ve adını giriniz.]**
+**Tarih:** **[EKSİK VERİ: Lütfen teslim tarihini gg/aa/yyyy formatında giriniz.]**
+
+MEF ÜNİVERSİTESİ
+MÜHENDİSLİK FAKÜLTESİ
+BİLGİSAYAR MÜHENDİSLİĞİ BÖLÜMÜ
+
+---
+
+## ABSTRACT
+
+**PRODUCT-DRIVEN KEYWORD GENERATION AND A FOUR-METHOD COMPARISON OF E-COMMERCE RELEVANCE IN SEARCH RESULTS**
+
+Ali Rubar Kal, Atahan Bulut
+MEF University, Faculty of Engineering, Department of Computer Engineering
+Advisor: **[EKSİK VERİ: advisor name]**
+**[EKSİK VERİ: MONTH, YEAR]**
+
+Bu projede, yapılandırılmış ürün verisinden işlemsel (transactional) niyet taşıyan arama sorguları üretilmekte ve bu sorgularla elde edilen web arama sonuçlarının e-ticaret uygunluğu dört farklı yöntemle değerlendirilmektedir. Karşılaştırılan yöntemler şunlardır: Selenium tabanlı toplama ile kural tabanlı alan adı puanlaması, Selenium tabanlı toplama ile küçük ölçekli dil modeli (NanoLLM) değerlendirmesi, Tavily arama API'si ile NanoLLM değerlendirmesi ve planlama–arama–değerlendirme döngüsü kuran etmen tabanlı (agentic) arama. Dört yöntemin tamamı LangGraph üzerinde tek bir yönlendirilmiş çevrimsiz çizge ile orkestre edilmiş, böylece her ürün için aynı anahtar kelimenin dört yönteme değişmeden verilmesi garanti altına alınmıştır.
+
+Sistem, Akakçe üzerinden toplanan 10 kategori grubuna ait 489 gerçek ürün üzerinde kurulmuştur. Değerlendirme, her kategoriden iki farklı markaya ait ikişer ürün seçilerek oluşturulan 20 ürünlük bir alt kümede yürütülmüştür: 20 ürün × 4 yöntem = 80 canlı çalıştırma, 399 arama sonucu ve 46 farklı alan adı. Sonuçların uygunluğu, yöntem tahminleri gizlenmiş bir çalışma kitabı üzerinden elle etiketlenmiş; 194 benzersiz URL için insan etiketi elde edilmiş ve bu etiketler 399 sonucun tamamını kapsamıştır (kapsam oranı %100).
+
+Ölçülen genel doğruluk %76,19'dur. Ancak asıl bulgu doğruluk sıralamasında değil, sınıflandırma davranışındadır: Selenium + NanoLLM 100 sonucun 100'üne "uygun" demiş, özgüllüğü (specificity) 0,00 ve dengeli doğruluğu 0,50 çıkmıştır; yani doğruluğu yalnızca kendi sonuç kümesindeki uygun oranını yansıtmaktadır. Agentic Search 100 sonucun 99'una "uygun" demiştir. Yalnızca Tavily + NanoLLM anlamlı bir reddetme oranına ulaşmıştır (özgüllük 0,3929; doğruluk %82,00; önemsiz sınıflandırıcı taban çizgisi %72,00). Kural tabanlı yöntem %70,71 ile kendi taban çizgisinin (%75,76) altında kalmıştır. Kategori kırılımında telefon kategorisi dört yöntem ortalamasında %100 doğrulukla en kolay kategori çıkmış, diğer dokuz grup %73,52 ortalamada kalmıştır.
+
+**Keywords:** e-commerce search relevance, transactional query generation, LLM-as-a-judge, agentic search, LangGraph, human relevance judgments, balanced accuracy
+
+---
+
+## ÖZET
+
+**ÜRÜN VERİSİNDEN ANAHTAR KELİME ÜRETİMİ VE ARAMA SONUÇLARININ E-TİCARET UYGUNLUĞUNUN DÖRT YÖNTEMLE KARŞILAŞTIRILMASI**
+
+Ali Rubar Kal, Atahan Bulut
+MEF Üniversitesi, Mühendislik Fakültesi, Bilgisayar Mühendisliği Bölümü
+Tez Danışmanı: **[EKSİK VERİ: danışman adı]**
+**[EKSİK VERİ: AY, Yıl]**
+
+E-ticaret arama motorlarında bir sorgunun döndürdüğü sayfaların gerçekten satın almaya yönelik olup olmadığını ölçmek, hem sıralama kalitesinin hem de arama motoru optimizasyonu çalışmalarının temel girdisidir. Bu proje, yapılandırılmış ürün kayıtlarından işlemsel niyetli arama sorguları üretmekte ve bu sorguların döndürdüğü sonuçların uygunluğunu dört ayrı yöntemle değerlendirerek yöntemleri aynı veri üzerinde karşılaştırmaktadır.
+
+Projenin veri katmanı, Akakçe üzerinden toplanan 10 kategori grubuna ait 489 üründen oluşmaktadır; kategori taksonomisi tek bir başvuru dosyasında tanımlanmış ve veri doğrulama bu taksonomiden türetilmiştir. Değerlendirme katmanı, dört yöntemi LangGraph çizgesi üzerinde sırayla çalıştırmakta, her yöntemin çıktısını ortak bir JSON şemasına yazmakta ve bu çıktıları insan etiketleriyle eşleştirerek doğruluk, kesinlik, duyarlılık, özgüllük ve dengeli doğruluk hesaplamaktadır.
+
+20 ürünlük değerlendirme alt kümesinde 80 canlı çalıştırma hatasız tamamlanmış, 399 sonuç üretilmiş ve bu sonuçların tamamı 194 benzersiz URL üzerinden elle etiketlenmiştir. Genel doğruluk %76,19 ölçülmüştür. Yöntemlerin üçünün doğruluğu, "her sonuca uygun de" biçimindeki önemsiz sınıflandırıcının doğruluğunu geçememiş veya çok az geçmiştir; bu nedenle raporda doğruluğun yanına özgüllük ve dengeli doğruluk da konulmuştur. Danışman geri bildiriminde dile getirilen "tek kategori yeterli değil" eleştirisi ölçümle doğrulanmıştır: telefon kategorisi dört yöntem ortalamasında %100, diğer dokuz kategori %73,52 doğruluk vermiştir.
+
+**Anahtar Kelimeler:** e-ticaret arama uygunluğu, işlemsel sorgu üretimi, dil modeliyle değerlendirme, etmen tabanlı arama, LangGraph, insan uygunluk yargıları, dengeli doğruluk
+
+---
+
+## TABLE OF CONTENTS
+
+1. INTRODUCTION
+   1.1. Motivation
+   1.2. Broad Impact
+       1.2.1. Global Impact of the solution
+       1.2.2. Economic Impact of the solution
+       1.2.3. Environmental Impact of the solution
+       1.2.4. Societal Impacts of the solution
+       1.2.5. Legal Issues related to the project
+2. PROJECT DEFINITION AND PLANNING
+   2.1. Project Definition
+   2.2. Project Planning
+       2.2.1 Aim of the Project
+       2.2.2 Project Coverage
+       2.2.3 Use Cases
+       2.2.4 Success Criteria
+       2.2.5 Project Time and Resource Estimation
+       2.2.6 Solution Strategies and Applicable Methods
+       2.2.7 Risk Analysis
+       2.2.8 Tools Needed
+3. THEORETICAL BACKGROUND
+   3.1. Literature Survey
+   3.2. Solution Method: LangGraph Tabanlı Dört Yöntemli Karşılaştırma Hattı
+4. ANALYSIS AND MODELLING
+   4.1. System Factors
+   4.2. How System Works
+   4.3. Modelling
+       4.3.1. System Architecture
+       4.3.2. UML Diagrams
+5. DESIGN, IMPLEMENTATION AND TESTING
+   5.1. Design
+   5.2. Implementation
+   5.3. Testing
+6. RESULTS
+7. CONCLUSION
+   7.1. Life-Long Learning
+   7.2. Professional and Ethical Responsibilities of Engineers
+   7.3. Contemporary Issues
+   7.4. Team Work
+APPENDIX A
+APPENDIX B
+ACKNOWLEDGEMENTS
+REFERENCES
+
+---
+
+## LIST OF TABLES
+
+- Tablo 1. Uygunluk değerlendirmesinde kullanılan yöntem ailelerinin yıllara göre gelişimi ve bu projede karşılık gelen yöntem
+- Tablo 2. Projenin gerçekleşen iş kırılımı ve zaman çizelgesi
+- Tablo 3. Kategori taksonomisi ve toplanan ürün sayıları
+- Tablo 4. Güvenilir e-ticaret alan adı tablosunun tür dağılımı
+- Tablo 5. Projede kullanılan yazılım araçları ve sürümleri
+- Tablo 6. Risk analizi: gerçekleşen ve öngörülen riskler
+- Tablo 7. Kaynak kodu ve test kodu büyüklüğü
+- Tablo 8. Dört yöntemin genel başarım karşılaştırması
+- Tablo 9. Yöntem bazlı karışıklık matrisi
+- Tablo 10. Kategori gruplarına göre doğruluk
+- Tablo 11. Dondurulmuş telefon deneyi ile çok kategorili deneyin karşılaştırması
+
+## LIST OF FIGURES
+
+- Şekil 1. Uçtan uca LangGraph çizgesinin düğüm yapısı
+- Şekil 2. Dört yöntemli karşılaştırma alt çizgesi
+- Şekil 3. Etmen tabanlı arama alt çizgesi
+- Şekil 4. Kullanım senaryosu (use case) diyagramı
+- Şekil 5. Veri akışı ve bileşen diyagramı
+- Şekil 6. Etiketleme ve ölçüm dizisi (sequence) diyagramı
+
+## LIST OF ABBREVIATIONS
+
+| Kısaltma | Açıklama |
+|---|---|
+| API | Application Programming Interface — Uygulama Programlama Arayüzü |
+| CSV | Comma-Separated Values — Virgülle Ayrılmış Değerler |
+| DAG | Directed Acyclic Graph — Yönlendirilmiş Çevrimsiz Çizge |
+| FN | False Negative — Yanlış Negatif |
+| FP | False Positive — Yanlış Pozitif |
+| IR | Information Retrieval — Bilgi Erişimi |
+| JSON | JavaScript Object Notation |
+| LLM | Large Language Model — Büyük Dil Modeli |
+| NanoLLM | Bu projede kullanılan küçük ölçekli, ücretsiz katmanlı dil modeli değerlendiricisi |
+| SEO | Search Engine Optimization — Arama Motoru Optimizasyonu |
+| TN | True Negative — Doğru Negatif |
+| TP | True Positive — Doğru Pozitif |
+| UML | Unified Modeling Language — Birleşik Modelleme Dili |
+| WBS | Work Breakdown Structure — İş Kırılım Yapısı |
+
+---
+
+# 1. INTRODUCTION
+
+E-ticaret alanında bir kullanıcının yazdığı sorgunun döndürdüğü sayfaların ne kadarının gerçekten satın alma eylemine hizmet ettiği, hem arama motoru sıralama kalitesinin hem de satıcıların arama motoru optimizasyonu yatırımlarının doğrudan ölçüsüdür. Bu proje iki birbirine bağlı problemi ele almaktadır. Birincisi, yapılandırılmış ürün verisinden (marka, model, varyant etiketi, kategori) işlemsel niyet taşıyan arama sorgularının otomatik üretilmesidir. İkincisi, bu sorguların döndürdüğü web sonuçlarının e-ticaret uygunluğunun otomatik olarak değerlendirilmesi ve farklı değerlendirme yaklaşımlarının aynı veri üzerinde nesnel biçimde karşılaştırılmasıdır.
+
+Projede karşılaştırılan dört yöntem, bilinçli olarak farklı maliyet–yetenek noktalarını temsil edecek şekilde seçilmiştir: (i) tarayıcı otomasyonu ile toplanan sonuçların statik bir güvenilir alan adı tablosuna göre puanlanması, (ii) aynı sonuçların küçük ölçekli bir dil modeliyle değerlendirilmesi, (iii) ticari bir arama API'sinden gelen sonuçların aynı dil modeliyle değerlendirilmesi ve (iv) planlama, arama ve değerlendirme adımlarını kendi içinde döngüye sokan etmen tabanlı bir yaklaşım. Dört yöntemin tamamı, aynı ürün ve aynı anahtar kelime ile beslenmelerini garanti eden tek bir LangGraph çizgesi üzerinde çalıştırılmaktadır.
+
+Projenin ilk aşamasında yalnızca akıllı telefon kategorisi kullanılmıştır. Danışman geri bildirimi üzerine, hattın farklı arama niyetlerine ve farklı ürün yapılarına genellenebildiğini gösterebilmek amacıyla veri kümesi on kategori grubuna genişletilmiş ve karşılaştırma bu genişletilmiş küme üzerinde tekrarlanmıştır. Bu rapor, genişletilmiş deneyin tasarımını, uygulamasını ve ölçülen sonuçlarını sunmaktadır.
+
+## 1.1. Motivation
+
+Bu proje üzerinde çalışmanın önemi üç noktada toplanmaktadır.
+
+Birincisi, uygunluk ölçümü otomatikleştirilemediği sürece arama kalitesi çalışmaları ölçeklenememektedir. Bilgi erişimi literatüründe uygunluk yargıları klasik olarak insan değerlendiriciler tarafından üretilir ve bu, Cranfield paradigmasının en pahalı bileşenidir [2]. Son yıllarda büyük dil modellerinin bu yargıları kısmen veya tamamen üstlenip üstlenemeyeceği aktif bir tartışma konusudur [3], [6]. Bu proje, söz konusu tartışmayı Türkçe e-ticaret bağlamında ve küçük, ücretsiz katmanlı modellerle sınayarak somut bir ölçüm sunmaktadır.
+
+İkincisi, bir yöntemin "yüksek doğruluk" vermesi ile "gerçekten ayırt etmesi" arasındaki fark, uygulamada sıkça gözden kaçmaktadır. Bu projenin ölçümleri, döndürülen sonuçların büyük çoğunluğunun zaten uygun olduğu bir veri kümesinde, hiçbir sonucu reddetmeyen bir sınıflandırıcının bile yüksek doğruluk elde edebildiğini göstermektedir. Bu nedenle raporda doğruluk tek başına değil, özgüllük ve dengeli doğruluk ile birlikte raporlanmıştır [8].
+
+Üçüncüsü, sonuçlardan doğrudan fayda sağlayacak taraflar bellidir. Ürün kataloğu yöneten satıcılar, hangi anahtar kelime kalıbının hangi tür sayfaları getirdiğini ve hangi otomatik değerlendiricinin manuel kontrol yükünü ne kadar azaltabileceğini görebilir. Fiyat karşılaştırma platformları, katalog eşleştirme kalitesini denetlemek için benzer bir ölçüm hattı kurabilir. Akademik açıdan ise, dört yöntemin aynı ürünler, aynı anahtar kelimeler ve aynı insan etiketleri üzerinde karşılaştırılması, yöntem seçiminin sonuca etkisini yalıtılmış biçimde göstermektedir.
+
+## 1.2. Broad Impact
+
+Uygunluk değerlendirmesi problemi, bilgi erişimi alanında farklı dönemlerde farklı yöntem aileleriyle ele alınmıştır. Tablo 1, bu gelişimi ve her yöntem ailesinin bu projedeki karşılığını özetlemektedir.
+
+**Tablo 1.** Uygunluk değerlendirmesinde kullanılan yöntem ailelerinin gelişimi ve bu projede karşılık gelen yöntem.
+
+| Yıl | Yöntem ailesi | Değerlendirme verisi | Bu projedeki karşılığı |
+|---|---|---|---|
+| 2000 | İnsan uygunluk yargıları (Cranfield / TREC) [2] | TREC ad hoc koleksiyonları | 194 benzersiz URL için elle üretilen temel doğruluk (ground truth) |
+| 2002 | Sorgu niyeti sınıflandırması [1] | AltaVista sorgu kayıtları ve kullanıcı anketi | İşlemsel niyetli anahtar kelime üretimi ve işlemsel amaç ölçütü |
+| 2023 | Etmen tabanlı akıl yürütme ve eylem döngüsü [7] | HotpotQA, FEVER, ALFWorld, WebShop | Agentic Search yöntemi (plan → search → evaluate → aggregate) |
+| 2023–2025 | Dil modeliyle uygunluk yargısı [3], [4], [5], [6] | Ürün arama ve web arama koleksiyonları | Selenium + NanoLLM ve Tavily + NanoLLM yöntemleri |
+
+### 1.2.1. Global Impact of the solution
+
+Çözümün küresel etkisi, kullanılan yöntemin dile ve pazara görece bağımsız olmasından kaynaklanmaktadır. Sistemin girdisi yapılandırılmış ürün kaydı, çıktısı ise ortak bir JSON şemasına yazılan sonuç listesidir; arama sağlayıcısı, değerlendirici model ve güvenilir alan adı tablosu birer yapılandırma öğesidir. Bu ayrıştırma sayesinde aynı hat, farklı bir ülkedeki e-ticaret ekosistemi için yalnızca alan adı tablosu ve kategori taksonomisi değiştirilerek yeniden kullanılabilir. Ayrıca proje, uygunluk değerlendirmesinde küçük ve ücretsiz katmanlı modellerin sınırlarını ölçtüğü için, büyük ticari model bütçesi olmayan araştırmacılar ve küçük işletmeler açısından doğrudan aktarılabilir bir bulgu üretmektedir.
+
+### 1.2.2. Economic Impact of the solution
+
+Ekonomik etki iki yönlüdür. Maliyet tarafında, bu projedeki 80 canlı çalıştırmanın tamamı için kaydedilen tahmini sağlayıcı maliyeti 0,00 USD'dir; çünkü kullanılan OpenRouter modeli ücretsiz katmanda çalışmakta ve Tavily arama maliyeti bu deney için sıfır olarak kaydedilmiştir. Bu, ölçüm hattının ücretsiz katman kotalarıyla kurulabileceğini göstermektedir; ancak ileriki çalıştırmaların da ücretsiz olacağı anlamına gelmez.
+
+Fayda tarafında, otomatik değerlendirmenin manuel etiketleme yükünü ne kadar azaltabileceği ölçülmüştür. 399 sonucun elle etiketlenmesi iki oturumda tamamlanmıştır. Ölçümlere göre, yöntemlerden yalnızca biri (Tavily + NanoLLM) uygun olmayan sonuçların %39,29'unu reddedebilmiştir; kalan üç yöntem pratikte hiçbir sonucu elemediği için manuel kontrol yükünü anlamlı ölçüde azaltmamaktadır. Bu bulgu, literatürde büyük ölçekli ürün arama değerlendirmesinde insan seviyesine yaklaşan doğruluk bildiren çalışmalarla [5] karşılaştırıldığında, model ölçeğinin ve istem tasarımının belirleyici olduğuna işaret etmektedir.
+
+Projenin doğrudan parasal maliyet kalemleri için: **[EKSİK VERİ: Lütfen donanım (kişisel bilgisayarlar), yazılım lisansı ve insan kaynağı saatlik ücret varsayımlarınızı giriniz; bu değerler proje kayıtlarında bulunmamaktadır.]**
+
+### 1.2.3. Environmental Impact of the solution
+
+Çevresel etki, hesaplama yoğunluğu üzerinden değerlendirilmelidir. Ölçülen ortalama çalışma süreleri yöntemler arasında beş kattan fazla farklılık göstermektedir: kural tabanlı yöntem çalıştırma başına ortalama 5,5505 saniye, etmen tabanlı yöntem ise 27,8395 saniye sürmektedir. Bu, en yüksek doğruluğu veren yöntemin aynı zamanda en yüksek hesaplama maliyetini taşımadığını göstermesi bakımından önemlidir: en yüksek doğruluğu veren Tavily + NanoLLM ortalama 12,0785 saniye ile etmen tabanlı yöntemin yaklaşık yarısı kadar sürede tamamlanmaktadır. Enerji tüketimi açısından, gereksiz yere daha ağır bir yöntem seçmemek doğrudan bir tasarruf kalemidir.
+
+Ayrıca veri toplama tarafında, hedef sitelere gereksiz yük bindirmemek için istekler arasında bekleme uygulanmış ve önceki oturumda toplanan ürünler yeniden çekilmek yerine devralınmıştır; toplama üst verisi 489 ürünün tamamının önceki oturumlardan devralındığını (`carried_over_from_previous_run: 489`, `collected_this_run: 0`) kaydetmektedir.
+
+Sunucu tarafı enerji tüketimi veya karbon eşdeğeri ölçümü yapılmamıştır: **[EKSİK VERİ: Lütfen ölçülmüş enerji tüketimi/karbon değeri varsa giriniz; proje kayıtlarında bulunmamaktadır.]**
+
+### 1.2.4. Societal Impacts of the solution
+
+Toplumsal etki, tüketicinin arama sonucundan gerçekten ürüne ulaşabilmesiyle ilgilidir. Bu projede uygunluk ölçütü, sayfanın hem sorguda adı geçen ürünün kendisi (belirtilen varyant dâhil) olmasını hem de işlemsel amaç taşımasını gerektirmektedir. Ölçümler, etiketlenmiş 194 URL'nin 54'ünün (%27,8) bu ölçütü karşılamadığını göstermektedir; yani kullanıcı, döndürülen sonuçların yaklaşık dörtte birinde aradığı ürünün satın alınabilir sayfasına ulaşamamaktadır. Bu oranın kategoriye göre ciddi biçimde değiştiği de ölçülmüştür: uygun sonuç payı telefon ve kitap/müzik/hobi kategorilerinde %95,00 iken, spor/outdoor kategorisinde %56,41'e düşmektedir.
+
+Otomatik değerlendiricilerin toplumsal riski de bu projede somutlaşmıştır. Hiçbir sonucu elemeyen bir değerlendirici, doğruluk metriğinde iyi görünmesine rağmen kullanıcıyı ilgisiz sayfalardan korumamaktadır. Bu nedenle raporda, otomatik değerlendiricilerin yalnızca doğrulukla değil, reddetme kabiliyetiyle birlikte raporlanması gerektiği savunulmaktadır.
+
+### 1.2.5. Legal Issues related to the project
+
+Projenin hukuki boyutu esas olarak veri toplama aşamasındadır. Veri, Akakçe üzerinden herkese açık ürün listeleme sayfalarından toplanmıştır. Toplama sırasında aşağıdaki ilkeler uygulanmıştır:
+
+- **Bot korumasının aşılmaması.** Cimri sitesi Cloudflare tabanlı koruma nedeniyle erişilebilir olmamış ve bu koruma aşılmaya çalışılmamıştır; site veri kaynağı olarak tamamen devre dışı bırakılmıştır. Akakçe'de karşılaşılan hız sınırlaması, istekler arası bekleme süresi artırılarak ve toplama işi birden fazla oturuma bölünerek yönetilmiştir. Toplam yedi toplama oturumu kaydedilmiştir.
+- **Robots Exclusion Protocol.** robots.txt, IETF tarafından RFC 9309 ile standartlaştırılmıştır [10]. Otomatik istemcilerin bu yönergelere uyması, hukuki zorunluluktan bağımsız olarak yerleşik bir norm olarak kabul edilmektedir [9].
+- **Kişisel veri toplanmaması.** Toplanan alanlar yalnızca ürün kimliği, ürün adı, marka, kategori, kaynak bağlantısı ve ürün nitelikleridir; hiçbir kişisel veri toplanmamıştır.
+- **Kimlik bilgilerinin depoya girmemesi.** API anahtarları `.env` dosyasında tutulmakta ve sürüm kontrolünde `.gitignore` ile hariç tutulmaktadır; depoda yalnızca anahtar içermeyen `.env.example` bulunmaktadır.
+- **Sentetik ve gerçek verinin ayrılması.** Sentetik katalog ile kazınmış veri, üst verideki `acquisition_mode` alanıyla (`synthetic` / `scraped`) ayrılmakta ve bu ayrımı koruyan otomatik testler bulunmaktadır. Sentetik veri hiçbir koşulda gerçek veri gibi sunulmamaktadır.
+
+Fikri mülkiyet açısından, toplanan veri özgün ifade değil olgusal ürün bilgisidir ve yalnızca akademik değerlendirme amacıyla kullanılmıştır. Araştırma amaçlı web kazımanın hukuki, etik ve kurumsal boyutları literatürde ayrıntılı biçimde tartışılmaktadır [9].
+
+---
+
+# 2. PROJECT DEFINITION AND PLANNING
+
+## 2.1. Project Definition
+
+**Kapsam.** Proje, yapılandırılmış ürün kayıtlarından işlemsel niyetli arama sorguları üreten ve bu sorguların döndürdüğü web sonuçlarının e-ticaret uygunluğunu dört farklı yöntemle değerlendirip karşılaştıran uçtan uca bir hat geliştirmektedir. Hat, ham veri toplamadan başlayıp doğrulanmış metrik raporuna kadar olan tüm adımları kapsamaktadır.
+
+**İşlevsel gereksinimler.**
+
+1. Sistem, kategori taksonomisine göre e-ticaret sitelerinden ürün verisi toplayabilmelidir; toplanan veri ile sentetik veri üst veride ayrılmalıdır.
+2. Sistem, ham ürün verisini temizleyip doğrulayarak kategori profiline uygun bir işlenmiş veri kümesine dönüştürmelidir.
+3. Sistem, her ürün için işlemsel niyet taşıyan tek bir anahtar kelime üretmelidir.
+4. Sistem, aynı anahtar kelimeyi dört yönteme değiştirmeden vermelidir.
+5. Her yöntem, ürün başına en fazla beş arama sonucu döndürmeli ve her sonuç için `predicted_relevant` (boolean) ve `relevance_score` (0–1) üretmelidir.
+6. Tüm yöntem çıktıları ortak bir JSON şemasına yazılmalı ve şema doğrulamasından geçmelidir.
+7. Sistem, benzersiz URL'leri insan değerlendirmesi için bir Excel çalışma kitabına aktarabilmeli ve doldurulmuş kitabı temel doğruluk dosyasına geri okuyabilmelidir.
+8. Sistem, insan etiketleriyle yöntem tahminlerini eşleştirerek doğruluk, kesinlik, duyarlılık, özgüllük ve dengeli doğruluk hesaplamalı; sonuçları hem genel hem kategori bazında raporlamalıdır.
+
+**İşlevsel olmayan gereksinimler.**
+
+1. **Tekrarlanabilirlik.** Bir metrik raporunun hangi sonuç dosyalarından hesaplandığı bir manifest dosyasında dondurulmalı; rapordaki her sayı bu dosyalardan yeniden üretilebilmelidir.
+2. **Yansızlık.** İnsan değerlendiriciye yöntem tahminleri gösterilmemelidir.
+3. **Karşılaştırılabilirlik.** Bir URL için verilen etiket, o URL'yi döndüren tüm yöntemler için ortak olmalıdır.
+4. **Sessiz veri kaybı olmaması.** Eksik etiket, eksik ürün/yöntem kombinasyonu veya çelişkili etiket, sessizce atlanmak yerine işlemi durdurmalıdır.
+5. **API'siz test edilebilirlik.** Test paketi ağ erişimi ve API anahtarı gerektirmeden çalışabilmelidir.
+6. **Geriye dönük koruma.** Önceki (telefon) deneyinin sonuçları değişmeden yeniden üretilebilmelidir.
+
+## 2.2. Project Planning
+
+İş kırılım yapısı yedi ana görevden oluşmaktadır. Tablo 2, sürüm kontrol geçmişinden çıkarılan gerçekleşen zaman çizelgesini göstermektedir. Tarihler, ilgili görevin ilk ve son işlem (commit) tarihlerinden alınmıştır.
+
+**Tablo 2.** Projenin gerçekleşen iş kırılımı ve zaman çizelgesi (kaynak: sürüm kontrol geçmişi, 42 işlem).
+
+| No | Görev | Sorumlu | Başlangıç | Bitiş |
+|---|---|---|---|---|
+| 1 | Veri işleme temeli ve depo kurulumu | Ali Rubar Kal, Atahan Bulut | 23.07.2026 | 23.07.2026 |
+| 2 | Selenium tabanlı toplama ve kural tabanlı değerlendirme | Ali Rubar Kal | 23.07.2026 | 24.07.2026 |
+| 3 | Yapılandırılmış anahtar kelime üreteci ve LLM entegrasyonu | Atahan Bulut | 23.07.2026 | 28.07.2026 |
+| 4 | Metrik ve temel doğruluk araçları | Ali Rubar Kal | 25.07.2026 | 25.07.2026 |
+| 5 | Tavily ve etmen tabanlı arama hatları | Atahan Bulut | 26.07.2026 | 28.07.2026 |
+| 6 | LangGraph orkestrasyonu ve dört yöntemli canlı değerlendirme | Ali Rubar Kal, Atahan Bulut | 28.07.2026 | 06.08.2026 |
+| 7 | On kategoriye genişletme, etiketleme ve kategori bazlı raporlama | Ali Rubar Kal, Atahan Bulut | 18.08.2026 | 19.08.2026 |
+
+Toplam takvim süresi 23.07.2026 – 19.08.2026 arası, yaklaşık dört haftadır. Katkı dağılımı sürüm kontrol geçmişine göre Ali Rubar Kal 26 işlem, Atahan Bulut 16 işlemdir.
+
+### 2.2.1 Aim of the Project
+
+Projenin amacı, yapılandırılmış ürün verisinden üretilen işlemsel arama sorgularının döndürdüğü web sonuçlarının e-ticaret uygunluğunu ölçmek ve bu ölçümü dört farklı otomatik değerlendirme yaklaşımı için aynı veri, aynı sorgular ve aynı insan etiketleri üzerinde karşılaştırmalı olarak yaparak, hangi yaklaşımın hangi maliyetle ne kadar gerçek ayırt etme kabiliyeti sunduğunu nesnel biçimde ortaya koymaktır.
+
+### 2.2.2 Project Coverage
+
+Proje aşağıdaki bileşenleri kapsamaktadır:
+
+- **Veri toplama katmanı.** On kategori grubu için Akakçe üzerinden ürün kazıma (BeautifulSoup4 ve Selenium), oturumlar arası devam edebilme ve toplama üst verisi üretimi. Ayrıca çevrimdışı çalışma için sentetik katalog.
+- **Veri işleme katmanı.** Kategori profiline göre temizleme, doğrulama ve şema uyumu; doğrulama sorunlarının ayrı bir dosyaya raporlanması.
+- **Anahtar kelime üretimi.** Ürün kaydından işlemsel niyetli tek anahtar kelime üretimi; hem canlı LLM hem deterministik mod.
+- **Dört değerlendirme yöntemi.** Selenium + Kural Tabanlı, Selenium + NanoLLM, Tavily + NanoLLM, Agentic Search.
+- **Orkestrasyon.** LangGraph üzerinde üç çizge: uçtan uca hat, dört yöntemli karşılaştırma alt çizgesi ve etmen tabanlı arama alt çizgesi.
+- **İnsan etiketleme döngüsü.** Excel çalışma kitabına dışa aktarım, doldurulmuş kitabın temel doğruluk dosyasına içe aktarımı, belirsiz satırlar için izlenebilir hakem (adjudication) mekanizması.
+- **Ölçüm ve raporlama.** Manifest ile dondurulan sonuç kümesi üzerinden genel ve kategori bazlı metrikler; metrik dosyalarından üretilen Markdown rapor.
+
+Kapsam dışında bırakılanlar: sıralama (ranking) kalitesi metrikleri (nDCG vb.), çok koşumlu varyans analizi, çoklu değerlendirici anlaşma katsayısı ve canlı üretim ortamına dağıtım.
+
+### 2.2.3 Use Cases
+
+**Şekil 4.** Kullanım senaryosu (use case) diyagramı.
+
+```
+                          ┌──────────────────────────────────────────────┐
+                          │        Uygunluk Değerlendirme Sistemi        │
+                          │                                              │
+   ┌──────────┐           │   ( UC1: Ürün verisi topla )                 │
+   │          │──────────▶│                                              │
+   │Araştırmacı│──────────▶│   ( UC2: Veriyi temizle ve doğrula )         │
+   │(Öğrenci) │──────────▶│                                              │
+   │          │──────────▶│   ( UC3: Anahtar kelime üret )               │
+   └──────────┘           │              │                               │
+        │                 │              │ «include»                     │
+        │                 │              ▼                               │
+        │────────────────▶│   ( UC4: Dört yöntemi çalıştır )             │
+        │                 │       │        │        │        │           │
+        │                 │       ▼        ▼        ▼        ▼           │
+        │                 │  «extend» Kural  NanoLLM  Tavily  Agentic     │
+        │                 │                                              │
+        │────────────────▶│   ( UC5: Etiketleme kitabı üret )            │
+        │                 │              │                               │
+        │                 │              │ «include» tahminleri gizle     │
+        │                 │              ▼                               │
+   ┌──────────┐           │   ( UC6: URL'leri elle etiketle )            │
+   │Değerlendi│──────────▶│              │                               │
+   │rici      │           │              │ «extend» belirsiz satırı       │
+   │(İnsan)   │           │              ▼            hakeme taşı         │
+   └──────────┘           │   ( UC7: Temel doğruluk üret )               │
+                          │              │                               │
+        ┌──────────┐      │              ▼                               │
+        │ Danışman │─────▶│   ( UC8: Metrik ve rapor üret )              │
+        └──────────┘      │                                              │
+                          └──────────────────────────────────────────────┘
+
+   Dış aktörler: Akakçe (veri kaynağı), Tavily API (arama),
+                 OpenRouter API (dil modeli), Bing/Google (Selenium araması)
+```
+
+**Kullanım senaryosu açıklamaları.**
+
+- **UC1 — Ürün verisi topla.** Aktör: Araştırmacı. Ön koşul: kategori taksonomisi tanımlı. Akış: taksonomideki her kategori için arama terimleriyle listeleme sayfaları gezilir, ürün kaydı çıkarılır, üst veri yazılır. Alternatif akış: hedef site hız sınırı uygularsa oturum kaydedilir ve `--resume` ile devam edilir.
+- **UC2 — Veriyi temizle ve doğrula.** Kategori profiline göre zorunlu ve isteğe bağlı alanlar denetlenir; sorunlu satırlar ayrı dosyaya yazılır.
+- **UC3 — Anahtar kelime üret.** Her ürün için işlemsel niyetli tek anahtar kelime üretilir.
+- **UC4 — Dört yöntemi çalıştır.** Aynı anahtar kelime dört yönteme sırayla verilir; her yöntem en fazla beş sonuç döndürür.
+- **UC5 — Etiketleme kitabı üret.** Benzersiz URL'ler Excel'e aktarılır; `predicted_relevant` ve `relevance_score` sütunları bilinçli olarak dışarıda bırakılır.
+- **UC6 — URL'leri elle etiketle.** Aktör: Değerlendirici. Her URL açılır ve kurala göre true/false seçilir.
+- **UC7 — Temel doğruluk üret.** Doldurulmuş kitap(lar) okunur, çelişkiler ve eksikler hata olarak raporlanır, temel doğruluk CSV'si yazılır.
+- **UC8 — Metrik ve rapor üret.** Manifest ile dondurulan sonuç dosyaları etiketlerle eşleştirilir; genel ve kategori bazlı metrikler ile Markdown rapor üretilir.
+
+### 2.2.4 Success Criteria
+
+Projenin başarı ölçütleri ve gerçekleşme durumu aşağıdadır. Her ölçütün gerçekleşme değeri, raporun 6. bölümündeki ölçümlerden alınmıştır.
+
+| No | Başarı ölçütü | Hedef | Gerçekleşen | Durum |
+|---|---|---|---|---|
+| B1 | Kategori genişlemesi | ≥ 10 kategori grubu | 10 grup, 489 ürün | Karşılandı |
+| B2 | Kategori başına ürün | ~50 | 9 grup 50; 1 grup 39 | Kısmen karşılandı |
+| B3 | Dört yöntemin hatasız canlı çalıştırılması | 80/80 | 80/80, 0 hata | Karşılandı |
+| B4 | İnsan etiket kapsamı | ≥ %90 | %100 (399/399) | Karşılandı |
+| B5 | Ortak şema doğrulaması | Tüm çıktılar geçerli | 80 dosyanın tamamı geçerli | Karşılandı |
+| B6 | Önceki deneyin korunması | Bire bir yeniden üretim | %68,84 değişmeden yeniden üretiliyor | Karşılandı |
+| B7 | Otomatik test paketi | Tümü geçmeli | 348 test, 1 atlandı, 0 hata | Karşılandı |
+| B8 | En az bir yöntemin önemsiz sınıflandırıcıyı anlamlı biçimde geçmesi | ≥ +5 puan | Tavily + NanoLLM: +10,0 puan | Karşılandı |
+
+B2 ölçütünün kısmen karşılanmasının nedeni ölçülmüş bir olgudur: `saat_moda_taki_ayakkabi` kategorisinde gerçek ilan başlıkları yapılandırılmış teknik özellik yayınlamadığı için hedef ürün sayısına ulaşılamamış ve kategori 39 üründe kalmıştır.
+
+### 2.2.5 Project Time and Resource Estimation
+
+**Takvim süresi.** Sürüm kontrol geçmişine göre projenin ilk işlemi 23.07.2026, son işlemi 19.08.2026 tarihlidir; toplam takvim süresi yaklaşık 4 haftadır (yaklaşık 0,93 ay).
+
+**Efor tahmini.** Proje kayıtlarında saat bazında zaman çizelgesi tutulmamıştır. Efor, dolaylı göstergelerden tahmin edilebilir: iki kişilik ekip, 42 işlem, 11.415 satır kaynak kodu ve 6.729 satır test kodu üretmiştir. Bu göstergelerden yola çıkarak yaklaşık 2 × 0,93 ≈ **1,86 kişi-ay** üst sınır tahmini yapılabilir; ancak bu tahmin, ekibin bu süre boyunca tam zamanlı çalıştığı varsayımına dayanır ve doğrulanmamıştır.
+
+**[EKSİK VERİ: Lütfen gerçek çalışma saati kaydınız varsa (haftalık saat × hafta × kişi) buraya giriniz; proje kayıtlarında saat bazlı efor verisi bulunmamaktadır.]**
+
+**Kaynak maliyeti.** Ölçülen sağlayıcı maliyeti, 80 canlı çalıştırmanın tamamı için 0,00 USD'dir (ücretsiz katman modeli ve sıfır olarak kaydedilen arama maliyeti). Donanım olarak yalnızca ekibin kişisel bilgisayarları kullanılmıştır; ek sunucu veya GPU kaynağı kullanılmamıştır. Yazılım yığınının tamamı açık kaynaktır.
+
+**[EKSİK VERİ: Lütfen donanım amortismanı ve insan kaynağı için varsaydığınız birim maliyetleri giriniz; toplam proje maliyeti bu değerler olmadan hesaplanamamaktadır.]**
+
+### 2.2.6 Solution Strategies and Applicable Methods
+
+Uygunluk değerlendirmesi problemi için değerlendirilen alternatif yaklaşımlar ve seçim gerekçeleri aşağıdadır.
+
+**Alt problem 1: Arama sonuçlarının elde edilmesi.**
+
+| Alternatif | Avantaj | Dezavantaj | Karar |
+|---|---|---|---|
+| Tarayıcı otomasyonu (Selenium) | Gerçek arama motoru sonuç sayfasını olduğu gibi görür; ek API maliyeti yok | Yavaş; CAPTCHA ve bot koruması riski; kırılgan seçiciler | Kullanıldı (iki yöntemde) |
+| Arama API'si (Tavily) | Hızlı, kararlı, yapılandırılmış çıktı | Sağlayıcıya bağımlılık; kota sınırı | Kullanıldı (bir yöntemde) |
+| Doğrudan HTML kazıma | Bağımlılık az | Arama motorları bot korumasıyla engelliyor | Kullanılmadı |
+
+İki farklı toplama yolunun aynı deneyde tutulması bilinçlidir: bu sayede "değerlendirici farkı" ile "toplama yolu farkı" ayrıştırılabilmektedir. Selenium + NanoLLM ile Tavily + NanoLLM aynı değerlendiriciyi kullandığı için aralarındaki fark doğrudan toplama yoluna atfedilebilir.
+
+**Alt problem 2: Uygunluk kararının verilmesi.**
+
+| Alternatif | Avantaj | Dezavantaj | Karar |
+|---|---|---|---|
+| Kural tabanlı alan adı puanlaması | Deterministik, çok hızlı, açıklanabilir | Tabloda olmayan alan adlarını kör noktaya sokar | Kullanıldı (temel çizgi) |
+| Küçük ölçekli dil modeli (NanoLLM) | Sayfa başlığı ve özetini yorumlayabilir; ücretsiz katman | Kararsız; aşırı hoşgörülü olabilir | Kullanıldı |
+| Etmen tabanlı akıl yürütme (ReAct benzeri) [7] | Sorguyu planlayıp birden fazla arama yapabilir | En yüksek gecikme; hata yayılımı | Kullanıldı |
+| Denetimli sınıflandırıcı eğitimi | Veriye özel yüksek başarım | Yeterli etiketli veri yok (194 etiket) | Kullanılmadı |
+| Büyük ticari dil modeli | Literatürde insan seviyesine yakın sonuç [5] | Maliyet ve kota | Kullanılmadı |
+
+**Alt problem 3: Temel doğruluğun üretilmesi.** Literatürde uygunluk yargılarının tamamen dil modeline bırakılması tartışmalıdır [3]. Bu projede, karşılaştırılan yöntemlerin kendisi dil modeli tabanlı olduğu için temel doğruluğun dil modeliyle üretilmesi döngüsel bir yanlılık yaratacaktı. Bu nedenle etiketler tamamen insan tarafından, yöntem tahminleri gizlenmiş bir çalışma kitabı üzerinden üretilmiştir.
+
+**Alt problem 4: Orkestrasyon.** Dört yöntemin ayrı betiklerle çalıştırılması, aynı anahtar kelimenin dört yönteme gittiğini garanti etmemektedir. Bu nedenle LangGraph tabanlı tek bir durum çizgesi tercih edilmiş; anahtar kelime tek bir düğümde üretilip ortak duruma yazılmış ve dört yöntem düğümü bu ortak durumdan okumuştur.
+
+### 2.2.7 Risk Analysis
+
+**Tablo 6.** Risk analizi: gerçekleşen ve öngörülen riskler.
+
+| No | Risk | Olasılık | Etki | Önlem / Gerçekleşme durumu |
+|---|---|---|---|---|
+| R1 | Hedef sitenin bot koruması veri toplamayı engeller | Yüksek | Yüksek | **Gerçekleşti.** Cimri, Cloudflare koruması nedeniyle erişilemedi. Koruma aşılmaya çalışılmadı; kaynak devre dışı bırakılıp Akakçe'ye yoğunlaşıldı. |
+| R2 | Hız sınırlaması toplamayı yavaşlatır | Yüksek | Orta | **Gerçekleşti.** Akakçe hız sınırı uyguladı. İstekler arası bekleme artırıldı, toplama yedi oturuma bölündü, `--resume` ile ilerleme korundu. |
+| R3 | Kategoriye özgü alanlar gerçek ilanlarda bulunmaz | Orta | Orta | **Gerçekleşti.** Moda ilanları yapılandırılmış özellik yayınlamıyor. Şema, yalnızca `variant_label` zorunlu olacak biçimde gevşetildi; kategoriye özgü alanlar isteğe bağlı yapıldı. İlgili kategori 39 üründe kaldı. |
+| R4 | Sağlayıcı günlük kotası deneyi yarıda keser | Yüksek | Yüksek | **Gerçekleşti ve önlem yetersiz kaldı.** Anahtar rotasyonu eklendi (`OPENROUTER_API_KEY_2`); kotası dolan anahtar kenara ayrılıp diğerine geçiliyor. Ancak ölçüm, iki anahtarın da aynı OpenRouter hesabına ait olduğunu ve ücretsiz katman limitinin anahtar başına değil **hesap başına** uygulandığını göstermiştir (her iki anahtar için `limit=50`, `kalan=0`, aynı `user_id`). Rotasyon bu nedenle ek günlük kapasite sağlamamaktadır. Deney, kotanın gün içinde tükenmesine karşı oturumlara bölünerek yürütülmüştür. |
+| R5 | Aynı sayfanın değerlendiriciye iki kez gitmesi | Orta | Orta | **Gerçekleşti.** Dışa aktarım ham URL üzerinden, metrikler normalize URL üzerinden tekilleştiriyordu; sondaki eğik çizgi farkı bir sayfayı iki kez etiketletti. İki taraf ortak normalizasyona geçirildi; uyumlu tekrarlar tek kayda indiriliyor, çelişkili tekrarlar içe aktarımı durduruyor. |
+| R6 | Değerlendiricinin belirsiz bıraktığı satırlar ölçümü bloke eder | Orta | Orta | **Gerçekleşti.** Beş satır belirsiz bırakıldı. Çalışma kitabı değiştirilmeden, ayrı bir hakem dosyasında kural referansıyla çözüldü; her hakem kararı temel doğruluk dosyasının not alanına gerekçesiyle yazıldı. |
+| R7 | Refaktör önceki deneyin sonuçlarını bozar | Orta | Yüksek | **Önlendi.** Genişletme öncesinde mevcut davranışı bire bir kaydeden karakterizasyon testleri yazıldı; dondurulmuş telefon deneyi hâlâ %68,84 ile yeniden üretiliyor. |
+| R8 | Değerlendirici modelin tüm sonuçlara "uygun" demesi | Orta | Yüksek | **Gerçekleşti ve ölçüldü.** Selenium + NanoLLM 100/100 sonuca uygun dedi. Bu, doğruluk yanına özgüllük, dengeli doğruluk ve önemsiz sınıflandırıcı taban çizgisi eklenerek raporda görünür kılındı. |
+| R9 | Etiket yanlılığının ölçülememesi | Orta | Orta | **Kısmen açık.** Etiketleme iki ekip üyesi arasında bölünmüştür (birinci oturum 134 satır, ikinci oturum 61 satır). Ancak ikinci çalışma kitabı, birincinin kapsadığı URL'leri tasarım gereği dışladığı için iki kümenin kesişimi sıfırdır; hiçbir URL iki kez etiketlenmemiştir. Bu nedenle değerlendiriciler arası anlaşma katsayısı hesaplanamamıştır. Sınırlılık olarak raporlanmıştır. |
+| R10 | Tek koşum nedeniyle varyansın bilinmemesi | Yüksek | Orta | **Açık.** Ürün/yöntem başına tek koşum yapılmıştır; güven aralığı verilememektedir. Sınırlılık olarak raporlanmıştır. |
+
+### 2.2.8 Tools Needed
+
+**Tablo 5.** Projede kullanılan yazılım araçları ve sürümleri (kaynak: `requirements.txt` ve çalıştırma ortamı).
+
+| Araç | Sürüm | Kullanım amacı |
+|---|---|---|
+| Python | 3.14.3 | Tüm hattın uygulama dili |
+| Selenium | 4.46.0 | Tarayıcı otomasyonu ile arama sonucu toplama |
+| BeautifulSoup4 | ≥ 4.12.0 | HTML ayrıştırma (ürün kazıma) |
+| LangGraph | ≥ 0.2.0 | Durum çizgesi tabanlı orkestrasyon |
+| Pydantic | ≥ 2.7.0 | Yapılandırılmış çıktı şeması doğrulaması |
+| pandas | 3.0.3 | Tablo işleme ve kural tabanlı puanlama |
+| NumPy | 2.5.1 | Sayısal işlemler |
+| openpyxl | ≥ 3.1.0 | Etiketleme çalışma kitabının yazılması ve okunması |
+| requests | ≥ 2.32.0 | HTTP istekleri (API çağrıları) |
+| python-dotenv | ≥ 1.0.0 | Ortam değişkeni yönetimi (API anahtarları) |
+| pytest | ≥ 8.2.0 | Test altyapısı (paket `unittest` ile de çalıştırılabilmektedir) |
+| Git / GitHub | — | Sürüm kontrolü ve iş birliği |
+| Microsoft Excel | — | İnsan etiketleme arayüzü |
+
+Dış servisler: OpenRouter (dil modeli sağlayıcısı, `google/gemma-4-26b-a4b-it:free` modeli), Tavily (arama API'si), Akakçe (ürün veri kaynağı), Bing/Google (Selenium üzerinden arama).
+
+Donanım: ekibin kişisel bilgisayarları. Ek sunucu, GPU veya bulut kaynağı kullanılmamıştır.
+
+---
+
+# 3. THEORETICAL BACKGROUND
+
+Bu bölümde, projenin dayandığı problem tanımı ve ilgili literatür sunulmakta, ardından geliştirilen çözüm yöntemi ayrıntılandırılmaktadır.
+
+**Problem tanımı.** Bir ürün kaydı $p$ ve bu kayıttan üretilen bir işlemsel sorgu $q(p)$ verildiğinde, bir arama yöntemi $M$ bir sonuç kümesi $R_M(q) = \{r_1, \dots, r_k\}$ döndürür ve her sonuç için ikili bir uygunluk tahmini $\hat{y}_M(r_i) \in \{0,1\}$ üretir. İnsan değerlendirici ise aynı sonuç için gerçek etiketi $y(r_i) \in \{0,1\}$ verir. Problem, farklı $M$ yöntemleri için $\hat{y}_M$ ile $y$ arasındaki uyumu aynı $p$, aynı $q(p)$ ve aynı $y$ üzerinde ölçmek ve karşılaştırmaktır.
+
+Burada kritik nokta, $y$ etiketinin sonucun bir özelliği olması, yöntemin özelliği olmamasıdır. Bir URL birden fazla yöntem tarafından döndürülebilir; bu durumda aynı etiket tüm yöntemler için geçerlidir. Bu tasarım kararı, yöntemlerin farklı etiket kümeleri üzerinde ölçülmesini ve dolayısıyla karşılaştırmanın anlamsızlaşmasını engellemektedir.
+
+## 3.1. Literature Survey
+
+**Uygunluk yargıları ve değerlendirme koleksiyonları.** Bilgi erişimi değerlendirmesinin yerleşik çerçevesi olan Cranfield paradigması üç bileşene dayanır: belge kümesi, bilgi ihtiyacı ifadeleri ve uygunluk yargıları. Voorhees, TREC ad hoc görevinde farklı değerlendiricilerin ürettiği uygunluk yargı kümelerinin sistem sıralamalarını nasıl etkilediğini incelemiş ve bireysel yargılar arasında belirgin farklar bulunmasına rağmen sistemlerin göreli sıralamasının kararlı kaldığını göstermiştir [2]. Bu bulgu, bu projenin tasarımı açısından önemlidir: az sayıda değerlendirici tarafından üretilen etiketler mutlak doğruluk değerlerini kaydırabilir, ancak yöntemlerin birbirine göre sıralamasının bundan görece az etkilenmesi beklenir.
+
+**Sorgu niyeti.** Broder, web aramalarını kullanıcının amacına göre gezinme (navigational), bilgi edinme (informational) ve işlem yapma (transactional) olarak sınıflandıran taksonomiyi önermiştir [1]. Bu projede üretilen anahtar kelimeler bilinçli olarak işlemsel niyet taşıyacak biçimde tasarlanmıştır (ürün adı, varyant ve "fiyat" kalıbı); uygunluk ölçütünün ikinci koşulu olan "işlemsel amaç" da doğrudan bu taksonomiden türetilmiştir.
+
+**Dil modelleriyle uygunluk yargısı.** Büyük dil modellerinin uygunluk yargılarını üstlenip üstlenemeyeceği güncel bir tartışma alanıdır. Faggioli ve arkadaşları, tamamen manuelden tamamen otomatiğe uzanan bir "insan–makine iş birliği spektrumu" tanımlamış ve dil modeli yargılarının eğitimli insan değerlendiricilerle korelasyonunu inceleyen bir pilot çalışma sunmuştur [3]. Ürün araması özelinde Mehrdad ve arkadaşları, dil modellerinin e-ticaret verisiyle ince ayarlanarak uygunluk etiketlemesinin ölçeklenebileceğini ve altın standart etiketlere yaklaşan doğruluklara ulaşılabileceğini bildirmiştir [6]. Sachdev ve arkadaşları, düşünce zinciri istemi, bağlam içi öğrenme ve erişimle desteklenmiş üretim gibi teknikleri sorgu–ürün uygunluk etiketlemesine uygulamıştır [4]. Hosseini ve arkadaşları ise çok kipli dil modelleriyle, sorguya özel açıklama yönergeleri üreterek büyük ölçekli ürün erişimi değerlendirmesi yapmış; 20.000 örnek üzerinde insan değerlendirici doğruluğuna yakın sonuçlar elde etmiştir [5].
+
+Bu projenin bulguları söz konusu literatürle önemli bir noktada ayrışmaktadır. Yukarıdaki çalışmalar genellikle büyük veya ince ayarlanmış modellerle ve özenle tasarlanmış istemlerle çalışmaktadır. Bu projede kullanılan ücretsiz katmanlı küçük model, ölçülen koşullarda uygun olmayan sonuçların hiçbirini reddedememiştir (özgüllük 0,00). Bu, dil modeliyle değerlendirmenin model ölçeğine ve istem tasarımına güçlü biçimde bağımlı olduğunu göstermektedir.
+
+**Etmen tabanlı akıl yürütme.** Yao ve arkadaşlarının önerdiği ReAct çerçevesi, akıl yürütme izleri ile eylemleri iç içe üreterek modelin dış kaynaklarla etkileşime girmesini ve plan güncellemesi yapmasını sağlamaktadır [7]. Bu projedeki Agentic Search yöntemi, aynı fikri planlama–arama–değerlendirme–toplama döngüsü olarak somutlaştırmaktadır. Ancak ölçümler, bu yöntemin en yüksek gecikmeyi (ortalama 27,8395 saniye) getirmesine rağmen ayırt etme kabiliyetinde anlamlı bir kazanım sağlamadığını (özgüllük 0,0435) göstermektedir.
+
+**Dengesiz sınıf dağılımında metrik seçimi.** Doğruluk, sınıf dağılımı dengesiz olduğunda yanıltıcıdır; çoğunluk sınıfını tahmin eden önemsiz bir sınıflandırıcı yüksek doğruluk elde edebilir. Brodersen ve arkadaşları, yanlı bir sınıflandırıcının dengesiz veri kümesinde iyimser bir doğruluk tahmini ürettiğini göstermiş ve dengeli doğruluğu (duyarlılık ile özgüllüğün ortalaması) bu soruna karşı bir ölçüt olarak önermiştir [8]. Bu projenin veri kümesinde etiketlenmiş URL'lerin %72,16'sı uygundur; dolayısıyla dengeli doğruluk ve özgüllük raporlaması metodolojik bir zorunluluktur.
+
+**Web kazımanın etik ve hukuki çerçevesi.** Brown ve arkadaşları, araştırma amaçlı web kazımanın hukuki, etik, kurumsal ve bilimsel boyutlarını sistematik biçimde ele almış ve robots.txt yönergelerine uymanın hukuki bir zorunluluk olmasa da yerleşik bir norm olduğunu vurgulamıştır [9]. robots.txt, 2022 yılında IETF tarafından RFC 9309 ile resmî bir standarda kavuşturulmuştur [10]. Bu projede bot korumaları aşılmamış, hız sınırlarına uyulmuş ve kişisel veri toplanmamıştır.
+
+## 3.2. Solution Method: LangGraph Tabanlı Dört Yöntemli Karşılaştırma Hattı
+
+Geliştirilen çözüm, altı aşamalı bir hattır.
+
+**Aşama 1 — Kategori taksonomisi.** On kategori grubu tek bir başvuru dosyasında (`data/reference/product_categories.csv`) tanımlanmıştır. Her satır; kategori grubu anahtarını, Türkçe görünen adı, ürün kimliği ön ekini, hedef ürün sayısını, zorunlu ve isteğe bağlı nitelikleri ve sayısal nitelik aralıklarını taşımaktadır. Bu dosya, hem kazıyıcının hem doğrulayıcının hem de raporlayıcının tek doğruluk kaynağıdır.
+
+**Tablo 3.** Kategori taksonomisi ve toplanan ürün sayıları.
+
+| Kategori grubu | Görünen ad | Ön ek | Hedef | Toplanan | İsteğe bağlı nitelikler |
+|---|---|---|---|---|---|
+| elektronik_cep_telefonu | Elektronik, Cep Telefonu | ELK | 50 | 50 | storage_gb, ram_gb |
+| ev_yasam_ofis_kirtasiye | Ev, Yaşam, Ofis, Kırtasiye | EVY | 50 | 50 | room_or_use |
+| anne_bebek_oyuncak | Anne, Bebek, Oyuncak | ABO | 50 | 50 | age_range |
+| saat_moda_taki_ayakkabi | Saat, Moda, Takı, Ayakkabı | SMT | 50 | 39 | size_label, color |
+| kitap_muzik_hobi | Kitap, Müzik, Hobi | KMH | 50 | 50 | creator |
+| spor_outdoor | Spor, Outdoor | SPO | 50 | 50 | discipline |
+| saglik_bakim_kozmetik | Sağlık, Bakım, Kozmetik | SBK | 50 | 50 | volume_ml |
+| oto_bahce_yapi_market | Oto, Bahçe, Yapı Market | OBY | 50 | 50 | power_or_volume |
+| petshop | Petshop | PET | 50 | 50 | animal_type, weight_kg |
+| supermarket | Süpermarket | SPM | 50 | 50 | net_weight_g |
+| **Toplam** | | | **500** | **489** | |
+
+Şema tasarımında kritik karar, kategoriye özgü alanların isteğe bağlı bırakılmasıdır. Yalnızca `variant_label` alanı zorunludur. Bunun gerekçesi ölçülmüş bir olgudur: gerçek ilan başlıkları, özellikle moda kategorisinde, yapılandırılmış teknik özellik içermemektedir. Alanları zorunlu kılmak, veri kaybına veya sentetik doldurmaya yol açacaktı.
+
+**Aşama 2 — Veri toplama.** Ürünler Akakçe üzerinden BeautifulSoup4 ve Selenium ile toplanmıştır. Toplama üst verisi `acquisition_mode: scraped` değerini taşımaktadır. Çevrimdışı çalışma ve test için ayrıca sentetik bir katalog bulunmakta ve bu katalog `acquisition_mode: synthetic` ile açıkça işaretlenmektedir. Toplanan veri kümesi 489 üründen ve 156 farklı markadan oluşmaktadır.
+
+**Aşama 3 — Veri işleme ve doğrulama.** İşleme adımı profil tabanlıdır: her kategori grubunun kendi zorunlu alan tanımı vardır ve telefon profili, önceki deneyin davranışını bire bir koruyacak şekilde bırakılmıştır. İşlenmiş veri kümesi 489 ürün içermekte ve doğrulama sorunu sayısı 0'dır.
+
+**Aşama 4 — Anahtar kelime üretimi.** Her ürün için işlemsel niyetli tek bir anahtar kelime üretilmektedir (örnek: `ELK001` → "iPhone 17 256 GB Siyah fiyat"). Üreteç iki modda çalışabilmektedir. Bu deneydeki 489 anahtar kelime **deterministik (fake) modda** üretilmiştir (`execution_mode: fake`, `model: deterministic-fake-keyword-generator`, `prompt_version: keyword-generation-v1`, çalışma süresi 0,01 s). Canlı LLM yolunun çalıştığı ayrı bir duman testiyle (smoke test) kanıtlanmıştır: 3 ürün, OpenRouter sağlayıcısı, `google/gemma-4-26b-a4b-it:free` modeli, 19,03 saniye, 0,00 USD. Bu ayrım raporda bilinçli olarak belirtilmektedir; anahtar kelimelerin canlı model tarafından üretildiğini iddia etmek yanlış olurdu.
+
+**Aşama 5 — Dört değerlendirme yöntemi.**
+
+1. **Selenium + Kural Tabanlı.** Tarayıcı otomasyonuyla toplanan her sonucun alan adı, 44 kayıtlık güvenilir e-ticaret alan adı tablosunda aranır. Bulunursa tablodaki `relevance_score` değeri atanır; bulunmazsa 0,0 atanır. `RELEVANCE_THRESHOLD = 0.60` eşiğini geçen sonuçlar uygun sayılır. Yöntem tamamen deterministiktir ve dil modeli kullanmaz.
+
+**Tablo 4.** Güvenilir e-ticaret alan adı tablosunun tür dağılımı (44 kayıt, puan aralığı 0,85–1,00).
+
+| Alan adı türü | Kayıt sayısı |
+|---|---|
+| retailer (perakendeci) | 29 |
+| marketplace (pazar yeri) | 7 |
+| manufacturer_store (üretici mağazası) | 5 |
+| price_comparison (fiyat karşılaştırma) | 2 |
+| classified_marketplace (ilan sitesi) | 1 |
+
+2. **Selenium + NanoLLM.** Aynı Selenium toplama yolu kullanılır; ancak uygunluk kararı, sonuç başlığı ve özeti üzerinden küçük ölçekli dil modeliyle verilir.
+3. **Tavily + NanoLLM.** Sonuçlar Tavily arama API'sinden alınır; değerlendirme yine aynı dil modeliyle yapılır. Bu yöntem ile bir öncekinin karşılaştırılması, toplama yolunun etkisini yalıtmaktadır.
+4. **Agentic Search.** Planlama, arama, değerlendirme ve toplama düğümlerinden oluşan bir alt çizge çalıştırılır; planlayıcı düğüm birden fazla arama sorgusu üretebilir.
+
+**Aşama 6 — Etiketleme ve ölçüm.** Yöntemlerin döndürdüğü benzersiz URL'ler Excel çalışma kitabına aktarılır. Çalışma kitabı `predicted_relevant` ve `relevance_score` sütunlarını bilinçli olarak içermez; bu, temel doğruluğun herhangi bir yönteme doğru kaymasını önlemek içindir. Doldurulmuş kitap(lar) geri okunarak temel doğruluk CSV'si üretilir ve metrikler hesaplanır.
+
+**Uygunluk kuralı** (çalışma kitabının yönerge sayfasında değerlendiriciye sunulan biçimiyle): Bir sonuç, ancak ve ancak iki koşul birlikte sağlanırsa uygundur — (i) sayfa, anahtar kelimede adı geçen ürünün kendisidir ve anahtar kelime bir varyant belirtiyorsa (depolama, hacim, ağırlık, beden, sürüm) o varyantı taşır; (ii) sayfa işlemsel amaç taşır: perakendeci ürün sayfası, pazar yeri ilanı, seri ilan veya fiyat karşılaştırma sayfası. Farklı ürün/varyant, aksesuar, haber, blog, inceleme, forum ve ürüne ulaşmayan kategori/arama sayfaları uygun değildir. **Stokta olmamak, bir sayfayı uygunsuz yapmaz.**
+
+---
+
+# 4. ANALYSIS AND MODELLING
+
+## 4.1. System Factors
+
+Sistemin davranışını etkileyen faktörler dört başlıkta toplanmaktadır.
+
+**Dış servis faktörleri.** Sistem üç dış servise bağımlıdır: arama motoru (Selenium üzerinden), Tavily arama API'si ve OpenRouter dil modeli API'si. Bu servislerin kota sınırları, gecikmeleri ve bot korumaları sistemin çalışabilirliğini doğrudan etkilemektedir. Ölçülen etkiler: OpenRouter ücretsiz katmanı **hesap başına** günde 50 model isteği ile sınırlıdır. Uygulamaya birden fazla anahtarı sırayla deneyen bir rotasyon mekanizması eklenmiş olsa da, ölçüm bu mekanizmanın ek kapasite sağlamadığını göstermiştir: eldeki iki anahtar aynı hesaba ait olduğu için ikisi de aynı 50 isteklik günlük havuzu paylaşmaktadır. Gerçek kapasite artışı ancak ayrı bir hesap veya ücretli katman ile mümkündür. Veri toplama tarafında Akakçe hız sınırlaması uygulamış, Cimri ise Cloudflare koruması nedeniyle tamamen erişilemez olmuştur.
+
+**Veri faktörleri.** Sonuçların uygunluk oranı kategoriye göre belirgin biçimde değişmektedir (%56,41 ile %95,00 arası). Bu değişkenlik, doğruluk metriğinin kategoriler arası karşılaştırmada tek başına yorumlanmasını engellemektedir. Ayrıca ürün adlarının yapısı kategoriye göre farklılaşmaktadır: telefon adları model ve depolama bilgisini içerirken, moda ürün adları çoğunlukla üretici kodu taşımaktadır.
+
+**Değerlendirici faktörleri.** Dil modeli tabanlı değerlendiricilerin karar eşiği istem tasarımına ve model ölçeğine bağlıdır. Ölçümler, kullanılan modelin uygunluk yönünde güçlü bir eğilim taşıdığını göstermektedir.
+
+**İnsan faktörleri.** Temel doğruluk iki değerlendirici tarafından üretilmiştir; etiketler iki oturuma bölünmüş ve her oturumu bir ekip üyesi tamamlamıştır. İki oturumun URL kümeleri kesişmediği için değerlendiriciler arası tutarlılık ölçülememektedir. Voorhees'in gösterdiği gibi, değerlendirici değişkenliği mutlak değerleri kaydırabilir ancak sistemlerin göreli sıralamasını görece az etkiler [2].
+
+## 4.2. How System Works
+
+Sistem, tek bir ürün için aşağıdaki adımları izler:
+
+1. **Ürün yükleme.** İşlenmiş veri kümesinden ürün kimliğine göre kayıt okunur. Kayıt bulunamazsa hat, hata mesajıyla durur.
+2. **Anahtar kelime üretimi.** Ürün adı, markası ve varyant etiketinden işlemsel niyetli tek anahtar kelime üretilir ve ortak duruma yazılır.
+3. **Yöntemlerin çalıştırılması.** Ortak durumdaki anahtar kelime dört yöntem düğümüne sırayla verilir. Her düğüm en fazla beş sonuç döndürür ve her sonuç için alan adı, URL, başlık, özet, `predicted_relevant` ve `relevance_score` alanlarını doldurur. Bir yöntem hata verirse hata kaydedilir ve hat diğer yöntemlerle devam eder.
+4. **Sonuçların sıralanması ve toplanması.** Yöntem çıktıları birleştirilir.
+5. **Kalıcılaştırma.** Her yöntem/ürün çifti için, çalıştırma modunu ve zaman damgasını taşıyan ayrı bir JSON dosyası yazılır.
+6. **Doğrulama.** Yazılan her dosya ortak şemaya göre doğrulanır: zorunlu alanların varlığı, URL'nin `http://` veya `https://` ile başlaması, `predicted_relevant` alanının boolean olması ve `relevance_score` alanının 0–1 aralığında bulunması denetlenir.
+
+Ölçüm tarafında akış şöyledir: benzersiz URL'ler çalışma kitabına aktarılır, elle etiketlenir, temel doğruluğa geri okunur; hangi sonuç dosyalarının rapora gireceği bir manifest dosyasında dondurulur; metrikler bu manifest üzerinden hesaplanır.
+
+## 4.3. Modelling
+
+### 4.3.1. System Architecture
+
+Sistem üç katmandan oluşmaktadır.
+
+**Şekil 5.** Veri akışı ve bileşen diyagramı.
+
+```
+┌───────────────────────────── VERİ KATMANI ──────────────────────────────┐
+│                                                                          │
+│  product_categories.csv ──▶ category_taxonomy.py                         │
+│         (10 kategori)              │                                     │
+│                                    ▼                                     │
+│  Akakçe ──▶ product_scraper.py ──▶ candidate_products_multicategory.csv  │
+│  (489 ürün)     (BS4 + Selenium)        + .metadata.json (scraped)       │
+│                                    │                                     │
+│  product_catalog.py ──────────────▶ .synthetic.csv (çevrimdışı yedek)    │
+│                                    │                                     │
+│                                    ▼                                     │
+│                          data_processor.py + quality_check.py            │
+│                          (profil tabanlı temizleme ve doğrulama)         │
+│                                    │                                     │
+│                                    ▼                                     │
+│                    processed_products_multicategory.json (489)           │
+│                                    │                                     │
+│                                    ▼                                     │
+│                          keyword_generator.py                            │
+│                                    │                                     │
+│                                    ▼                                     │
+│                  generated_keywords_multicategory.json (489)             │
+└──────────────────────────────────┬───────────────────────────────────────┘
+                                   │
+┌──────────────────────── DEĞERLENDİRME KATMANI ──────────────────────────┐
+│                                   ▼                                      │
+│                            langgraph_flow.py                             │
+│                    (uçtan uca çizge — bkz. Şekil 1)                      │
+│         ┌──────────┬──────────────┼──────────────┬──────────┐            │
+│         ▼          ▼              ▼              ▼          │            │
+│  selenium_    selenium_      tavily_llm    agentic_search    │            │
+│  rule_based   nano_llm                                       │            │
+│      │            │              │              │            │            │
+│  rule_based_  nano_llm_     tavily_client  agentic_search    │            │
+│  evaluator    evaluator          .py           .py           │            │
+│      │            │              │              │            │            │
+│  trusted_     OpenRouter     Tavily API    OpenRouter        │            │
+│  domains.csv  (NanoLLM)                    (planlayıcı)      │            │
+│      └────────────┴──────────────┴──────────────┘            │            │
+│                          │                                   │            │
+│                          ▼                                   │            │
+│              results_multicategory/<yöntem>/*.json (80)      │            │
+│                          │                                   │            │
+│                          ▼                                   │            │
+│                   result_validator.py (ortak şema)           │            │
+└──────────────────────────┬───────────────────────────────────────────────┘
+                           │
+┌──────────────────── ÖLÇÜM VE RAPORLAMA KATMANI ─────────────────────────┐
+│                          ▼                                               │
+│  export_label_workbook.py ──▶ label_review_session1.xlsx (134 URL)       │
+│     (tahminler gizli)     ──▶ label_review_session2.xlsx (61 URL)        │
+│                                        │                                 │
+│                                   [İnsan etiketleme]                     │
+│                                        ▼                                 │
+│  multicategory_label_adjudications.csv ──▶ import_label_workbook.py      │
+│              (5 hakem kararı)                      │                     │
+│                                                    ▼                     │
+│                               multicategory_ground_truth.csv (194)       │
+│                                                    │                     │
+│  build_manifest.py ──▶ final_evaluation_manifest_multicategory.json      │
+│                                (80 dosya donduruldu)                     │
+│                                                    │                     │
+│                          ┌─────────────────────────┴──────────┐          │
+│                          ▼                                    ▼          │
+│                  final_metrics.py                    category_metrics.py │
+│                          │                                    │          │
+│                          └─────────────┬──────────────────────┘          │
+│                                        ▼                                 │
+│                            multicategory_report.py                       │
+│                                        │                                 │
+│                                        ▼                                 │
+│                     multicategory_evaluation_report.md                   │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+Mimarinin iki tasarım ilkesi vardır. Birincisi, **ortak şema**: dört yöntem birbirinden tamamen bağımsız çalışsa da hepsi aynı JSON şemasına yazmak zorundadır; bu, metrik katmanının yöntemden habersiz kalmasını sağlar. İkincisi, **dondurulmuş manifest**: bir rapor, hangi sonuç dosyalarından hesaplandığını açıkça listeleyen bir manifest üzerinden üretilir; hattın yeniden çalıştırılması yeni dosyalar üretse bile rapor hesaplandığı koşuma bağlı kalır.
+
+### 4.3.2. UML Diagrams
+
+**Şekil 1.** Uçtan uca LangGraph çizgesinin düğüm yapısı (aktivite diyagramı karşılığı).
+
+```
+  START
+    │
+    ▼
+┌──────────────┐   ürün kaydı bulunamazsa → hata mesajıyla durur
+│ load_product │
+└──────┬───────┘
+       ▼
+┌──────────────────┐
+│ generate_keyword │  işlemsel niyetli tek anahtar kelime → ortak durum
+└──────┬───────────┘
+       ▼
+┌──────────────────┐
+│ compare_methods  │  (alt çizge — bkz. Şekil 2)
+└──────┬───────────┘
+       ▼
+┌──────────────┐
+│ rank_results │
+└──────┬───────┘
+       ▼
+┌──────────────┐
+│  aggregate   │
+└──────┬───────┘
+       ▼
+┌────────────────┐
+│ persist_output │  yöntem/ürün başına bir JSON dosyası
+└──────┬─────────┘
+       ▼
+      END
+```
+
+**Şekil 2.** Dört yöntemli karşılaştırma alt çizgesi.
+
+```
+  START
+    │
+    ▼
+┌───────┐
+│ input │  ortak durumdan ürün ve anahtar kelimeyi okur
+└───┬───┘
+    ▼
+┌─────────────────────┐
+│ selenium_rule_based │  bir yöntem hata verirse hata kaydedilir,
+└───┬─────────────────┘  akış bir sonraki yöntemle devam eder
+    ▼
+┌───────────────────┐
+│ selenium_nano_llm │
+└───┬───────────────┘
+    ▼
+┌────────────┐
+│ tavily_llm │
+└───┬────────┘
+    ▼
+┌────────────────┐
+│ agentic_search │
+└───┬────────────┘
+    ▼
+┌────────────────────┐
+│ result_aggregation │
+└───┬────────────────┘
+    ▼
+   END
+```
+
+Yöntemlerin sıralı (paralel değil) çalıştırılması bilinçli bir karardır: dış servis kotalarının eşzamanlı isteklerle hızla tükenmesini ve hedef sitelere ani yük binmesini önlemektedir.
+
+**Şekil 3.** Etmen tabanlı arama alt çizgesi.
+
+```
+  START ──▶ plan ──▶ search ──▶ evaluate ──▶ aggregate ──▶ END
+             │         │           │
+             │         │           └─ her sonuç için uygunluk kararı
+             │         └─ arama hatası kaydedilir, akış sürer
+             └─ bir veya birden fazla arama sorgusu üretir
+```
+
+**Şekil 6.** Etiketleme ve ölçüm dizisi (sequence) diyagramı.
+
+```
+Araştırmacı   export_label   Değerlendirici   import_label   build_manifest   metrics
+     │         _workbook          │            _workbook          │             │
+     │──dışa aktar──▶│            │                │              │             │
+     │               │─xlsx üret─▶│                │              │             │
+     │               │ (tahminler │                │              │             │
+     │               │  gizli)    │                │              │             │
+     │               │            │──etiketle──────│              │             │
+     │               │            │  (194 URL)     │              │             │
+     │───────────────────────────────içe aktar────▶│              │             │
+     │                             │               │              │             │
+     │                        hakem dosyası───────▶│              │             │
+     │                        (5 belirsiz satır)   │              │             │
+     │                                             │─ground truth│             │
+     │                                             │  (194 kayıt) │             │
+     │──manifest üret──────────────────────────────────────────▶ │             │
+     │                                             │  (80 dosya,  │             │
+     │                                             │   ızgara     │             │
+     │                                             │   denetimi)  │             │
+     │──metrik hesapla──────────────────────────────────────────────────────▶ │
+     │                                                            │  genel +    │
+     │◀──────────────────────────────────────────── rapor ────────│  kategori   │
+```
+
+---
+
+# 5. DESIGN, IMPLEMENTATION AND TESTING
+
+## 5.1. Design
+
+**Modül tasarımı.** Kaynak kod, sorumluluk sınırlarına göre ayrılmıştır. Veri katmanı modülleri (`category_taxonomy.py`, `product_scraper.py`, `product_catalog.py`, `data_processor.py`, `quality_check.py`) değerlendirme yöntemlerinden habersizdir. Yöntem modülleri (`rule_based_evaluator.py`, `nano_llm_evaluator.py`, `tavily_client.py`, `agentic_search.py`) birbirinden habersizdir. Ölçüm modülleri (`ground_truth.py`, `metrics.py`, `result_validator.py`, `category_metrics.py`) yalnızca ortak JSON şemasını bilir.
+
+**Veri sözleşmeleri.** Sistemde üç kritik sözleşme vardır:
+
+1. **Sonuç şeması.** Her sonuç dosyası şu alanları taşımak zorundadır: `product_id`, `keyword`, `method`, `execution_mode`, `provider`, `model`, `prompt_version`, `runtime_seconds`, `estimated_cost_usd`, `results`. Her sonuç öğesi ise `domain`, `url`, `title`, `snippet`, `predicted_relevant`, `relevance_score` alanlarını taşır. `execution_mode` yalnızca `live` veya `fake` olabilir; `method` yalnızca dört tanımlı yöntemden biri olabilir.
+2. **Temel doğruluk şeması.** `product_id, keyword, method, domain, url, human_relevant, notes`. `method` alanının boş bırakılması bilinçlidir: boş değer, etiketin o URL'yi döndüren tüm yöntemler için ortak olduğu anlamına gelir.
+3. **Manifest şeması.** `report_scope`, `evaluation_subset_file`, `ground_truth_file`, `selected_result_files`.
+
+**Hata tasarımı.** Sistem, sessiz veri kaybı yerine gürültülü başarısızlık ilkesini benimser. Eksik etiket, çelişkili etiket, ürün/yöntem ızgarasında delik, geçersiz sonuç dosyası ve eşleşmeyen hakem kaydı durumlarının her biri işlemi durdurur ve sorunu satır numarasıyla raporlar.
+
+**URL kimliği.** Aynı sayfanın farklı yazımları (sondaki eğik çizgi, ana bilgisayar adının büyük/küçük harfi) tek bir kimliğe indirgenir; sorgu dizesi ise korunur, çünkü pazar yerlerinde varyant filtreleri sorgu dizesinde taşınmaktadır. Bu normalizasyon hem dışa aktarım hem içe aktarım hem de metrik eşleştirme tarafında ortak kullanılmaktadır.
+
+**Hakem (adjudication) tasarımı.** Değerlendiricinin bilinçli olarak belirsiz bıraktığı satırlar, çalışma kitabı değiştirilerek değil, ayrı bir CSV dosyasında çözülür. Bu dosya `product_id, url, resolved_label, rule, adjudicated_by` sütunlarını taşır. Tasarım üç güvence sunar: (i) bir hakem kaydı yalnızca değerlendiricinin okunamaz bıraktığı bir satıra uygulanabilir, değerlendiricinin verdiği bir cevabı asla değiştiremez; (ii) hiçbir satırla eşleşmeyen hakem kaydı içe aktarımı durdurur; (iii) her hakem kararı, ham cevabı ve dayandığı kuralı temel doğruluk dosyasının `notes` alanına yazar. Böylece bir denetçi bu satırları dışlayıp metrikleri yeniden hesaplayabilir.
+
+## 5.2. Implementation
+
+**Tablo 7.** Kaynak kodu ve test kodu büyüklüğü (satır sayısı).
+
+| Katman | Dosya sayısı | Satır sayısı |
+|---|---|---|
+| Kaynak kodu (`src/`) | 32 | 11.415 |
+| Test kodu (`tests/`) | 19 | 6.729 |
+| **Toplam** | **51** | **18.144** |
+
+En büyük modüller: `product_scraper.py` (1.396), `langgraph_flow.py` (1.131), `data_processor.py` (745), `quality_check.py` (598), `keyword_generator.py` (566), `import_label_workbook.py` (513), `multicategory_report.py` (481), `category_metrics.py` (451), `selenium_collector.py` (404), `export_label_workbook.py` (403).
+
+**Uygulama ayrıntıları.**
+
+*Kazıyıcı.* `product_scraper.py`, kategori başına arama terimleri üzerinden listeleme sayfalarını gezmektedir. Bir listeleme sayfası yaklaşık 32 ürün taşıdığından, 50 ürünlük hedefe ulaşmak için kategori başına en az iki çalışan arama terimi gerekmektedir. Kazıyıcı, oturum kesintilerinde ilerlemeyi kaydetmekte ve `--resume` bayrağıyla devam edebilmektedir; toplam yedi toplama oturumu kaydedilmiştir.
+
+*Profil tabanlı işleme.* `data_processor.py` ve `quality_check.py`, kategori grubuna göre farklı zorunlu alan kümeleri uygulamaktadır. Telefon profili, önceki deneyin davranışını bire bir koruyacak biçimde bırakılmıştır.
+
+*Kural tabanlı değerlendirici.* `rule_based_evaluator.py`, alan adını 44 kayıtlık tabloda arar; bulamazsa 0,0 puan verir. `RELEVANCE_THRESHOLD = 0.60` sabiti eşiği belirler. Modül ayrıca tablodaki puanların 0–1 aralığında ve sayısal olduğunu doğrulamakta, geçersiz puan bulursa açık bir hata mesajı üretmektedir.
+
+*API anahtarı rotasyonu.* OpenRouter ücretsiz katmanı **hesap başına** günde 50 model isteği ile sınırlıdır. Uygulama, `OPENROUTER_API_KEY_2` biçiminde numaralandırılmış ek anahtarları desteklemekte; günlük kotası dolan anahtarı kenara ayırıp bir sonrakine geçmekte, denenmemiş anahtar kalmadığında ise geri çekilme (backoff) uygulamaktadır. Mekanizmanın dayandığı varsayım her anahtarın kendi kotasına sahip olmasıdır; bu varsayım yalnızca anahtarlar **farklı hesaplara** ait olduğunda geçerlidir. Bu projede kullanılan iki anahtar aynı hesaba ait olduğundan rotasyon ek günlük kapasite sağlamamıştır.
+
+*Manifest üreteci.* `build_manifest.py`, sonuç dizinindeki her dosyayı doğrular, yalnızca `live` modundaki koşumları dikkate alır ve her (ürün, yöntem) çifti için dosya adındaki zaman damgasına göre en yeni koşumu seçer. Yöntem adları alt çizgi içerdiğinden (`selenium_rule_based`), zaman damgası dosya adını parçalara ayırmak yerine doğrudan düzenli ifadeyle eşleştirilmektedir. Üreteç, ürün/yöntem ızgarasında bir delik bulursa manifest yazmayı reddetmektedir.
+
+*Kategori bazlı metrikler.* `category_metrics.py`, her (yöntem, kategori) çifti için karışıklık matrisi ve türetilmiş metrikleri hesaplamaktadır. Tanımsız oranlar (örneğin hiç uygunsuz etiket yoksa özgüllük) sıfır olarak değil, eksik olarak raporlanmaktadır.
+
+## 5.3. Testing
+
+**Test stratejisi.** Test paketi üç amaca hizmet etmektedir: (i) kategori genişletmesi öncesinde mevcut davranışı bire bir kaydeden karakterizasyon (kilit) testleri, (ii) yeni bileşenlerin sözleşmelerini sabitleyen birim testleri, (iii) bulunan her hata için bir gerileme (regression) testi.
+
+**Test paketinin ölçülen durumu.** Test paketi 19 dosya ve 6.729 satırdan oluşmaktadır. Çalıştırma sonucu: **348 test, 1 atlandı, 0 hata, 0 başarısızlık**; toplam çalışma süresi yaklaşık 1,2 saniyedir. Test paketi ağ erişimi veya API anahtarı gerektirmemektedir; dış servisler sahte (fake) uygulamalarla değiştirilmiştir. Bu, testlerin kota tüketmeden ve internet bağlantısı olmadan çalışabilmesini sağlamaktadır.
+
+**Karakterizasyon testleri.** Kategori genişletmesine başlamadan önce, mevcut telefon hattının davranışını kaydeden üç sözleşme testi dosyası yazılmıştır: veri sözleşmesi (şema sabitleri, temizleme davranışı, doğrulama hata sözlüğü), yöntem sözleşmesi (alan adı tablosu, puanlama, anahtar kelime üretimi, URL yardımcıları, API anahtarı rotasyonu) ve orkestrasyon sözleşmesi (çizge topolojisi, JSON sözleşmesi). Bu testler sayesinde, genişletme sonrasında dondurulmuş telefon deneyinin %68,84 doğruluk değerinin değişmeden yeniden üretilebildiği doğrulanabilmektedir.
+
+**Testle yakalanan hatalar.** Test yazımı sırasında iki gerçek hata bulunmuş ve her biri için kilit testi eklenmiştir:
+
+1. **URL tekilleştirme uyuşmazlığı.** Dışa aktarım modülü ham URL üzerinden, metrik modülü ise normalize URL üzerinden tekilleştirme yapmaktaydı. Sondaki eğik çizgi farkı, aynı sayfanın değerlendiriciye iki kez gitmesine ve iki etiketin metrik katmanında çakışmasına yol açtı. Düzeltme: her iki taraf ortak normalizasyon fonksiyonunu kullanacak biçimde değiştirildi; uyumlu tekrarlar tek kayda indiriliyor, çelişkili tekrarlar içe aktarımı durduruyor. Bu davranış beş ayrı testle sabitlendi.
+2. **Etiketsiz yöntemin rapordan düşmesi.** Kategori bazlı metrik modülünde, sonuçlarının hiçbiri etiketlenmemiş bir yöntem rapordan tamamen kayboluyordu; bu, dört yöntemli bir karşılaştırmanın sessizce üç yöntemli hale gelmesi anlamına gelirdi. Düzeltme: böyle bir yöntem, puanlanamadığı açıkça belirtilerek raporda tutulmaktadır.
+
+**Test kapsamı örnekleri.** Etiketleme döngüsü için yazılan testler; belirsiz cevabın (`true?`) asla etiket sayılmaması, hakem kaydının değerlendiricinin verdiği cevabı değiştirememesi, eşleşmeyen hakem kaydının içe aktarımı durdurması, büyük/küçük harf ve boşluk farklarının eşleşmeyi bozmaması gibi davranışları sabitlemektedir. Manifest üreteci için yazılan testler; en yeni koşumun seçilmesi, `fake` modundaki koşumların dondurulmaması, ızgarada delik olduğunda üretimin reddedilmesi ve alt küme dışı ürün bulunduğunda hata verilmesi davranışlarını kapsamaktadır.
+
+---
+
+# 6. RESULTS
+
+Bu bölümdeki tüm değerler, `reports_multicategory/multicategory_evaluation_metrics.json` ve `reports_multicategory/multicategory_category_metrics.json` dosyalarından alınmıştır. Bu dosyalar, `data/evaluation/final_evaluation_manifest_multicategory.json` manifestinde dondurulan 80 sonuç dosyası ile `data/labels/multicategory_ground_truth.csv` temel doğruluk dosyasından hesaplanmıştır.
+
+**Deney protokolü.**
+
+| Öğe | Değer |
+|---|---|
+| Ürün sayısı | 20 (10 kategori × 2 ürün, 20 farklı marka) |
+| Yöntem sayısı | 4 |
+| Canlı çalıştırma sayısı | 80 (hata yok) |
+| Toplam arama sonucu | 399 |
+| Benzersiz URL | 195 |
+| Benzersiz alan adı | 46 |
+| Elle etiketlenen benzersiz URL | 194 |
+| Etiket kapsamı | %100 (399/399) |
+| Uygun etiket / uygunsuz etiket | 140 / 54 |
+| Hakem kararıyla çözülen satır | 5 |
+| Tekilleştirme ile birleştirilen satır | 1 |
+
+Etiketleme iki oturumda yürütülmüştür: birinci oturumda 134 satır, ikinci oturumda 61 satır. Her oturumu bir ekip üyesi tamamlamıştır. İkinci çalışma kitabı, birincisinde etiketlenen URL'leri tasarım gereği dışlamaktadır; bu nedenle iki değerlendiricinin etiket kümeleri kesişmemekte ve aralarındaki anlaşma ölçülememektedir (bkz. Ölçüm sınırlılıkları).
+
+**Genel sonuç.** 399 etiketli sonucun 304'ünde yöntem tahmini insan etiketiyle örtüşmüştür; genel doğruluk **%76,19**'dur. Toplam karışıklık sayıları: TP = 289, TN = 15, FP = 86, FN = 9.
+
+**Tablo 8.** Dört yöntemin genel başarım karşılaştırması.
+
+| Yöntem | Sonuç | Doğruluk | "Hep uygun" taban çizgisi | Dengeli doğruluk | Kesinlik | Duyarlılık | Özgüllük | Ort. süre (s) | Maliyet (USD) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Tavily + NanoLLM | 100 | **0,8200** | 0,7200 | **0,6895** | 0,8068 | 0,9861 | **0,3929** | 12,0785 | 0,00 |
+| Agentic Search | 100 | 0,7800 | 0,7700 | 0,5218 | 0,7778 | 1,0000 | 0,0435 | 27,8395 | 0,00 |
+| Selenium + NanoLLM | 100 | 0,7400 | 0,7400 | 0,5000 | 0,7400 | 1,0000 | 0,0000 | 14,1995 | 0,00 |
+| Selenium + Kural Tabanlı | 99 | 0,7071 | 0,7576 | 0,5091 | 0,7614 | 0,8933 | 0,1250 | **5,5505** | 0,00 |
+
+"Hep uygun" taban çizgisi sütunu, o yöntemin döndürdüğü her sonuca "uygun" cevabı veren önemsiz bir sınıflandırıcının elde edeceği doğruluğu göstermektedir. Bu değer varsayımsal değildir; yöntemin kendi sonuç kümesindeki uygun etiket oranıdır.
+
+**Bulgu 1: Üç yöntem önemsiz sınıflandırıcıyı geçememektedir.** Taban çizgisini geçen yöntemler ve marjları: Tavily + NanoLLM **+10,0 puan**, Agentic Search **+1,0 puan**. Selenium + NanoLLM taban çizgisine tam olarak eşittir (0,7400 = 0,7400). Selenium + Kural Tabanlı ise taban çizgisinin **5,05 puan altındadır** (0,7071 < 0,7576).
+
+**Bulgu 2: Dil modeli tabanlı değerlendiriciler neredeyse hiçbir sonucu reddetmemektedir.** Yöntemlerin "uygun" deme oranları ve uygunsuz sonuçları reddetme oranları:
+
+- Selenium + NanoLLM: sonuçların **%100,00**'üne uygun demiştir; uygunsuz sonuçların **%0,00**'ını reddetmiştir (26 uygunsuz sonuçtan 0'ı).
+- Agentic Search: sonuçların %99,00'una uygun demiştir; uygunsuz sonuçların %4,35'ini reddetmiştir (23'ten 1'i).
+- Selenium + Kural Tabanlı: sonuçların %88,89'una uygun demiştir; uygunsuz sonuçların %12,50'sini reddetmiştir (24'ten 3'ü).
+- Tavily + NanoLLM: sonuçların %88,00'ına uygun demiştir; uygunsuz sonuçların %39,29'unu reddetmiştir (28'den 11'i).
+
+Selenium + NanoLLM'in dengeli doğruluğu 0,5000'dir; bu, ikili sınıflandırmada tesadüf düzeyidir [8].
+
+**Tablo 9.** Yöntem bazlı karışıklık matrisi.
+
+| Yöntem | TP | TN | FP | FN | Etiketli sonuç |
+|---|---:|---:|---:|---:|---:|
+| Tavily + NanoLLM | 71 | 11 | 17 | 1 | 100 |
+| Agentic Search | 77 | 1 | 22 | 0 | 100 |
+| Selenium + NanoLLM | 74 | 0 | 26 | 0 | 100 |
+| Selenium + Kural Tabanlı | 67 | 3 | 21 | 8 | 99 |
+
+**Bulgu 3: Kural tabanlı yöntemin yanlış negatifleri tablodan kaynaklanmaktadır.** Kural tabanlı yöntem, dört yöntem arasında yanlış negatiflerin neredeyse tamamını üretmektedir (9 yanlış negatifin 8'i). Bunun nedeni yapısaldır: yöntem, güvenilir alan adı tablosunda bulunmayan bir alan adına 0,0 puan vermektedir. Tabloda bulunmayan üretici mağazaları ve niş perakendeciler, gerçekte uygun ürün sayfaları sunmalarına rağmen eşiği geçememektedir. Sonuçlarda görülen 46 farklı alan adının yalnızca 44'ü tabloda tanımlıdır ve sonuçlarda `tefal.com.tr` (7 sonuç) ve `efsanekamp.com` (7 sonuç) gibi uzun kuyruk alan adları belirgin biçimde yer almaktadır.
+
+**Bulgu 4: Toplama yolu, değerlendiriciden daha belirleyicidir.** Selenium + NanoLLM ile Tavily + NanoLLM aynı değerlendirici modeli kullanmaktadır; aralarındaki tek fark sonuçların nereden geldiğidir. Doğruluk farkı 8 puandır (0,7400'e karşı 0,8200) ve özgüllük farkı 0,3929'dur. Bu, ölçülen koşullarda arama sonuçlarının kalitesinin, değerlendirici modelin kendisinden daha belirleyici olduğunu göstermektedir.
+
+**Tablo 10.** Kategori gruplarına göre doğruluk ve uygun sonuç payı.
+
+| Kategori grubu | Etiketli | Uygun payı | Tavily+NanoLLM | Agentic | Selenium+NanoLLM | Kural Tabanlı |
+|---|---:|---:|---:|---:|---:|---:|
+| anne_bebek_oyuncak | 40 | 0,8250 | 0,800 | 0,900 | 0,800 | 0,700 |
+| elektronik_cep_telefonu | 40 | 0,9500 | 1,000 | 1,000 | 1,000 | 1,000 |
+| ev_yasam_ofis_kirtasiye | 40 | 0,7750 | 0,700 | 0,900 | 0,800 | 0,800 |
+| kitap_muzik_hobi | 40 | 0,9500 | 1,000 | 1,000 | 1,000 | 0,800 |
+| oto_bahce_yapi_market | 40 | 0,7500 | 0,900 | 0,800 | 0,700 | 0,700 |
+| petshop | 40 | 0,6500 | 0,800 | 0,600 | 0,600 | 0,600 |
+| saat_moda_taki_ayakkabi | 40 | 0,7000 | 0,600 | 0,700 | 0,800 | 0,500 |
+| saglik_bakim_kozmetik | 40 | 0,6750 | 0,900 | 0,600 | 0,600 | 0,600 |
+| spor_outdoor | 39 | 0,5641 | 0,800 | 0,600 | 0,400 | 0,667 |
+| supermarket | 40 | 0,6250 | 0,700 | 0,700 | 0,700 | 0,700 |
+
+**Bulgu 5: Telefon kategorisi setteki en kolay kategoridir.** Dört yöntem ortalaması alındığında telefon kategorisi **%100,00**, diğer dokuz kategori grubu ise **%73,52** doğruluk vermektedir. Bu, danışman geri bildiriminde dile getirilen kaygının ölçümle doğrulanması anlamına gelmektedir: yalnızca telefon kategorisiyle yürütülen bir değerlendirme, hattın diğer kategorilerdeki başarımını olduğundan iyi göstermektedir. Uygun sonuç payı da kategoriye göre %56,41 ile %95,00 arasında değişmektedir; bu değişkenlik, doğruluğun kategoriler arası doğrudan karşılaştırılmasını engellemektedir.
+
+**Tablo 11.** Dondurulmuş telefon deneyi ile çok kategorili deneyin karşılaştırması.
+
+| Deney | Ürün | Çalıştırma | Etiketli sonuç | Genel doğruluk |
+|---|---:|---:|---:|---:|
+| Yalnızca telefon (dondurulmuş) | 10 | 40 | 199 | %68,84 |
+| Çok kategorili | 20 | 80 | 399 | %76,19 |
+
+Yöntem bazında dondurulmuş telefon deneyinin doğrulukları: Tavily + NanoLLM %74,00; Selenium + Kural Tabanlı %69,39; Agentic Search %66,00; Selenium + NanoLLM %66,00. İki deney farklı ürünler, farklı anahtar kelimeler ve farklı etiketler kullandığından genel değerler doğrudan karşılaştırılabilir değildir. Buradaki tek çıkarım, her iki deneyde de Tavily + NanoLLM'in en yüksek doğruluğu vermesi ve önceki deneyin sonuçlarının genişletme sonrasında değişmeden yeniden üretilebilmesidir.
+
+**Ölçüm sınırlılıkları.**
+
+- Ürün ve yöntem başına tek koşum yapılmıştır; varyans ve güven aralığı hesaplanmamıştır.
+- Kategori başına iki ürün, yöntemleri aynı zeminde karşılaştırmak için yeterlidir ancak bir kategoriyi karakterize etmek için azdır.
+- Etiketleme iki değerlendirici arasında bölünmüştür (134 ve 61 satır), ancak ikinci çalışma kitabı birincinin kapsadığı URL'leri dışladığından iki kümenin kesişimi sıfırdır. Hiçbir URL iki kez etiketlenmediği için değerlendiriciler arası anlaşma katsayısı (Cohen kappa) hesaplanamamaktadır. Bu katsayının hesaplanabilmesi, aynı URL alt kümesinin her iki değerlendirici tarafından bağımsız etiketlenmesini gerektirir.
+- Anahtar kelimeler deterministik modda üretilmiştir; canlı dil modeliyle üretilen anahtar kelimelerin sonuçları nasıl değiştireceği ölçülmemiştir.
+- Maliyetler 0,00 USD olarak raporlanmıştır; bu, kullanılan modelin ücretsiz katmanda olmasından ve arama maliyetinin sıfır kaydedilmesinden kaynaklanmaktadır ve gelecekteki koşumların ücretsiz olacağı anlamına gelmez.
+
+---
+
+# 7. CONCLUSION
+
+Bu projede, yapılandırılmış ürün verisinden işlemsel niyetli arama sorguları üreten ve bu sorguların döndürdüğü web sonuçlarının e-ticaret uygunluğunu dört farklı yöntemle değerlendiren uçtan uca bir hat geliştirilmiştir. Dört yöntem, LangGraph tabanlı tek bir durum çizgesi üzerinde, aynı ürünler ve aynı anahtar kelimelerle çalıştırılmış; sonuçların uygunluğu yöntem tahminleri gizlenerek elle etiketlenmiş ve tüm yöntemler aynı insan etiketleri üzerinde ölçülmüştür.
+
+Uygulama deneyiminin en öğretici yanı, ilk bakışta başarılı görünen bir sonucun daha yakından incelendiğinde ne kadar farklı okunabildiğidir. Ön değerlendirme aşamasında, henüz etiketlerin bir bölümü tamamlanmışken, yöntemlerin sıralaması bugünkünden farklı görünmekteydi; çünkü yöntemler o aşamada birbirinden farklı alt kümeler üzerinde ölçülüyordu. Etiket kapsamı %100'e ulaştığında hem sıralama değişmiş hem de asıl bulgunun doğruluk sıralamasında değil, sınıflandırma davranışında olduğu ortaya çıkmıştır: dil modeli tabanlı değerlendiricilerden biri hiçbir sonucu reddetmemiş, bir diğeri yüz sonuçtan yalnızca birini reddetmiştir. Bu, doğruluk metriğinin tek başına raporlanmasının yanıltıcı olabileceğini somut biçimde göstermektedir.
+
+İkinci önemli deneyim, ölçüm altyapısının kendisinin de test edilmesi gerektiğidir. Proje sırasında bulunan iki hatanın ikisi de ölçüm hattındaydı ve her ikisi de sessiz veri kaybına yol açacak nitelikteydi: aynı sayfanın iki kez etiketlenmesi ve etiketsiz bir yöntemin rapordan tamamen düşmesi. Her iki durum için de gerileme testi yazılmıştır.
+
+Üçüncü olarak, danışman geri bildiriminin ölçümle doğrulanabilmesi projenin yönünü belirlemiştir. "Tek kategori yeterli değil" eleştirisi, on kategoriye genişletme sonrasında sayısal olarak doğrulanmıştır: telefon kategorisi dört yöntem ortalamasında %100 doğruluk verirken diğer dokuz kategori %73,52'de kalmıştır.
+
+## 7.1. Life-Long Learning
+
+Proje boyunca ekibin kendi kendine öğrenmek durumunda kaldığı konular şunlardır:
+
+**Durum çizgesi tabanlı orkestrasyon.** LangGraph, ders müfredatında yer almayan bir kütüphanedir. Düğüm, kenar, ortak durum ve koşullu geçiş kavramları resmî dokümantasyondan [11] ve kütüphanenin örneklerinden öğrenilmiştir. Kazanılan içgörü, orkestrasyonun yalnızca "adımları sırayla çalıştırmak" olmadığı; ortak durumun, aynı girdinin tüm yöntemlere değişmeden ulaşmasını garanti eden bir sözleşme işlevi gördüğüdür.
+
+**Bilgi erişimi değerlendirme metodolojisi.** Uygunluk yargısı, test koleksiyonu, Cranfield paradigması ve değerlendirici değişkenliği kavramları literatürden öğrenilmiştir [2], [3]. Özellikle "etiket, sonucun özelliğidir; yöntemin özelliği değildir" ilkesi, tasarımın merkezine yerleşmiştir.
+
+**Dengesiz veride metrik seçimi.** Doğruluğun dengesiz sınıf dağılımında neden yanıltıcı olduğu ve dengeli doğruluğun bu soruna nasıl yanıt verdiği literatürden öğrenilmiş [8] ve rapora doğrudan yansıtılmıştır.
+
+**Tarayıcı otomasyonu ve kazıma dayanıklılığı.** Selenium ile arama sonucu toplamanın kırılganlığı, bot korumaları ve hız sınırlamaları uygulamalı olarak öğrenilmiştir. Oturum bazlı ilerleme kaydı ve devam edebilme yeteneği, bu deneyimin doğrudan sonucudur.
+
+**Karakterizasyon testi disiplini.** Mevcut davranışı değiştirmeden önce onu teste alma yaklaşımı, projenin en değerli mühendislik pratiği olmuştur. Bu sayede on kategoriye genişletme sırasında önceki deneyin sonuçlarının bozulmadığı sürekli doğrulanabilmiştir.
+
+Kullanılan kaynaklar: hakemli konferans ve dergi makaleleri (bkz. Kaynakça), kütüphanelerin resmî dokümantasyonları [11], [12] ve IETF standart belgesi [10].
+
+## 7.2. Professional and Ethical Responsibilities of Engineers
+
+Proje süresince aşağıdaki profesyonel ve etik sorumluluklar gözetilmiştir.
+
+**Veri toplamada dürüstlük.** Bot korumaları aşılmamıştır. Cloudflare koruması nedeniyle erişilemeyen kaynak, korumayı aşmaya çalışmak yerine veri kaynağı listesinden çıkarılmıştır. Hız sınırlamalarına uyulmuş, istekler arası bekleme süresi artırılmıştır. robots.txt standardının [10] öngördüğü davranış normu benimsenmiştir. Araştırma amaçlı kazımanın etik çerçevesi literatürdeki tartışmalarla uyumlu biçimde ele alınmıştır [9].
+
+**Sentetik ile gerçek verinin ayrılması.** Projede hem gerçek kazınmış veri hem de çevrimdışı çalışma için sentetik katalog bulunmaktadır. Bu iki kaynak üst verideki `acquisition_mode` alanıyla açıkça ayrılmakta ve bu ayrımı koruyan otomatik testler bulunmaktadır. Sentetik veri hiçbir koşulda gerçek veri gibi sunulmamıştır.
+
+**Ölçüm dürüstlüğü.** Rapordaki tüm sayılar metrik dosyalarından otomatik olarak üretilmektedir; elle yazılmamaktadır. Bu, rapordaki değerlerin altındaki deneyden sapmasını yapısal olarak engellemektedir. Ayrıca olumsuz bulgular gizlenmemiştir: yöntemlerden birinin hiçbir sonucu reddetmediği ve bir diğerinin önemsiz sınıflandırıcının altında kaldığı açıkça raporlanmıştır. Anahtar kelimelerin canlı dil modeliyle değil deterministik modda üretildiği de saklanmamıştır.
+
+**Etiketleme yansızlığı.** Temel doğruluğu üreten kişiye yöntem tahminleri gösterilmemiştir. Bu, ölçülen doğrulukların herhangi bir yöntem lehine kaymasını önlemek için alınmış bilinçli bir önlemdir. Değerlendiricinin belirsiz bıraktığı satırlar, çalışma kitabı değiştirilmeden ayrı bir hakem dosyasında ve dayandıkları kural yazılarak çözülmüştür; böylece bir denetçi bu satırları dışlayıp metrikleri yeniden hesaplayabilmektedir.
+
+**Gizlilik ve güvenlik.** Kişisel veri toplanmamıştır. API anahtarları sürüm kontrolüne girmemekte, yalnızca anahtar içermeyen örnek dosya paylaşılmaktadır.
+
+**Uygulanan standartlar.** ACM Etik ve Mesleki Davranış Kuralları'nın araştırma dürüstlüğü ve zarar vermeme ilkeleri ile IEEE Etik Kuralları'nın veriyi dürüst raporlama ilkesi gözetilmiştir. **[EKSİK VERİ: Bölümünüzün veya üniversitenizin resmî olarak atıf yapmanızı istediği belirli bir etik kod/yönerge varsa buraya ekleyiniz.]**
+
+## 7.3. Contemporary Issues
+
+Proje, güncel birkaç tartışmanın tam merkezinde yer almaktadır.
+
+**Yapay zekânın değerlendirici olarak kullanılması.** Dil modellerinin insan değerlendiricilerin yerini alıp alamayacağı, bilgi erişimi topluluğunda aktif bir tartışmadır [3]. Bu proje, tartışmaya küçük ve ücretsiz modeller açısından somut bir veri noktası eklemektedir: ölçülen koşullarda küçük model, uygun olmayan sonuçların hiçbirini reddedememiştir. Bu, "yapay zekâ değerlendirebilir" iddiasının model ölçeğinden bağımsız genellenmemesi gerektiğini göstermektedir.
+
+**Etmen tabanlı sistemlerin maliyet-fayda dengesi.** Etmen tabanlı yaklaşımlar güncel olarak büyük ilgi görmektedir [7]. Bu projede etmen tabanlı yöntem en yüksek gecikmeyi getirmiş (ortalama 27,8395 saniye, kural tabanlı yöntemin yaklaşık beş katı) ancak ayırt etme kabiliyetinde anlamlı kazanım sağlamamıştır (özgüllük 0,0435). Bu, mimari karmaşıklığın otomatik olarak kalite getirmediğini göstermektedir.
+
+**Veri erişiminin daralması.** Platformlar resmî veri kanallarını kısıtladıkça araştırmacılar kazımaya yönelmekte, bu da yeni etik ve hukuki sorunlar doğurmaktadır [9]. Bu proje, bir veri kaynağının bot koruması nedeniyle tamamen kullanılamaz hale gelmesini doğrudan yaşamıştır.
+
+**Ücretsiz katman kotalarıyla araştırma yapmak.** Ticari model erişiminin maliyeti, öğrenci ve küçük ölçekli araştırmalar için gerçek bir kısıttır. Bu projede günlük kota sınırı, çok anahtarlı rotasyon ve deneyin oturumlara bölünmesiyle yönetilmiştir. Bu, kaynak kısıtının yalnızca bir zorluk değil, aynı zamanda mimari kararları biçimlendiren bir tasarım faktörü olduğunu göstermektedir.
+
+**Kullanılan güncel araçlar.** Durum çizgesi tabanlı LLM orkestrasyonu (LangGraph), arama API'leri (Tavily), model yönlendirme platformları (OpenRouter), tarayıcı otomasyonu (Selenium WebDriver [12]) ve yapılandırılmış çıktı doğrulaması (Pydantic) projede fiilen kullanılmıştır.
+
+## 7.4. Team Work
+
+Proje iki kişilik bir ekiple yürütülmüştür: Ali Rubar Kal ve Atahan Bulut; ikisi de MEF Üniversitesi Bilgisayar Mühendisliği bölümü öğrencisidir. Sürüm kontrol geçmişine göre katkı dağılımı Ali Rubar Kal 26 işlem, Atahan Bulut 16 işlem biçimindedir.
+
+**İş bölümü.** Ekip, işi teknik sorumluluk alanlarına göre bölmüştür. Veri toplama, kural tabanlı değerlendirme ve metrik/temel doğruluk altyapısı ağırlıklı olarak birinci üyede; yapılandırılmış anahtar kelime üretimi, dil modeli entegrasyonu, Tavily ve etmen tabanlı arama hatları ağırlıklı olarak ikinci üyede toplanmıştır. LangGraph orkestrasyonu, canlı değerlendirme koşumları ve kategori genişletmesi ortak yürütülmüştür. Etiketleme iki oturuma bölünmüş ve her oturumu bir ekip üyesi üstlenmiştir: birinci oturumdaki 134 satır bir üye, ikinci oturumdaki 61 satır diğer üye tarafından tamamlanmıştır. Bölünme iş yükünü paylaştırmış, ancak ikinci kitap birincinin URL'lerini dışladığı için iki değerlendiricinin ortak etiketlediği URL kalmamış ve anlaşma ölçümü mümkün olmamıştır.
+
+**Organizasyon ve iletişim.** Koordinasyon, ortak bir Git deposu ve işlem mesajlarında tutulan gerekçe kayıtları üzerinden sağlanmıştır. İşlem mesajlarının yalnızca "ne değişti" değil "neden değişti" bilgisini de taşıması, ekip üyelerinin birbirinin kararlarını sonradan anlayabilmesini sağlamıştır.
+
+**Değerlendirme.** Ekip kompozisyonunun güçlü yanı, iki üyenin farklı bileşenlerde derinleşerek paralel ilerleyebilmesiydi. Zayıf yanı, etiketleme iki kişi arasında bölünmüş olmasına rağmen örtüşen bir alt küme bırakılmadığı için etiket güvenilirliğinin ölçülememesi olmuştur. Geriye dönük bakıldığında, URL'lerin küçük bir alt kümesinin (örneğin %10'unun) her iki üye tarafından bağımsız etiketlenmesi, neredeyse aynı iş yüküyle bir anlaşma katsayısı üretebilir ve önemli bir metodolojik kazanım sağlayabilirdi.
+
+**Dış paydaş.** Proje danışmanı, ara değerlendirmede tek kategorinin yetersizliğine ilişkin geri bildirim vermiş ve bu geri bildirim projenin ikinci aşamasının kapsamını doğrudan belirlemiştir. **[EKSİK VERİ: Şirket/kurum iş birliği yapıldıysa, birlikte çalışılan kişilerin pozisyonları ve alanları buraya eklenmelidir; proje kayıtlarında böyle bir iş birliği bulunmamaktadır.]**
+
+---
+
+# APPENDIX A
+
+**Sonuçların yeniden üretilmesi.** Aşağıdaki komutlar, rapordaki tüm sayıları sıfırdan yeniden üretmektedir. Komutlar Windows PowerShell içindir.
+
+```powershell
+# 1. Temel doğruluğu iki çalışma kitabından ve hakem dosyasından üret
+.\.venv\Scripts\python.exe src\evaluation\import_label_workbook.py `
+  --workbook data\labels\label_review_session1.xlsx data\labels\label_review_session2.xlsx `
+  --adjudication data\labels\multicategory_label_adjudications.csv `
+  --output data\labels\multicategory_ground_truth.csv
+
+# 2. Rapora girecek sonuç dosyalarını manifestte dondur
+.\.venv\Scripts\python.exe src\evaluation\build_manifest.py
+
+# 3. Genel metrikleri hesapla
+.\.venv\Scripts\python.exe src\evaluation\final_metrics.py `
+  --manifest data\evaluation\final_evaluation_manifest_multicategory.json `
+  --output reports_multicategory\multicategory_evaluation_metrics.json
+
+# 4. Kategori bazlı metrikleri hesapla
+.\.venv\Scripts\python.exe src\evaluation\category_metrics.py
+
+# 5. Markdown raporu üret
+.\.venv\Scripts\python.exe src\evaluation\multicategory_report.py
+
+# 6. Test paketini çalıştır (348 test)
+.\.venv\Scripts\python.exe -m unittest discover -s tests -p "test*.py"
+```
+
+**Dondurulmuş telefon deneyinin yeniden üretilmesi.**
+
+```powershell
+.\.venv\Scripts\python.exe src\evaluation\final_metrics.py
+.\.venv\Scripts\python.exe src\evaluation\final_report.py
+```
+
+**Ortam değişkenleri** (`.env` dosyasında tanımlanır; depoya girmez):
+
+```
+OPENROUTER_API_KEY=
+OPENROUTER_API_KEY_2=      # isteğe bağlı; yalnızca AYRI bir hesabın anahtarı ek kota sağlar
+NANO_LLM_MODEL=google/gemma-4-26b-a4b-it:free
+AGENTIC_PLANNER_MODEL=google/gemma-4-26b-a4b-it:free
+TAVILY_API_KEY=
+```
+
+---
+
+# APPENDIX B
+
+**B.1. Sonuç dosyası JSON şeması.** Her yöntem/ürün çifti için yazılan dosyanın zorunlu alanları:
+
+| Alan | Tür | Açıklama |
+|---|---|---|
+| `product_id` | string | Ürün kimliği (örn. `ELK001`) |
+| `keyword` | string | Dört yönteme de verilen ortak anahtar kelime |
+| `method` | string | `tavily_llm`, `agentic_search`, `selenium_nano_llm`, `selenium_rule_based` |
+| `execution_mode` | string | `live` veya `fake` |
+| `provider` | string | Servis sağlayıcı adı |
+| `model` | string | Kullanılan model kimliği |
+| `prompt_version` | string | İstem sürümü |
+| `runtime_seconds` | number | Çalışma süresi |
+| `estimated_cost_usd` | number | Tahmini maliyet |
+| `results` | array | Sonuç listesi (en fazla 5) |
+
+Her sonuç öğesinin zorunlu alanları: `domain` (string), `url` (string, `http://` veya `https://` ile başlamalı), `title` (string), `snippet` (string), `predicted_relevant` (boolean), `relevance_score` (number, 0–1 aralığında).
+
+**B.2. Temel doğruluk CSV şeması.**
+
+| Sütun | Açıklama |
+|---|---|
+| `product_id` | Ürün kimliği |
+| `keyword` | Anahtar kelime |
+| `method` | **Boş bırakılır** — etiket, URL'yi döndüren tüm yöntemler için ortaktır |
+| `domain` | Alan adı |
+| `url` | Tam URL |
+| `human_relevant` | `true` / `false` |
+| `notes` | Değerlendirici notu, değerlendirici adı ve varsa hakem kararının gerekçesi |
+
+**B.3. Hakem (adjudication) dosyası şeması.**
+
+| Sütun | Açıklama |
+|---|---|
+| `product_id` | Ürün kimliği |
+| `url` | Hakem kararı uygulanacak URL |
+| `resolved_label` | Çözülen etiket (`true` / `false`) |
+| `rule` | Kararın dayandığı kural veya emsal |
+| `adjudicated_by` | Kararı veren |
+
+**B.4. Bu deneyde çözülen beş belirsiz satır.**
+
+| Ürün | Durum | Dayanılan kural / emsal | Sonuç |
+|---|---|---|---|
+| SBK003 | Ürün doğru (300 ml), stokta yok, fiyat görünmüyor | Yönerge: "Stokta olmamak sayfayı uygunsuz yapmaz"; sayfa tam olarak `variant_label` = 300 ml | true |
+| SPM001 | Doğru ürün, 12'li paket olarak satılıyor | Birinci oturum emsali: Eti Burçak 114 g × 12 adet → false | false |
+| SPM001 | Doğru ürün, 12'li paket olarak satılıyor | Aynı emsal | false |
+| SPM003 | Doğru ürün, 50'li paket, stokta yok | Birinci oturum emsali: Lotus 250 g 6 adet → false | false |
+| SPM003 | Doğru ürün, 250 g × 10 paket | Aynı emsal | false |
+
+Beş kararın tamamı, değerlendiricinin birinci oturumda kendi verdiği kararlara ve yönerge sayfasındaki yazılı kurala dayandırılmıştır; bağımsız bir yargı kullanılmamıştır. Her karar temel doğruluk dosyasının `notes` alanına ham cevabı ve gerekçesiyle yazılmıştır.
+
+**B.5. Kategori dağılımı.** Bkz. Tablo 3.
+
+---
+
+# ACKNOWLEDGEMENTS
+
+Proje danışmanımıza, ara değerlendirmede tek bir ürün kategorisinin genellenebilirliği göstermek için yeterli olmadığına dair verdiği geri bildirim için teşekkür ederiz. Bu geri bildirim, projenin ikinci aşamasının kapsamını belirlemiş ve raporun en anlamlı bulgularından birinin (telefon kategorisinin setteki en kolay kategori olduğu) ortaya çıkmasını sağlamıştır. **[EKSİK VERİ: Danışmanın adı ve teşekkür edilecek diğer kişi/kurumlar eklenmelidir.]**
+
+---
+
+# REFERENCES
+
+[1] A. Broder, "A taxonomy of web search," *ACM SIGIR Forum*, vol. 36, no. 2, pp. 3–10, 2002.
+
+[2] E. M. Voorhees, "Variations in relevance judgments and the measurement of retrieval effectiveness," *Information Processing & Management*, vol. 36, no. 5, pp. 697–716, 2000.
+
+[3] G. Faggioli, L. Dietz, C. Clarke, G. Demartini, M. Hagen, C. Hauff, N. Kando, E. Kanoulas, M. Potthast, B. Stein, and H. Wachsmuth, "Perspectives on large language models for relevance judgment," arXiv preprint arXiv:2304.09161, 2023.
+
+[4] J. Sachdev, S. D. Rosario, A. Phatak, H. Wen, S. Kirti, and C. Tripathy, "Automated query-product relevance labeling using large language models for e-commerce search," in *Proc. 8th Int. Conf. Natural Language Processing and Information Retrieval (NLPIR)*, 2024. doi: 10.1145/3711542.3711582. Also available as arXiv:2502.15990.
+
+[5] K. Hosseini, T. Kober, J. Krapac, R. Vollgraf, W. Cheng, and A. Peleteiro Ramallo, "Retrieve, annotate, evaluate, repeat: Leveraging multimodal LLMs for large-scale product retrieval evaluation," in *Advances in Information Retrieval (ECIR 2025)*, Lecture Notes in Computer Science, Springer, 2025. doi: 10.1007/978-3-031-88708-6_10. Also available as arXiv:2409.11860.
+
+[6] N. Mehrdad, H. Mohapatra, M. Bagdouri, P. Chandran, A. Magnani, X. Cai, A. Puthenputhussery, S. Yadav, T. Lee, C. Zhai, and C. Liao, "Large language models for relevance judgment in product search," presented at the LLM4Eval Workshop, ACM SIGIR, 2024. arXiv:2406.00247.
+
+[7] S. Yao, J. Zhao, D. Yu, N. Du, I. Shafran, K. Narasimhan, and Y. Cao, "ReAct: Synergizing reasoning and acting in language models," in *Proc. Int. Conf. Learning Representations (ICLR)*, 2023. arXiv:2210.03629.
+
+[8] K. H. Brodersen, C. S. Ong, K. E. Stephan, and J. M. Buhmann, "The balanced accuracy and its posterior distribution," in *Proc. 20th Int. Conf. Pattern Recognition (ICPR)*, 2010, pp. 3121–3124. doi: 10.1109/ICPR.2010.764.
+
+[9] M. A. Brown, A. Gruen, G. Maldoff, S. Messing, Z. Sanderson, and M. Zimmer, "Web scraping for research: Legal, ethical, institutional, and scientific considerations," *Big Data & Society*, 2025. doi: 10.1177/20539517251381686. Also available as arXiv:2410.23432.
+
+[10] M. Koster, G. Illyes, H. Zeller, and L. Sassman, "Robots Exclusion Protocol," RFC 9309, Internet Engineering Task Force, Sep. 2022. doi: 10.17487/RFC9309.
+
+[11] LangChain Inc., "LangGraph documentation." [Online]. Available: https://langchain-ai.github.io/langgraph/
+
+[12] Selenium Project, "WebDriver documentation." [Online]. Available: https://www.selenium.dev/documentation/webdriver/
