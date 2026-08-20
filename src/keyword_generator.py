@@ -22,6 +22,13 @@ DEFAULT_OUTPUT_PATH = ROOT_DIR / "data" / "processed" / "generated_keywords.json
 DEFAULT_MODEL = "google/gemma-4-26b-a4b-it:free"
 OPENROUTER_BATCH_SIZE = 3
 OPENROUTER_MAX_ATTEMPTS = 4
+# Longest pause this client will take on one 429 before giving up. The
+# provider may answer a spent daily allowance with a Retry-After pointing at
+# midnight, and honouring that would park a batch job for hours. A daily limit
+# is already handled by setting the key aside, and a per-minute limit clears in
+# seconds, so a long wait here never buys anything: failing fast lets the
+# caller resume once the allowance is back.
+OPENROUTER_MAX_BACKOFF_SECONDS = 60.0
 KEYWORD_PROMPT_VERSION = "keyword-generation-v1"
 
 
@@ -433,8 +440,14 @@ class OpenRouterKeywordClient:
         """Send one request, rotating keys and backing off on rate limits.
 
         A 429 is answered by switching to a key that has not been tried for
-        this request. Waiting only helps a per-minute limit, whereas another
-        key has its own allowance, so rotation is attempted first.
+        this request, because waiting only helps a per-minute limit while a
+        key on a different account brings a fresh daily allowance.
+
+        Rotation only buys capacity when the keys belong to *different*
+        accounts. OpenRouter applies the free-tier daily limit per account, so
+        two keys issued from one account share a single allowance and every
+        one of them reports the same remaining count. Backoff is still the
+        fallback once no untried key is left.
         """
 
         body = json.dumps(payload).encode("utf-8")
@@ -472,7 +485,12 @@ class OpenRouterKeywordClient:
                 except (TypeError, ValueError):
                     requested_delay = 0.0
 
-                sleep(max(requested_delay, float(2**backoff_attempt)))
+                sleep(
+                    min(
+                        max(requested_delay, float(2**backoff_attempt)),
+                        OPENROUTER_MAX_BACKOFF_SECONDS,
+                    )
+                )
                 backoff_attempt += 1
                 # After waiting, a per-minute limit may have cleared, so keys
                 # become eligible again unless their daily quota is spent.
