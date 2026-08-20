@@ -23,10 +23,43 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
+from evaluation.category_metrics import build_category_report  # noqa: E402
+from evaluation.final_metrics import build_final_metrics_report  # noqa: E402
 from evaluation.ground_truth import (  # noqa: E402
     build_ground_truth_lookup,
     find_human_label,
     load_ground_truth,
+)
+
+MANIFESTS = PROJECT_ROOT / "data" / "evaluation"
+# Which stored report each manifest is supposed to produce. Reading a metrics
+# file and checking it against itself proves nothing: a stale file agrees with
+# itself perfectly. These are recomputed from the manifests instead.
+RECOMPUTABLE = (
+    (
+        "telefon (dondurulmus)",
+        MANIFESTS / "final_evaluation_manifest.json",
+        PROJECT_ROOT / "reports" / "final_evaluation_metrics.json",
+        None,
+    ),
+    (
+        "cok kategori (v1)",
+        MANIFESTS / "final_evaluation_manifest_multicategory.json",
+        PROJECT_ROOT
+        / "reports_multicategory"
+        / "multicategory_evaluation_metrics.json",
+        PROJECT_ROOT
+        / "reports_multicategory"
+        / "multicategory_category_metrics.json",
+    ),
+    (
+        "hizalanmis istem (v2)",
+        MANIFESTS / "final_evaluation_manifest_prompt_v2.json",
+        PROJECT_ROOT
+        / "reports_multicategory"
+        / "prompt_v2_evaluation_metrics.json",
+        PROJECT_ROOT / "reports_multicategory" / "prompt_v2_category_metrics.json",
+    ),
 )
 
 V1_RESULTS = PROJECT_ROOT / "results_multicategory"
@@ -231,6 +264,31 @@ def main() -> int:
     phone = json.loads(FROZEN_PHONE.read_text(encoding="utf-8"))
     checker.check("telefon dogrulugu 0.6884", phone["accuracy"] == 0.6884)
     checker.check("telefon 199 etiketli sonuc", phone["labeled_result_count"] == 199)
+
+    print()
+    print("=== 8. METRIKLER MANIFESTTEN YENIDEN URETILEBILIYOR MU ===")
+    for label, manifest, metrics_file, category_file in RECOMPUTABLE:
+        if not manifest.exists():
+            checker.check(f"{label}: manifest mevcut", False, str(manifest))
+            continue
+
+        stored = json.loads(metrics_file.read_text(encoding="utf-8"))
+        rebuilt = build_final_metrics_report(manifest)
+        checker.check(
+            f"{label}: genel metrikler yeniden uretiliyor",
+            rebuilt == stored,
+            f"dogruluk {rebuilt['accuracy']}",
+        )
+
+        if category_file is None:
+            continue
+
+        stored_categories = json.loads(category_file.read_text(encoding="utf-8"))
+        rebuilt_categories = build_category_report(manifest)
+        checker.check(
+            f"{label}: kategori metrikleri yeniden uretiliyor",
+            rebuilt_categories == stored_categories,
+        )
 
     print()
     if checker.failures:
