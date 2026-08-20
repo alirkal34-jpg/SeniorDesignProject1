@@ -1,0 +1,62 @@
+{
+  "product_id": "OBY001",
+  "keyword": "Shell Helix Ultra Professional AG 5W-30 5 lt Motor Yağı fiyat",
+  "method": "agentic_search",
+  "execution_mode": "live",
+  "provider": "openrouter+selenium+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "planner_model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v2-aligned",
+  "search_queries": [
+    "Shell Helix Ultra Professional AG 5W-30 5 lt fiyat",
+    "Shell Helix Ultra Professional AG 5W-30 5 lt satın al",
+    "Shell Helix Ultra Professional AG 5W-30 5 lt motor yağı fiyatları"
+  ],
+  "search_errors": [],
+  "runtime_seconds": 43.22,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/motor-yagi/en-ucuz-shell-helix-ultra-professional-ag-5w-30-5-lt-fiyati,487109151.html",
+      "title": "Shell Helix Ultra Professional AG 5W-30 5 lt Motor Yağı",
+      "snippet": "En ucuz Shell Helix Ultra Professional AG 5W-30 5 lt Motor Yağı lt fiyatı 156,42 TL'den başlayan seçeneklerle Akakçe'de! Shell Helix …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/shell-helix-ultra-5w-30-motor-yagi-y-s276311",
+      "title": "️ Shell Helix Ultra 5W-30 Motor Yağı ile ... - Trendyol",
+      "snippet": "2 gün önce · Trendyol'da Shell Helix Ultra 5W-30 motor yağına uygun fiyatlarla sahip olmak mümkün. Bu platform, kaliteli ürünü …",
+      "predicted_relevant": false,
+      "relevance_score": 0.5
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/motor-yagi/en-ucuz-shell-helix-ultra-professional-ag-5w-30-5-lt-motor-yagi-fiyatlari,2197664513",
+      "title": "Shell Helix Ultra Professional AG 5W-30 5 L Motor Yağı …",
+      "snippet": "En ucuz Shell Helix Ultra Professional AG 5W-30 5 L Motor Yağı fiyatları 1.329,00 …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/shell-helix-ultra-professional-5w-30-ag-5-litre-motor-yagi-api-sn-cf-ve-acea-a3-b4-viskozite-uretim-yili-2024-pm-HB00000H4C9Y",
+      "title": "Shell Helix Ultra Professional 5W-30 AG 5 Litre Motor …",
+      "snippet": "Shell Helix Ultra Professional 5W-30 AG 5 Litre Motor Yağı en iyi fiyatla Hepsiburada'dan satın alın! Şimdi …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/shell/helix-ultra-pro-5w-30-ag-serisi-dexos2-acea-c3-dpf-motor-yagi-5lt-p-32055055",
+      "title": "Shell Helix Ultra Pro AG 5W30 5 lt Motor Yağı Fiyatı, Yorumları",
+      "snippet": "Helix Ultra Pro 5w-30 AG SERISI Dexos2-acea C3 Dpf Motor Yağı 5LT yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ],
+  "rejudged_provider": "Google AI Studio"
+}

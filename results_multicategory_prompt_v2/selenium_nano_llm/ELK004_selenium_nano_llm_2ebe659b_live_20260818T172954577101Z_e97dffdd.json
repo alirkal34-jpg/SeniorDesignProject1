@@ -1,0 +1,55 @@
+{
+  "product_id": "ELK004",
+  "keyword": "Samsung Galaxy S25 FE 256 GB fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v2-aligned",
+  "runtime_seconds": 13.23,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-samsung-galaxy-s25-fe-fiyatlari,a2405102761",
+      "title": "Samsung Galaxy S25 FE Cep Telefonu Fiyatları | Cimri",
+      "snippet": "Samsung S25 FE Türkiye fiyatı, donanım seviyeleri ve depolama seçeneklerine …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/samsung-galaxy-s25-fe-cep-telefonu-x-c103498-a292-v10637598",
+      "title": "Samsung Galaxy S25 FE Cep Telefonu Fiyatları Trendyol",
+      "snippet": "Samsung Galaxy S25 FE Cep Telefonu and sevdiğin markaların yeni sezon ürünleri ve kampanyaları Trendyol'da!🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/samsung-galaxy-s25-fe-android-telefonlar-xc-60005201-b8848-t6774",
+      "title": "Samsung Galaxy S25 FE Fiyatları ve Özellikleri",
+      "snippet": "Sabit bir fiyat aralığı vermek yerine Hepsiburada üzerinde güncel Samsung Galaxy S25 FE seçeneklerini karşılaştırabilir; depolama …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-samsung-galaxy-s25-fe-fiyatlari,2405102763",
+      "title": "Samsung Galaxy S25 FE 256GB 8GB Ram Gece Siyahı Fiyatları | Cimri",
+      "snippet": "En ucuz Samsung Galaxy S25 FE 256GB 8GB Ram Gece Siyahı fiyatları 37.799,00 TL'den başlayan tekliflerle Cimri'de! Samsung …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/samsung-galaxy-s25-fe-samsung-cep-telefonu-x-b794-c103498-a292-v10637598",
+      "title": "Samsung Galaxy S25 FE Samsung Cep Telefonu Fiyatları Trendyol",
+      "snippet": "Samsung Galaxy S25 FE Samsung Cep Telefonu and sevdiğin markaların yeni sezon ürünleri ve kampanyaları Trendyol'da!🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ],
+  "rejudged_provider": "Google AI Studio"
+}

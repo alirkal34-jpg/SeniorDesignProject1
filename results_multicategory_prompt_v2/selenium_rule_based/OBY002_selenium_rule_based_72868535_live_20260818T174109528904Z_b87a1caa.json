@@ -1,0 +1,54 @@
+{
+  "product_id": "OBY002",
+  "keyword": "Castrol Magnatec 10W-40 A3/B4 4 lt Motor Yağı fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 5.49,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/motor-yagi/en-ucuz-castrol-magnatec-10w-40-a3-b4-4-lt-fiyati,93995.html",
+      "title": "Castrol Magnatec 10W-40 A3/B4 4 lt Motor Yağı",
+      "snippet": "En ucuz Castrol Magnatec 10W-40 A3/B4 4 lt Motor Yağı lt fiyatı 160,27 TL'den …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/castrol-magnatec-10w-40-motor-yagi-y-s292957",
+      "title": "Trendyol'da Castrol Magnatec 10W-40 Motor Yağı Satın Al",
+      "snippet": "Castrol 10-40 Motor Yağı Kaç TL? Fiyat bilgisi verilmemektedir, ancak Castrol Magnatec 10W-40 motor yağının fiyatı, genellikle kalite …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/castrol-10w-40-4-lt-motor-yagi-y-s93607",
+      "title": "Castrol 10W-40 4 Lt Motor Yağı ile Aracınızı Koruyun! - Trendyol",
+      "snippet": "3 gün önce · Castrol 10W-40 4 Lt Motor Yağı ile En İyi Fiyat Nasıl Bulunur? Trendyol, düzenlediği kampanyalar ve sunduğu indirimli …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/castrol-magnatec-10w-40-a3-b4-4-litre-motor-yagi-uretim-yili-2024-pm-HBC000071ECD8",
+      "title": "Castrol Magnatec 10W-40 A3/B4 4 Litre Motor Yağı ( Üretim Fiyatı",
+      "snippet": "Castrol Magnatec 10W-40A 3/B4 4 Litre Motor Yağı, API SN/CF, ACEA A3/B4 standartlarına uygundur ve modern benzinli ve dizel …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/castrol-magnatec-10w40-4-lt-motor-yagi-pm-otm652002",
+      "title": "Castrol Magnatec 10W40 4 Lt Motor Yağı Fiyatı - Taksit Seçenekleri",
+      "snippet": "Castrol Magnatec 10W40 4 Lt Motor Yağı en iyi fiyatla Hepsiburada'dan satın alın! Şimdi indirimli fiyatla online sipariş verin, …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

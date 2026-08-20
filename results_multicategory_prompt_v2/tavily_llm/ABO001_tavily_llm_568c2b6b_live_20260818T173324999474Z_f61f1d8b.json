@@ -1,0 +1,54 @@
+{
+  "product_id": "ABO001",
+  "keyword": "Molfix 6 Numara Extra Large 80'li Bebek Bezi fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it",
+  "prompt_version": "relevance-v2-aligned",
+  "runtime_seconds": 4.01,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/bebek-bezi/molfix-6-numara.html",
+      "title": "Molfix 6 Numara Fiyatları | En Ucuzu Akakçe",
+      "snippet": "Molfix 6 Numara Extra Large 80'li Bebek Bezi · 519,90 TL +25 FİYAT 6,50 TL/adet · Ürüne Git (+25) ; Molfix 6 Numara Extra Large 62'li Bebek Bezi · 439,00 TL +71",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/bebek-bezi/molfix.html",
+      "title": "Molfix Bebek Bezi Fiyatları | En Ucuzu Akakçe",
+      "snippet": "%13 indirimle Molfix 6 Numara Extra Large 80'li Bebek Bezi 520 TL'ye,; %14 indirimle Molfix 3 Numara Midi 140'lı Bebek Bezi 520 TL'ye,; %10 indirimle Molfix 5",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/molfix/bebek-bezi-beden-6-15-kg-extra-large-80-adet-mega-pk-p-971720793",
+      "title": "Molfix Bebek Bezi Beden:6 (15+KG) Extra Large 80 Adet Mega Pk",
+      "snippet": "Bezi Beden:6 (15+KG) Extra Large 80 Adet Mega ・ fiyata satın alın. 4 İndirimli Kupon! 6 Paket İçi Bez Adedi:1 ・ 4.4 (97) 586,04 TL (9,45 TL / adet)",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/molfix/bebek-bezi-c-60001048?filtreler=beden%3A6",
+      "title": "Molfix 6 Bebek Bezleri ve Fiyatları - Hepsiburada.com",
+      "snippet": "Molfix 6 Bebek Bezleri uygun fiyat ve indirim fırsatlarıyla burada. 135 ürün var Extra Large 64 Adet. Extra Large 80 Adet … 217 değerlendirme4,4(217) 749,90 TL",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "e-bebek.com",
+      "url": "https://www.e-bebek.com/bebek-bezleri-molfix-c10111_b587",
+      "title": "Molfix Bebek Bezi Fiyatları - [1,2,3,4,5,6 Numara] - ebebek",
+      "snippet": "Molfix Bebek Bezi 2 Beden Mini Fırsat Paketi 3-6 kg 80 Adet. (117). 389,99 TL ... Molfix Bebek Bezi 6 Beden XL Ultra Fırsat Paketi 15+ kg 62 Adet. Molfix",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    }
+  ],
+  "rejudged_provider": "Google"
+}

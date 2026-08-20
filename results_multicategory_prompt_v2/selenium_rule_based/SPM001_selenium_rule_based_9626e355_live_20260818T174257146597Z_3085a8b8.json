@@ -1,0 +1,54 @@
+{
+  "product_id": "SPM001",
+  "keyword": "Eti Burçak Sütlü Çikolatalı Bisküvi 114 gr fiyat",
+  "method": "selenium_rule_based",
+  "execution_mode": "live",
+  "provider": "selenium+rule_based",
+  "search_engine": "bing",
+  "model": "rule-based-v1",
+  "prompt_version": "not_applicable",
+  "runtime_seconds": 5.25,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/biskuvi/en-ucuz-eti-burcak-sutlu-cikolatali-114-gr-fiyati,405079779.html",
+      "title": "Eti Burçak Sütlü Çikolatalı Bisküvi 114 gr - akakce.com",
+      "snippet": "İlk olarak fiyat listesi ve Eti Burçak Sütlü Çikolatalı bisküvi fiyatı detaylı olarak gözden geçirilmelidir. Böylelikle farklı adetlerdeki fiyat …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/biskuvi/en-ucuz-eti-114-gr-burcak-sutlu-cikolatali-biskuvi-fiyatlari,2584834083",
+      "title": "Eti 114 gr Burçak Sütlü Çikolatalı Bisküvi Fiyatları | Cimri",
+      "snippet": "En ucuz Eti 114 gr Burçak Sütlü Çikolatalı Bisküvi fiyatları 40,75 TL'den başlayan tekliflerle Cimri'de! Eti 114 gr Burçak Sütlü Çikolatalı …",
+      "predicted_relevant": true,
+      "relevance_score": 0.85
+    },
+    {
+      "domain": "migros.com.tr",
+      "url": "https://www.migros.com.tr/eti-burcak-sutlu-cikolatali-biskuvi-114-g-p-6b1d9b",
+      "title": "Eti Burçak Sütlü Çikolatalı Bisküvi 114 G - @migros tr",
+      "snippet": "Eti Burçak Sütlü Çikolatalı Bisküvi, besin özellikleri açısından oldukça zengin olan Eti'nin bu geleneksel …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/eti/burcak-sutlu-cikolatali-biskuvi-114-g-x-12-adet-p-33737962",
+      "title": "Eti Burçak Sütlü Çikolatalı Bisküvi 114 g x 12 Adet - Trendyol",
+      "snippet": "Kampanya fiyatından satılmak üzere 10 adetten fazla stok sunulmuştur. Bir ürün, birden fazla satıcı tarafından satılabilir.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/eti/burcak-sutlu-cikolatali-114-gr-p-32791379",
+      "title": "Eti Burçak Sütlü Çikolatalı 114 gr Fiyatı, Yorumları - TRENDYOL",
+      "snippet": "Burçak Sütlü Çikolatalı 114 gr yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ]
+}

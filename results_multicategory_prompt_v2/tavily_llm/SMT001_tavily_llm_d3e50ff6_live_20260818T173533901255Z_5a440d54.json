@@ -1,0 +1,54 @@
+{
+  "product_id": "SMT001",
+  "keyword": "Calvin Klein Must K60K610294 Kadın Çapraz Çanta fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it",
+  "prompt_version": "relevance-v2-aligned",
+  "runtime_seconds": 29.01,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/omuz-cantasi/en-ucuz-calvin-klein-must-k60k610294-kadin-capraz-canta-fiyati,152373938.html",
+      "title": "Calvin Klein Must K60K610294 Kadın Çapraz Çanta",
+      "snippet": "2.159,40 TL Ücretsiz kargo Satıcıya Git Son güncelleme: Bugün 01:52 Peşin fiyatına 3 taksitPeşin fiyatına 3 taksitStokta 1 adet Satıcı: Amazon Türkiye",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/calvin-klein-kadin-ck-must-capraz-canta-pm-HBC000032VMFY",
+      "title": "Calvin Klein Kadın Ck Must Çapraz Çanta",
+      "snippet": "Calvin Klein Kadın Ck Must Çapraz Çanta. Fiyat aralığı: 3.299,00 TL - 4.399,20 TL Gurur … 9,4 Yetkili Satıcı 4.399,20",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "amazon.com.tr",
+      "url": "https://www.amazon.com.tr/%C3%87apraz-Ask%C4%B1l%C4%B1-Kad%C4%B1n-%C3%87antas%C4%B1-Calvin-Klein/s?rh=n%3A13546959031%2Cp_89%3ACalvin%2BKlein",
+      "title": "Calvin Klein - Çapraz Askılı Kadın Çantası / Kadın El Ve ...",
+      "snippet": "Bayan Ck Must Kamera Çantası Mono K60k610294 Crossovers · 4,55 yıldız üzerinden 4,5 (97) · 2.159,40 TL2.159,40TL ; Sculpted Camera Bag18 Mono Kadın Çanta · 4,65",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/calvin-klein/kadin-ck-must-capraz-kamera-canta-p-358513138",
+      "title": "Calvin Klein Kadın Ck Must Çapraz Kamera Çanta",
+      "snippet": "Calvin Klein Kadın Ck Must Çapraz Kamera Çanta Peşin Fiyatına 3 Taksit 3x 1.073 TL … satış fiyatını satıcı belirlemektedir.",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/omuz-cantasi/en-ucuz-calvin-klein-k60k612807-siyah-kadin-capraz-canta-fiyatlari,2446015509",
+      "title": "Calvin Klein K60K612807 Siyah Kadın Çapraz Çanta",
+      "snippet": "Calvin Klein K60K612807 Siyah Kadın Çapraz Çanta fiyatları 6.459,00 ・ 1 Fiyat Arasında En Ucuz 6.459 TL Peşin Fiyatına 3. Amazon 3.619,99 TL Guess ・ 17.08.",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    }
+  ],
+  "rejudged_provider": "Google"
+}

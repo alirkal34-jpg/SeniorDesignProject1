@@ -1,0 +1,62 @@
+{
+  "product_id": "EVY001",
+  "keyword": "Tefal Ingenio Ceramic Renew 11 Parça Büyük Tencere Seti fiyat",
+  "method": "agentic_search",
+  "execution_mode": "live",
+  "provider": "openrouter+selenium+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "planner_model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v2-aligned",
+  "search_queries": [
+    "Tefal Ingenio Ceramic Renew 11 Parça Büyük Tencere Seti fiyat",
+    "Tefal Ingenio Ceramic Renew 11 Parça Büyük Tencere Seti satın al",
+    "Tefal Ingenio Ceramic Renew 11 Parça Büyük Tencere Seti en ucuz"
+  ],
+  "search_errors": [],
+  "runtime_seconds": 21.73,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/tencere/en-ucuz-tefal-ingenio-ceramic-renew-buyuk-set-11-parca-fiyati,271052679.html",
+      "title": "Tefal Ingenio Ceramic Renew 11 Parça Büyük Tencere Seti",
+      "snippet": "En ucuz Tefal Ingenio Ceramic Renew 11 Parça Büyük Tencere Seti fiyatları için 12 taksit ve indirimleri kaçırma! Tefal Ingenio …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "tefal.com.tr",
+      "url": "https://www.tefal.com.tr/ingenio-ceramic-renew-11-parca-induksiyonlu-tencere-tava-seti-2100129672/",
+      "title": "Ingenio Ceramic Renew 11 Parça İndüksiyonlu …",
+      "snippet": "Tüm set üstü ocaklarla uyumlu olan bu tencere seti, Thermo-Signal™ ısı …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "tefal.com.tr",
+      "url": "https://www.tefal.com.tr/tava-ve-tencereler/ingenio/",
+      "title": "Tefal Ingenio Tencere Fiyatları ve Modelleri | Tefal",
+      "snippet": "Ingenio Ceramic Renew 11 Parça İndüksiyonlu Tencere Tava Seti 7999 TL • Kolay, yapışmayan seramik: …",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/tefal/ingenio-ceramic-renew-seramik-kaplama-tava-tencere-seti-11-parca-p-738794466",
+      "title": "TEFAL Ingenio Ceramic Renew Seramik Kaplama Tava Tencere Seti",
+      "snippet": "Ingenio Ceramic Renew Seramik Kaplama Tava Tencere Seti - 11 Parça yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/tefal-ingenio-ceramic-renew-seramik-kaplama-tava-tencere-seti-11-parca-pm-HBC00004K3RGK",
+      "title": "Tefal Ingenio Ceramic Renew Seramik Kaplama Tava …",
+      "snippet": "Tüm set üstü ocaklarla uyumlu olan bu tencere seti, Thermo-Signal™ ısı göstergesi sayesinde …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ],
+  "rejudged_provider": "Google AI Studio"
+}

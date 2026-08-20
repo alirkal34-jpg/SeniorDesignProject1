@@ -1,0 +1,55 @@
+{
+  "product_id": "SPM003",
+  "keyword": "Lotus Biscoff Karamelize Bisküvi 250 gr fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it",
+  "prompt_version": "relevance-v2-aligned",
+  "runtime_seconds": 7.88,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/biskuvi/en-ucuz-lotus-biscoff-karamelize-250-gr-fiyati,495082365.html",
+      "title": "Lotus Biscoff Karamelize Bisküvi 250 gr Fiyatları, …",
+      "snippet": "En ucuz Lotus Biscoff Karamelize Bisküvi 250 gr kg fiyatı 529,68 TL'den başlayan …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/lotus/biscoff-karamelize-biskuvi-250-g-6-adet-p-84850914",
+      "title": "Lotus Biscoff Karamelize Bisküvi 250 g 6 Adet - Trendyol",
+      "snippet": "5 gün önce · Lotus Biscoff 250 G . x 6 ADET Eşsiz karamelize tada sahip lezzetli bir çıtır kurabiye. Lotus Biscoff, 1932'den beri aynı …",
+      "predicted_relevant": false,
+      "relevance_score": 0.5
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/lotus-biskuvi-x-b108531-c103948",
+      "title": "Lotus Bisküvi Fiyatları ve Çeşitleri 2026 - Trendyol",
+      "snippet": "Lotus bisküvi sosu, tozu, kreması ve ezmesi gibi nice lezzete dakikalar içerisinde erişim sağlamanız mümkündür. Marka, kategori, …",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/lotus-biscoff-250gr-pm-HBC00007JJFZN",
+      "title": "Lotus Biscoff 250 gr İncecik Çıtır Bisküvi Karamelize Tatlı Fiyatı",
+      "snippet": "Lotus Biscoff 250 gr İncecik Çıtır Bisküvi Karamelize Tatlı en iyi fiyatla Hepsiburada'dan satın alın! Şimdi indirimli fiyatla sipariş verin, …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/lotus-biscoff-karamelize-biskuvi-250-gr-pm-HB00000T4M7F",
+      "title": "Lotus Biscoff Karamelize Bisküvi 250 gr Fiyatı - Taksit Seçenekleri",
+      "snippet": "Lotus Biscoff Karamelize Bisküvi 250 gr en iyi fiyatla Hepsiburada'dan satın alın! Şimdi indirimli fiyatla online sipariş verin, ayağınıza …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ],
+  "rejudged_provider": "Google"
+}

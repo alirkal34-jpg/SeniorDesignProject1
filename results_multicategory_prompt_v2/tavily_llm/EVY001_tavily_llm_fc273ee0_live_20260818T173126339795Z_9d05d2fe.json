@@ -1,0 +1,54 @@
+{
+  "product_id": "EVY001",
+  "keyword": "Tefal Ingenio Ceramic Renew 11 Parça Büyük Tencere Seti fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it",
+  "prompt_version": "relevance-v2-aligned",
+  "runtime_seconds": 13.54,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/tencere/en-ucuz-tefal-ingenio-ceramic-renew-buyuk-set-11-parca-fiyati,271052679.html",
+      "title": "Tefal Ingenio Ceramic Renew 11 Parça Büyük Tencere Seti",
+      "snippet": "En Ucuz Tefal Ingenio Ceramic Renew 11 Parça Büyük Tencere Seti Fiyatları ; Kargo Dahil En Ucuz 7.999,00 TL Ücretsiz kargo Peşin fiyatına 6 taksit · Tefal.com.tr",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/tencere-tava-setleri/en-ucuz-tefal-ingenio-ceramic-renew-11-parca-induksiyonlu-gri-tencere-tava-seti-fiyatlari,2541716651",
+      "title": "Tefal Ingenio Ceramic Renew 11 Parça İndüksiyonlu Gri ...",
+      "snippet": "En ucuz Tefal Ingenio Ceramic Renew 11 Parça İndüksiyonlu Gri Tencere Tava Seti fiyatları 8.999,10 TL'den başlayan tekliflerle Cimri'de!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/tefal/ingenio-ceramic-renew-seramik-kaplama-tava-tencere-seti-11-parca-p-738794466",
+      "title": "TEFAL Ingenio Ceramic Renew Seramik Kaplama Tava ...",
+      "snippet": "Tencere Seti - 11 Parça Peşin Fiyatına 6 Taksit 6x 1.456,35 TL 4.5 462",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "tefal.com.tr",
+      "url": "https://www.tefal.com.tr/ingenio-ceramic-renew-11-parca-induksiyonlu-tencere-tava-seti-2100129672",
+      "title": "Ingenio Ceramic Renew 11 Parça İndüksiyonlu Tencere ...",
+      "snippet": "Ingenio Ceramic Renew 11 Parça İndüksiyonlu Tencere Tava Seti ... tefal.com.tr'de 3000 TL ve üzerindeki siparişlerde ücretsiz kargo mevcuttur. ... Çevre üzerinde",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "sikayetvar.com",
+      "url": "https://www.sikayetvar.com/tefal/ceramic-renew",
+      "title": "Tefal Ceramic Renew Kullanıcı Yorumları ve Şikayetleri",
+      "snippet": "22 Ağustos 2024 tarihinde Tefal internet sitesinden Ingenio Ceramic Renew 11 Parça İndüksiyonlu Tencere Tava Seti satın",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    }
+  ],
+  "rejudged_provider": "Google"
+}

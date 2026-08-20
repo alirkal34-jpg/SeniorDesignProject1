@@ -1,0 +1,55 @@
+{
+  "product_id": "EVY006",
+  "keyword": "Nehir Silver 6 Parça Çelik Mini Tencere Seti fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v2-aligned",
+  "runtime_seconds": 13.21,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/tencere/en-ucuz-nehir-silver-6-parca-celik-mini-seti-fiyati,864382119.html",
+      "title": "Nehir Silver 6 Parça Çelik Mini Tencere Seti - akakce.com",
+      "snippet": "En ucuz Nehir Silver 6 Parça Çelik Mini Tencere Seti fiyatları için 12 taksit ve indirimleri kaçırma! Nehir Silver 6 Parça Çelik Mini …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "nehir.com.tr",
+      "url": "https://nehir.com.tr/products/silver-6-parca-paslanmaz-celik-mini-tencere-seti-12-14-16-cm",
+      "title": "Silver 6 Parça Paslanmaz Çelik Mini Tencere Seti (12-14-16 cm)",
+      "snippet": "Silver 6 Parça Paslanmaz Çelik Mini Tencere Seti (12-14-16 cm) Fiyatlarını, Yorumlarını İnceleyin, Nehir.com'a Özel İndirimli …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/nehir-silver-6-parca-paslanmaz-celik-mini-tencere-seti-12-14-16-cm-pm-HBC00007FNPXB",
+      "title": "Nehir Silver 6 Parça Paslanmaz Çelik Mini Tencere Seti …",
+      "snippet": "14 Ara 2016 · Nehir Silver 6 Parça Paslanmaz Çelik Mini Tencere Seti en iyi …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/nehir/nehir-silver-celik-6-parca-mini-tencere-seti-p-874810196",
+      "title": "Nehir NEHİR SILVER ÇELİK 6 PARÇA MİNİ TENCERE …",
+      "snippet": "NEHİR SILVER ÇELİK 6 PARÇA MİNİ TENCERE SETİ yorumlarını inceleyin, Trendyol'a özel indirimli …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/nehir-tencere-x-b101813-c1191",
+      "title": "Nehir Tencere | Nehir Tencere Seti Modelleri - Trendyol",
+      "snippet": "Nehir Tencere fiyatları, boyutuna ve malzeme kalitesine bağlı olarak değişiklik gösterir. Trendyol’da birçok indirimli ve uygun fiyatlı …",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    }
+  ],
+  "rejudged_provider": "Google AI Studio"
+}

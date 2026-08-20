@@ -1,0 +1,62 @@
+{
+  "product_id": "ELK001",
+  "keyword": "iPhone 17 256 GB Siyah fiyat",
+  "method": "agentic_search",
+  "execution_mode": "live",
+  "provider": "openrouter+selenium+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "planner_model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v2-aligned",
+  "search_queries": [
+    "iPhone 17 256 GB Siyah fiyatı",
+    "iPhone 17 256 GB Siyah satın al",
+    "iPhone 17 256 GB Siyah en ucuz"
+  ],
+  "search_errors": [],
+  "runtime_seconds": 15.92,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-apple-iphone-17-256gb-siyah-fiyatlari,2508497796",
+      "title": "Apple iPhone 17 256GB Siyah Fiyatları | Cimri",
+      "snippet": "En ucuz Apple iPhone 17 256GB Siyah fiyatları 76.999,00 TL'den başlayan tekliflerle Cimri'de! Apple iPhone 17 256GB Siyah …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/apple-iphone-17-256-gb-siyah-p-HBCV00009Z3Y49",
+      "title": "Apple iPhone 17 256 GB Siyah Fiyatı - Taksit Seçenekleri",
+      "snippet": "Apple iPhone 17 256 GB Siyah en iyi fiyatla Hepsiburada'dan satın alın! Şimdi indirimli fiyatla online sipariş verin, ayağınıza gelsin!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/apple/iphone-17-256gb-siyah-p-985256842",
+      "title": "Apple iPhone 17 256GB Siyah - Fiyatı, Yorumları - Trendyol",
+      "snippet": "iPhone 17 256GB Siyah yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "mediamarkt.com.tr",
+      "url": "https://www.mediamarkt.com.tr/tr/product/_apple-mg6j4tua-iphone-17-256gb-akilli-telefon-siyah-1249221.html",
+      "title": "APPLE iPhone 17 256 GB Akıllı Telefon Siyah MG6J4TU/A",
+      "snippet": "APPLE iPhone 17 256 GB Akıllı Telefon Siyah MG6J4TU/A fiyatı ve özelliklerini incelemek için hemen tıkla, sen de kazananlar …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "apple.com",
+      "url": "https://www.apple.com/tr/shop/buy-iphone/iphone-17/6.3-in%C3%A7-ekran-256gb-siyah",
+      "title": "iPhone 17 256 GB Siyah satın alın - Apple (TR)",
+      "snippet": "Ne kadar depolama alanına ihtiyacınız olacağını daha iyi anlayın. Seçtiğiniz yeni iPhone 17. Tam dilediğiniz şekilde. KDV ve yasal …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ],
+  "rejudged_provider": "Google AI Studio"
+}

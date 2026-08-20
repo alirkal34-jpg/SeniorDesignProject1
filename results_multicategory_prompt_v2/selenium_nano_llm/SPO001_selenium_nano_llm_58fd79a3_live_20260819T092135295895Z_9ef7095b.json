@@ -1,0 +1,55 @@
+{
+  "product_id": "SPO001",
+  "keyword": "Efsane Kamp Medium 2 Odalı 10 Kişilik Aile Çadırı fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it",
+  "prompt_version": "relevance-v2-aligned",
+  "runtime_seconds": 12.92,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cadir/en-ucuz-efsane-kamp-medium-10-kisilik-kamp-i-fiyati,464975497.html",
+      "title": "Efsane Kamp Medium 2 Odalı 10 Kişilik Aile Çadırı Fiyatları ...",
+      "snippet": "En ucuz Efsane Kamp Medium 2 Odalı 10 Kişilik Aile Çadırı fiyatları için 12 taksit ve indirimleri kaçırma! Efsane Kamp Medium 2 …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/cadir/efsane-kamp.html",
+      "title": "Efsane Kamp Çadır Fiyatları & Kamp Çadırı Modelleri | En Ucuzu …",
+      "snippet": "10 farklı Efsane Kamp Çadır için fiyatlar listeleniyor. En çok satan Efsane Kamp Çadır hangileri? En ucuz Efsane Kamp Çadır fiyatları …",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "efsanekamp.com",
+      "url": "https://efsanekamp.com/collections/cadirlar",
+      "title": "Dayanıklı ve Uygun Fiyatlı Çadır Modelleri, En İyi Çadır – Efsane Kamp",
+      "snippet": "Doğayla iç içe olmanın keyfini çıkarırken, Efsane Kamp’ın sunduğu çadırlarla rahat ve güvenli bir deneyim yaşayın. İhtiyaçlarınıza …",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "efsanekamp.com",
+      "url": "https://efsanekamp.com/collections/tum-cadirlar",
+      "title": "Uygun Fiyatlı ve Dayanıklı Çadırlar, Efsane Kamp Malzemeleri",
+      "snippet": "Doğa tutkunları için en dayanıklı ve uygun fiyatlı çadır modelleri Efsane Kamp’ta! Hemen keşfedin, kamp keyfinizi bir üst seviyeye …",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "sahibinden.com",
+      "url": "https://www.sahibinden.com/ilan/ikinci-el-ve-sifir-alisveris-spor-doga-sporlari-efsane-kamp-medium-2-odali-10-kisilik-aile-kamp-cadiri-1306393862/detay",
+      "title": "Efsane Kamp Medium 2 Odalı 10 Kişilik Aile kamp Çadırı",
+      "snippet": "Siz de kendi güvenliğiniz ve diğer kullanıcıların daha sağlıklı alışveriş yapabilmeleri için, satın almak istediğiniz ürünü teslim almadan …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ],
+  "rejudged_provider": "Google"
+}

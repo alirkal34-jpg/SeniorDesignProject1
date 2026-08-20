@@ -1,0 +1,55 @@
+{
+  "product_id": "SBK001",
+  "keyword": "Vichy Dercos Energy Plus 400 ml Saç Dökülmesine Karşı Şampuan fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v2-aligned",
+  "runtime_seconds": 21.12,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/vichy-dercos-energy-dokulme-karsiti-sampuan-400-ml-k5122-pm-sgdrmkd41001",
+      "title": "Vichy Dercos Energy+ Dökülme Karşıtı Şampuan 400 …",
+      "snippet": "Vichy Dercos Energy+ Dökülme Karşıtı Şampuan 400 ml K5122 en iyi fiyatla …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/vichy/dercos-energy-dokulme-karsiti-sampuan-400-ml-p-756801510",
+      "title": "Vichy Dercos Energy+ Dökülme Karşıtı Şampuan 400 …",
+      "snippet": "Dercos Energy+ Dökülme Karşıtı Şampuan 400 ml yorumlarını inceleyin, …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/sampuan-ve-sac-kremi/en-ucuz-vichy-dercos-energy-400-ml-sampuan-fiyatlari,2169765877",
+      "title": "Vichy Dercos Energy+ 400 ML Saç Dökülmesine Karşı Şampuan …",
+      "snippet": "5 satıcı arasındaki en ucuz Vichy Dercos Energy+ 400 ML Saç Dökülmesine Karşı Şampuan fiyatı, 16.08.2026 tarihinde 495,00 TL. …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "dermoeczanem.com",
+      "url": "https://www.dermoeczanem.com/vichy-dercos-energy-sac-dokulmesine-karsi-sampuan-400-ml",
+      "title": "Vichy Dercos Energy+ Saç Dökülmesine Karşı …",
+      "snippet": "Bazı hacim veren şampuanlar, durulanmayacak ve saç tellerinize yapışarak …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/sampuan/vichy.html",
+      "title": "Vichy Dercos Şampuan Fiyatları ve Yorumları | En Ucuzu Akakçe",
+      "snippet": "Vichy Dercos şampuan fiyat aralığı ürünlerin özellikleri doğrultusunda belirlenir. Uzman bakım sağlamak amacıyla geliştirilen …",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    }
+  ],
+  "rejudged_provider": "Google AI Studio"
+}

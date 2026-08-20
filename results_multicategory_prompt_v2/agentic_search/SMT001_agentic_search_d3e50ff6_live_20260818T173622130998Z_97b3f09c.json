@@ -1,0 +1,62 @@
+{
+  "product_id": "SMT001",
+  "keyword": "Calvin Klein Must K60K610294 Kadın Çapraz Çanta fiyat",
+  "method": "agentic_search",
+  "execution_mode": "live",
+  "provider": "openrouter+selenium+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "planner_model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v2-aligned",
+  "search_queries": [
+    "Calvin Klein Must K60K610294 Kadın Çapraz Çanta fiyat",
+    "Calvin Klein Must K60K610294 satın al",
+    "Calvin Klein K60K610294 çanta fiyat karşılaştırma"
+  ],
+  "search_errors": [],
+  "runtime_seconds": 48.23,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/omuz-cantasi/en-ucuz-calvin-klein-must-k60k610294-kadin-capraz-canta-fiyati,152373938.html",
+      "title": "Calvin Klein Must K60K610294 Kadın Çapraz Çanta - akakce.com",
+      "snippet": "En ucuz Calvin Klein Must K60K610294 Kadın Çapraz Çanta fiyatları için 12 taksit ve indirimleri kaçırma! Calvin Klein Must …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/capraz-canta/calvin-klein.html",
+      "title": "Calvin Klein Çapraz Çanta Fiyatları | En Ucuzu Akakçe",
+      "snippet": "En ucuz Calvin Klein Çapraz Çanta fiyatları TL'den başlayan fırsatlarla Akakçe'de! farklı Calvin Klein Çapraz Çanta seçeneğini gör, …",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/calvin-klein-kadin-ck-must-capraz-kamera-canta-pm-HBC000032VPMX",
+      "title": "Calvin Klein Kadın Ck Must Çapraz Kamera Çanta Fiyatı",
+      "snippet": "Calvin Klein Kadın Ck Must Çapraz Kamera Çanta en iyi fiyatla Hepsiburada'dan satın alın! Şimdi indirimli fiyatla sipariş verin, …",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "n11.com",
+      "url": "https://www.n11.com/urun/calvin-klein-k60k610294-0gj-kadin-canta-siyah-26490650",
+      "title": "Calvin Klein K60K610294 0GJ Kadın Çanta - Siyah - n11",
+      "snippet": "Calvin Klein K60K610294 0GJ Kadın Çanta - Siyah Siyah en iyi özellikleri ve gerçek kullanıcı yorumları uygun fiyatlarla n11'de. …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/calvin-klein/kadin-ck-must-capraz-canta-p-290577610",
+      "title": "Calvin Klein Kadın Ck Must Çapraz Çanta - Fiyatı, Yorumları",
+      "snippet": "Kampanya fiyatından satılmak üzere 10 adetten fazla stok sunulmuştur. Bir ürün, birden fazla satıcı tarafından satılabilir.",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    }
+  ],
+  "rejudged_provider": "Google AI Studio"
+}

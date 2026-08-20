@@ -1,0 +1,54 @@
+{
+  "product_id": "OBY001",
+  "keyword": "Shell Helix Ultra Professional AG 5W-30 5 lt Motor Yağı fiyat",
+  "method": "tavily_llm",
+  "execution_mode": "live",
+  "provider": "tavily+openrouter",
+  "model": "google/gemma-4-26b-a4b-it",
+  "prompt_version": "relevance-v2-aligned",
+  "runtime_seconds": 12.9,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/motor-yagi/shell-5w-30.html",
+      "title": "Shell 5W 30 Motor Yağı Fiyatları | En Ucuzu Akakçe",
+      "snippet": "Shell 5W 30 Motor Yağı Fiyatları ; Shell Helix Ultra Professional AG 5W-30 5 lt Motor Yağı · 1.329,00 TL · 265,80 TL/lt ; Shell Helix HX8 ECT 5W-30 4 lt Motor Yağı.",
+      "predicted_relevant": false,
+      "relevance_score": 0.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/motor-yagi/en-ucuz-shell-helix-ultra-professional-ag-5w-30-5-lt-motor-yagi-fiyatlari,2197664513",
+      "title": "Shell Helix Ultra Professional AG 5W-30 5 L Motor Yağı Fiyatları - Cimri",
+      "snippet": "En ucuz Shell Helix Ultra Professional AG 5W-30 5 L Motor Yağı fiyatları 1.329,00 TL'den başlayan tekliflerle Cimri'de! Shell Helix Ultra Professional AG",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "yandex.com.tr",
+      "url": "https://yandex.com.tr/shopping/t/shell-5w-30-5-lt",
+      "title": "Shell 5W-30 5 lt — en ucuz fiyatlarla satın al, en iyi modelleri seç - Yandex",
+      "snippet": "Shell Helix Ultra Professional AG 5W-30 5 lt Motor Yağı. En Ucuz 1.329TL Akakçe +6 fiyat. Fiyatı düştü 1.149TL 1.697TL",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "turkoilmarket.com",
+      "url": "https://www.turkoilmarket.com/urun/shell-helix-ultra-pro-ag-5w-30-5-litre",
+      "title": "Shell Helix Ultra Pro AG 5W-30 - 5 Litre Motor Yağı fiyatı ve incelemesi",
+      "snippet": "1.799,99 TL\n\nShell Helix Ultra Pro AG 5W-30 - 5 Litre Motor Yağı Shell Helix Ultra Pro AG 5W-30 - 5 Litre Motor Yağı turkoilmarket.com madeni yağ fiyatları, motor yağı fiyat, benzinli, dizel araba yağları, makine yağları fiyatı, şanzıman yağları, motosiklet yağları, yağ filtresi, hava filtresi, polen filtresi, yedek parça AFHJQYZ4Shell Helix Ultra Pro AG 5W-30 - 5 Litre Motor Yağı\n\nideasoft   e-ticaret paketleri  ile hazırlandı. [...] Cam Suyu\n\nFiyat\n\n2.249,99 TL + KDV\n\n\\225,20 TL den başlayan taksitlerle!!\n\n%11\n\n2.399,99 TL\n\n2.699,99 TL\n\nSepete Ekle;)\n\nHemen Al;)\n\n\n\nYorum Yaz;)\n\nFiyatı Düşünce Haber Ver;)\n\nPaylaş\n\nÜrün Bilgisi;)\n\nYorumlar;)\n\nTaksit Seçenekleri;)\n\nÖnerileriniz;)\n\nÜrün Bilgisi;)\n\nTam sentetik motor yağı – Motor üreticilerinin özel gereksinimlerini karşılamak üzere geliştirilmiştir.\n\nGünümüzün yüksek performanslı motorları, değişen ihtiyaçlara ayak uyduran ve motor performansını artırıp [...] %3\n\nLiqui Moly 5w-30 Synthoil High Tech Tam Sentetik Motor Yağı 5 Litre (20959)\")\n\n3.299,99 TL\n\n3.399,99 TL\n\nCastrol Edge 5W-30 FST Titanium LL - 5 Litre\n\n%6\n\nCastrol Edge 5W-30 FST Titanium LL - 5 Litre\n\n3.099,99 TL\n\n3.299,99 TL\n\nLİQUI MOLY Leichtlauf Performance 5w-30 5 Litre (21364)\")\n\n%6\n\nLİQUI MOLY Leichtlauf Performance 5w-30 5 Litre (21364)\")\n\n3.099,99 TL\n\n3.299,99 TL\n\nShell Helix Ultra Pro AP-L 5w-30 5 Litre  Motor Yağı\n\n%7\n\nShell Helix Ultra Pro AP-L 5w-30 5 Litre Motor Yağı",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/shell/helix-ultra-pro-5w-30-ag-serisi-dexos2-acea-c3-dpf-motor-yagi-5lt-p-32055055",
+      "title": "Shell Helix Ultra Pro AG 5W30 5 lt Motor Yağı Fiyatı, Yorumları",
+      "snippet": "Helix Ultra Pro 5w-30 AG … fiyata satın alın. Shell Helix Ultra Pro 5w-30. Peşin Fiyatına Taksit 350 TL",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ],
+  "rejudged_provider": "Google"
+}

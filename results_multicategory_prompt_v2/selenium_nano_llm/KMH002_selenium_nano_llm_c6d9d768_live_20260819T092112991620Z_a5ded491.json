@@ -1,0 +1,55 @@
+{
+  "product_id": "KMH002",
+  "keyword": "CA Games Mona Lisa Puzzle 1000 Parça 7022 fiyat",
+  "method": "selenium_nano_llm",
+  "execution_mode": "live",
+  "provider": "selenium:bing+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v2-aligned",
+  "runtime_seconds": 19.74,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/ca-games/ca-puzzle-1000-parca-mona-lisa-ca-7022-p-770082626",
+      "title": "CA Games Ca Puzzle 1000 Parça Mona Lisa Ca.7022 - Trendyol",
+      "snippet": "Ca Puzzle 1000 Parça Mona Lisa Ca.7022 yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/ca-games/ca-puzzle-1000-parca-mona-lisa-ca-7022-p-1115692159",
+      "title": "CA Games Ca Puzzle 1000 Parça Mona Lisa Ca.7022 - Fiyatı, Yorumları",
+      "snippet": "CA Games Ca Puzzle 1000 Parça Mona Lisa Ca.7022 Henüz Yorum Yazılmamış. Son 2 Ürün!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "smallman.com.tr",
+      "url": "https://www.smallman.com.tr/ca-games-puzzle-1000-parca-mona-lisa-ca7022",
+      "title": "Ca Games Puzzle 1000 Parça Mona Lisa Ca.7022",
+      "snippet": "Ca Games Puzzle 1000 Parça Mona Lisa Ca.7022 modeli; evden çalışanlar, ofis …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/ca-games-mona-lisa-1000-parca-puzzle-pm-HBC00000NOR7P",
+      "title": "Ca Games Mona Lisa 1000 Parça Puzzle Fiyatı - Taksit Seçenekleri",
+      "snippet": "Ca Games Mona Lisa 1000 Parça Puzzle en iyi fiyatla Hepsiburada'dan satın alın! Şimdi indirimli fiyatla online sipariş verin, …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "teknosa.com",
+      "url": "https://www.teknosa.com/ca-games-mona-lisa-1000-parca-puzzle-ca7022-p-789830121",
+      "title": "CA Games Mona Lisa 1000 Parça Puzzle CA7022 Fiyatı ve Özellikleri",
+      "snippet": "CA Games Mona Lisa 1000 Parça Puzzle CA7022 özelliklerini incelemek ve en uygun fiyata satın almak için hemen tıkla!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ],
+  "rejudged_provider": "Google AI Studio"
+}

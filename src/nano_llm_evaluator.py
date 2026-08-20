@@ -27,6 +27,52 @@ METHOD_AGENTIC_SEARCH = "agentic_search"
 METHOD_SELENIUM_NANO_LLM = "selenium_nano_llm"
 METHOD_SELENIUM_RULE_BASED = "selenium_rule_based"
 NANO_LLM_PROMPT_VERSION = "relevance-v1"
+NANO_LLM_PROMPT_VERSION_ALIGNED = "relevance-v2-aligned"
+
+
+def build_relevance_prompt_v1(result_count: int) -> str:
+    """The prompt every reported run was produced with.
+
+    It calls a category page relevant, which the human labeling rule does
+    not. Kept verbatim so the frozen results stay reproducible.
+    """
+
+    return (
+        "Evaluate whether each Google search result is relevant for a Turkish "
+        "transactional e-commerce product keyword. Relevant means product, "
+        f"category, marketplace, retailer, or price-comparison intent. Return exactly {result_count} "
+        "evaluation objects in the same order as the input results. Return JSON only."
+    )
+
+
+def build_relevance_prompt_v2_aligned(result_count: int) -> str:
+    """The same criterion the human reviewers were given, in prompt form.
+
+    Written once from the workbook's instruction sheet and not tuned against
+    the labels: adjusting it until the score improves would be fitting the
+    prompt to the test set and would void the comparison it exists to make.
+    """
+
+    return (
+        "You judge Turkish e-commerce search results for a transactional "
+        "product keyword.\n"
+        "A result is RELEVANT only when BOTH conditions hold:\n"
+        "  1. The page is the product named in the keyword, including the "
+        "variant (storage, volume, weight, size, edition) when the keyword "
+        "states one.\n"
+        "  2. The page has transactional purpose: a retailer product page, a "
+        "marketplace listing, a classified listing, or a price-comparison "
+        "page.\n"
+        "A result is IRRELEVANT when any of these hold:\n"
+        "  - it is a different product or a different variant,\n"
+        "  - it is an accessory for the product rather than the product,\n"
+        "  - it is a news article, a blog post, a review, or a forum thread,\n"
+        "  - it is a category or search page that does not reach the "
+        "product.\n"
+        "Being out of stock does NOT make a page irrelevant.\n"
+        f"Return exactly {result_count} evaluation objects in the same order "
+        "as the input results. Return JSON only."
+    )
 EVALUATION_MAX_ATTEMPTS = 3
 
 logger = logging.getLogger(__name__)
@@ -115,6 +161,24 @@ class FakeNanoLLMEvaluator:
 class OpenRouterNanoLLMEvaluator(OpenRouterKeywordClient):
     """OpenRouter evaluator returning strict predicted_relevant/relevance_score data."""
 
+    # Which criterion the model is asked to apply. The default reproduces
+    # every reported run; an experiment can swap in another builder without
+    # touching the evaluation path itself.
+    prompt_builder = staticmethod(build_relevance_prompt_v1)
+    prompt_version = NANO_LLM_PROMPT_VERSION
+
+    # Optional OpenRouter provider routing, e.g. {"order": ["Google"],
+    # "allow_fallbacks": False}. The default sends nothing, so the reported
+    # runs keep their original routing. Pinning matters when a rerun has to
+    # stay on the same provider as the results it will be compared against.
+    provider_routing: dict[str, Any] | None = None
+
+    # Optional cap on the answer length. Without one the provider reserves
+    # credit for the model's whole context window, which can refuse a request
+    # the actual answer would easily afford: five evaluation objects run well
+    # under a thousand tokens. None keeps the reported runs' behaviour.
+    max_output_tokens: int | None = None
+
     def evaluate_results(self, keyword: str, results: list[dict[str, Any]]) -> list[dict[str, Any]]:
         payload = {
             "model": self.model,
@@ -122,12 +186,7 @@ class OpenRouterNanoLLMEvaluator(OpenRouterKeywordClient):
             "messages": [
                 {
                     "role": "system",
-                    "content": (
-                        "Evaluate whether each Google search result is relevant for a Turkish "
-                        "transactional e-commerce product keyword. Relevant means product, "
-                        f"category, marketplace, retailer, or price-comparison intent. Return exactly {len(results)} "
-                        "evaluation objects in the same order as the input results. Return JSON only."
-                    ),
+                    "content": type(self).prompt_builder(len(results)),
                 },
                 {
                     "role": "user",
@@ -177,6 +236,12 @@ class OpenRouterNanoLLMEvaluator(OpenRouterKeywordClient):
                 },
             },
         }
+
+        if type(self).provider_routing is not None:
+            payload["provider"] = type(self).provider_routing
+
+        if type(self).max_output_tokens is not None:
+            payload["max_tokens"] = type(self).max_output_tokens
 
         # The free model does not always honour its own JSON schema, so an
         # unusable answer is retried instead of failing the whole experiment.

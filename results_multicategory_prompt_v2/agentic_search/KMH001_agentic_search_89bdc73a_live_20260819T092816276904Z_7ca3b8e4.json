@@ -1,0 +1,62 @@
+{
+  "product_id": "KMH001",
+  "keyword": "Anatolian Dünya Haritası Puzzle 2000 Parça 3935 fiyat",
+  "method": "agentic_search",
+  "execution_mode": "live",
+  "provider": "openrouter+selenium+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "planner_model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v2-aligned",
+  "search_queries": [
+    "Anatolian Dünya Haritası Puzzle 2000 Parça fiyatı",
+    "Anatolian Dünya Haritası 2000 parça puzzle satın al",
+    "Anatolian Dünya Haritası Puzzle 2000 parça en ucuz"
+  ],
+  "search_errors": [],
+  "runtime_seconds": 33.54,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/anatolian-puzzle/2000-parca-yapboz-puzzle-dunya-haritasi-3935-p-110333",
+      "title": "Anatolian Puzzle Dünya Haritası 2000 Parça Puzzle 3935 Fiyatı ...",
+      "snippet": "Anatolian 3935 2000 parça dünya haritası puzzle yorumları ile kullanıcı deneyimlerini öğrenebilirsiniz. Online alışveriş platformu …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/anatolian-puzzle/2000-parca-dunya-haritasi-3935-p-110333",
+      "title": "Anatolian Puzzle Dünya Haritası 2000 Parça Puzzle 3935 Fiyatı ...",
+      "snippet": "Anatolian 3935 2000 parça dünya haritası puzzle yorumları ile kullanıcı deneyimlerini öğrenebilirsiniz. Online alışveriş platformu …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/anatolian-2000-parcalik-dunya-haritasi-puzzle-zorlu-ve-eglenceli-pm-HB000001JA4M",
+      "title": "Anatolian 2000 Parçalık Dünya Haritası Puzzle - Zorlu ve Fiyatı",
+      "snippet": "Anatolian 2000 Parçalık Dünya Haritası Puzzle - Zorlu ve en iyi fiyatla Hepsiburada'dan satın alın! Şimdi indirimli fiyatla sipariş verin, …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "akakce.com",
+      "url": "https://www.akakce.com/puzzle/en-ucuz-anatolian-dunya-haritasi-2000-parca-3935-fiyati,2018361944.html",
+      "title": "Anatolian Dünya Haritası Puzzle 2000 Parça 3935 - akakce.com",
+      "snippet": "Anatolian Dünya Haritası Puzzle 2000 Parça 3935 özelliklerini incele, 519,20 TL'den başlayan fırsatları yakala!",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "amazon.com.tr",
+      "url": "https://www.amazon.com.tr/D%C3%BCnya-Haritas%C4%B1-Puzzle-2000-3935/dp/B01N6F0UKM",
+      "title": "Anatolian Puzzle - Dünya Haritası / 2000 Parça, #3935 - Amazon",
+      "snippet": "Her bir parça birbirinden farklıdır ve parçalar birbirine mükemmel uyumludur. Anatolian Puzzle tek başına veya bir grup içinde …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ],
+  "rejudged_provider": "Google AI Studio"
+}

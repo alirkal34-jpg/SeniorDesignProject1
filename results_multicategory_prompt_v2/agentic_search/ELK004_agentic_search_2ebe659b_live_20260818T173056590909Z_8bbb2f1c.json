@@ -1,0 +1,62 @@
+{
+  "product_id": "ELK004",
+  "keyword": "Samsung Galaxy S25 FE 256 GB fiyat",
+  "method": "agentic_search",
+  "execution_mode": "live",
+  "provider": "openrouter+selenium+openrouter",
+  "search_engine": "bing",
+  "model": "google/gemma-4-26b-a4b-it:free",
+  "planner_model": "google/gemma-4-26b-a4b-it:free",
+  "prompt_version": "relevance-v2-aligned",
+  "search_queries": [
+    "Samsung Galaxy S25 FE 256 GB fiyatı",
+    "Samsung Galaxy S25 FE 256 GB satın al",
+    "Samsung Galaxy S25 FE 256 GB en ucuz"
+  ],
+  "search_errors": [],
+  "runtime_seconds": 55.18,
+  "estimated_cost_usd": 0.0,
+  "results": [
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-samsung-galaxy-s25-fe-fiyatlari,a2405102761",
+      "title": "Samsung Galaxy S25 FE Cep Telefonu Fiyatları | Cimri",
+      "snippet": "Samsung S25 FE Türkiye fiyatı, donanım seviyeleri ve depolama seçeneklerine …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "hepsiburada.com",
+      "url": "https://www.hepsiburada.com/samsung-galaxy-s25-fe-android-telefonlar-xc-60005201-b8848-t6774",
+      "title": "Samsung Galaxy S25 FE Fiyatları ve Özellikleri",
+      "snippet": "Sabit bir fiyat aralığı vermek yerine Hepsiburada üzerinde güncel Samsung Galaxy S25 FE seçeneklerini karşılaştırabilir; depolama …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "vatanbilgisayar.com",
+      "url": "https://www.vatanbilgisayar.com/samsung-galaxy-s25-fe-akilli-telefon.html",
+      "title": "Samsung Galaxy S25 FE 5G 8/256 Gb Akıllı Telefon Gece Siyahı",
+      "snippet": "Samsung Galaxy S25 FE Akıllı Telefon fiyatı, teknik özellikleri, modelleri, en ucuz fiyatlarla Vatan Bilgisayar'da",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "cimri.com",
+      "url": "https://www.cimri.com/cep-telefonlari/en-ucuz-samsung-galaxy-s25-fe-fiyatlari,2405102763",
+      "title": "Samsung Galaxy S25 FE 256GB 8GB Ram Gece Siyahı Fiyatları | Cimri",
+      "snippet": "En ucuz Samsung Galaxy S25 FE 256GB 8GB Ram Gece Siyahı fiyatları 37.799,00 TL'den başlayan tekliflerle Cimri'de! Samsung …",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    },
+    {
+      "domain": "trendyol.com",
+      "url": "https://www.trendyol.com/samsung/galaxy-s25-fe-8gb-256gb-siyah-p-984233972",
+      "title": "Samsung Galaxy S25 FE 8GB-256GB Siyah - Fiyatı, Yorumları",
+      "snippet": "Galaxy S25 FE 8GB-256GB Siyah yorumlarını inceleyin, Trendyol'a özel indirimli fiyata satın alın 🧡",
+      "predicted_relevant": true,
+      "relevance_score": 1.0
+    }
+  ],
+  "rejudged_provider": "Google AI Studio"
+}
