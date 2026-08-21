@@ -69,30 +69,43 @@ sayısı. Rapordaki bir sayı dosyalardan saparsa bu komut kırmızı veriyor."
 
 **Beklenen:** 489 geçerli satır, 0 geçersiz.
 
-```powershell
-.\.venv\Scripts\python.exe src\quality_check.py --dataset multicategory
-```
-
-**Beklenen:** kategori başına ürün sayısı tablosu; dokuz grup 50/50, moda grubu
-`39/50 <- below target` ve son satırda **`Dataset-level quality check: FAILED`**.
-
-Bu kırmızı satır beklenen davranıştır, hazırlıksız yakalanmayın. Kaliteyi
-denetleyen kapı, hedefin altına düşen bir kategoriyi geçirmiyor.
-
-**Anlatım:** "Veri Akakçe'den kazındı, üretilmedi. Her satır ilanın kendi HTTPS
-ürün URL'sini taşıyor ve veri kümesi `acquisition_mode: scraped` damgalı.
-Testlerden biri bu damganın sessizce kaybolmasını engelliyor, çünkü sentetik
-veriyi gerçek gibi sunmak istemiyoruz. Ekranda gördüğünüz FAILED de tam olarak
-bu yüzden duruyor: moda kategorisi 50 yerine 39 üründe kaldı, çünkü o
-kategorideki gerçek ilan başlıkları yapılandırılmış teknik özellik
-yayınlamıyor. Eksik 11 satırı uydurmak yerine kapının kırmızı kalmasını tercih
-ettik; bu, raporda ölçülmüş bir olgu olarak yazılı."
-
-Hoca kapının yeşil hâlini görmek isterse eşiği ölçülen değere indirin:
+Kalite kapısı, kaynağın gerçekten doldurabildiği tabanda çalıştırılır. Bu,
+`README.md` içinde belgelenen çağrı biçimidir:
 
 ```powershell
 .\.venv\Scripts\python.exe src\quality_check.py --dataset multicategory --min-per-category 39
 ```
+
+**Beklenen:** kategori başına ürün sayısı tablosu ve son satırda
+`Dataset-level quality check: PASSED`. Kapı geçse de eksiklik ekranda kalır:
+
+```
+Total rows: 489
+saat_moda_taki_ayakkabi       39/50 <- below target
+Dataset-level quality check: PASSED
+```
+
+**Anlatım:** "Veri Akakçe'den kazındı, üretilmedi. Her satır ilanın kendi HTTPS
+ürün URL'sini taşıyor ve veri kümesi `acquisition_mode: scraped` damgalı.
+Testlerden biri bu damganın sessizce kaybolmasını engelliyor, çünkü sentetik
+veriyi gerçek gibi sunmak istemiyoruz. Tabloda moda kategorisinin 39/50'de
+kaldığını göreceksiniz: o kategorideki gerçek ilan başlıkları yapılandırılmış
+teknik özellik yayınlamıyor. Eksik 11 satırı uydurmak yerine kapıyı ulaşılan
+tabanda çalıştırıyoruz; rapor yine de her kategoriyi taksonomi hedefine karşı
+listeliyor, yani eksiklik gizlenmiyor."
+
+Hoca "peki taksonomi hedefine göre ne oluyor" derse eşiksiz çalıştırın:
+
+```powershell
+.\.venv\Scripts\python.exe src\quality_check.py --dataset multicategory
+```
+
+**Beklenen:** `Dataset-level quality check: FAILED`. Bu bir kod hatası değildir.
+Kapının dokuz koşulundan üçü düşer ve üçü de aynı tek olgunun ayrı sayımlarıdır:
+`489 < 500`, eksik kimlikler `SMT040`–`SMT050`, ve moda grubunun 39/50'si.
+Kalan altı koşul — benzersiz kimlik, sıfır tekrar, sıfır eksik URL, sıfır
+geçersiz URL — geçmeye devam eder. Kapı tek başına durur; metrik zincirini de
+test paketini de tetiklemez.
 
 ---
 
