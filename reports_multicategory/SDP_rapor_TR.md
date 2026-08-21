@@ -288,6 +288,8 @@ Kapsam dışında bırakılanlar: sıralama (ranking) kalitesi metrikleri (nDCG 
 
 **Şekil 4.** Kullanım senaryosu (use case) diyagramı.
 
+Diyagramda üç aktör ve sekiz kullanım senaryosu vardır. **Araştırmacı** altı senaryoyu başlatır: veri toplama, veri temizleme, anahtar kelime üretme, dört yöntemi çalıştırma, etiketleme kitabı üretme ve metrik hesaplama. **Değerlendirici** yalnızca bir senaryoda yer alır: URL'leri elle etiketleme. **Danışman** ise yalnızca metrik ve rapor çıktısını görür. Sistemin dışında dört servis bulunur: Akakçe (veri kaynağı), Tavily (arama API'si), OpenRouter (dil modeli) ve Bing (Selenium ile arama). Diyagramdaki iki ilişki önemlidir: etiketleme kitabı üretilirken model tahminleri gizlenir (`«include»`), ve değerlendiricinin belirsiz bıraktığı satır hakem adımına taşınır (`«extend»`).
+
 ```
                           ┌──────────────────────────────────────────────┐
                           │        Uygunluk Değerlendirme Sistemi        │
@@ -582,6 +584,8 @@ Sistem üç katmandan oluşur.
 
 **Şekil 5.** Veri akışı ve bileşen diyagramı.
 
+Diyagram üç katmanı yukarıdan aşağıya gösterir. **Veri katmanında** kategori taksonomisi kazıyıcıyı yönlendirir; kazıyıcı Akakçe'den 489 ürün toplar; veri işleme ve kalite kontrolü bu ürünleri temizler; anahtar kelime üreteci her ürün için bir sorgu yazar. **Değerlendirme katmanında** LangGraph çizgesi dört yöntemi sırayla çalıştırır. Her yöntemin kendi arama kaynağı ve kendi karar vericisi vardır, ama hepsi çıktısını ortak JSON şemasına yazar ve doğrulamadan geçer. **Ölçüm katmanında** benzersiz URL'ler Excel'e aktarılır, elle etiketlenir, hakem dosyasıyla birlikte temel doğruluğa dönüşür; manifest hangi sonuç dosyalarının rapora gireceğini dondurur; metrikler ve rapor bu dondurulmuş kümeden üretilir.
+
 ```
 ┌───────────────────────────── VERİ KATMANI ──────────────────────────────┐
 │                                                                          │
@@ -664,6 +668,8 @@ Mimarinin iki tasarım ilkesi vardır. Birincisi, **ortak şema**: dört yöntem
 
 **Şekil 1.** Uçtan uca LangGraph çizgesinin düğüm yapısı (aktivite diyagramı karşılığı).
 
+Çizge altı düğümden oluşur ve düz bir sıra izler: `load_product` → `generate_keyword` → `compare_methods` → `rank_results` → `aggregate` → `persist_output`. İlk düğüm ürün kaydını okur; kayıt bulunamazsa hat hata mesajıyla durur. İkinci düğüm anahtar kelimeyi üretip ortak duruma yazar. Üçüncü düğüm dört yöntemi çalıştıran alt çizgedir (Şekil 2). Son düğüm her yöntem/ürün çifti için bir JSON dosyası yazar.
+
 ```
   START
     │
@@ -696,6 +702,8 @@ Mimarinin iki tasarım ilkesi vardır. Birincisi, **ortak şema**: dört yöntem
 ```
 
 **Şekil 2.** Dört yöntemli karşılaştırma alt çizgesi.
+
+Alt çizge önce `input` düğümünde ortak durumdan ürünü ve anahtar kelimeyi okur. Ardından dört yöntemi tek sıra hâlinde çalıştırır: `selenium_rule_based` → `selenium_nano_llm` → `tavily_llm` → `agentic_search`. Son düğüm `result_aggregation` çıktıları birleştirir. Bir yöntem hata verirse hata kaydedilir ve akış bir sonraki yöntemle devam eder; tek bir yöntemin başarısızlığı diğer üçünü durdurmaz.
 
 ```
   START
@@ -732,6 +740,8 @@ Yöntemlerin sıralı (paralel değil) çalıştırılması bilinçli bir karard
 
 **Şekil 3.** Etmen tabanlı arama alt çizgesi.
 
+Bu alt çizgede dört düğüm vardır: `plan` → `search` → `evaluate` → `aggregate`. `plan` düğümü dil modelini kullanarak bir veya birden fazla arama sorgusu üretir. `search` düğümü bu sorguları çalıştırır; bir arama hata verirse hata kaydedilir ve akış sürer. `evaluate` düğümü her sonuç için uygunluk kararı verir.
+
 ```
   START ──▶ plan ──▶ search ──▶ evaluate ──▶ aggregate ──▶ END
              │         │           │
@@ -741,6 +751,8 @@ Yöntemlerin sıralı (paralel değil) çalıştırılması bilinçli bir karard
 ```
 
 **Şekil 6.** Etiketleme ve ölçüm dizisi (sequence) diyagramı.
+
+Diyagram altı katılımcı arasındaki mesaj sırasını gösterir. Araştırmacı dışa aktarım aracını çağırır; araç, model tahminleri gizlenmiş bir Excel dosyası üretir. Değerlendirici 194 URL'yi elle etiketler. Araştırmacı içe aktarım aracını çağırır; araç, doldurulmuş kitabı ve hakem dosyasını okuyarak 194 kayıtlık temel doğruluğu yazar. Sonra manifest üreteci 80 sonuç dosyasını dondurur ve ürün/yöntem ızgarasında delik olmadığını denetler. Son olarak metrik araçları genel ve kategori bazlı raporları üretir.
 
 ```
 Araştırmacı   export_label   Değerlendirici   import_label   build_manifest   metrics
