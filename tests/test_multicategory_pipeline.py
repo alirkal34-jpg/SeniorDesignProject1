@@ -69,6 +69,7 @@ from product_scraper import (
     make_provider,
     parse_listing_html,
     save_dataset,
+    select_category_groups,
 )
 from quality_check import build_multicategory_quality_profile, check_dataset_quality
 
@@ -1563,3 +1564,43 @@ class EvaluationSubsetTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CategorySelectionTests(unittest.TestCase):
+    """Locking the narrowed collection, which a short live run needs.
+
+    A listing site rate-limits a long session, so a demonstration is better
+    off covering three groups fully than ten partially. Narrowing must stay
+    explicit: a name the taxonomy does not carry has to stop the run, because
+    a dataset silently covering fewer categories than requested would be
+    indistinguishable from one the site cut short.
+    """
+
+    def groups(self) -> list[CategoryGroup]:
+        return load_category_groups()
+
+    def test_no_names_keeps_every_group(self) -> None:
+        groups = self.groups()
+        self.assertEqual(select_category_groups(groups, []), groups)
+
+    def test_named_groups_come_back_in_taxonomy_order(self) -> None:
+        selected = select_category_groups(
+            self.groups(), ["supermarket", "elektronik_cep_telefonu"]
+        )
+        self.assertEqual(
+            [group.category_group for group in selected],
+            ["elektronik_cep_telefonu", "supermarket"],
+        )
+
+    def test_an_unknown_group_is_refused(self) -> None:
+        with self.assertRaises(ScraperError):
+            select_category_groups(self.groups(), ["elektronik_cep_telefonu", "nope"])
+
+    def test_the_named_groups_keep_their_own_contract(self) -> None:
+        # Narrowing must not relax what a group requires; the product ID
+        # prefix and the required attributes have to survive the filter.
+        selected = select_category_groups(self.groups(), ["petshop"])
+        original = next(
+            group for group in self.groups() if group.category_group == "petshop"
+        )
+        self.assertEqual(selected, [original])

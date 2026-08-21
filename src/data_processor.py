@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 import pandas as pd
@@ -727,9 +727,43 @@ def main() -> None:
         choices=sorted(PROFILES),
         default=SMARTPHONE_PROFILE.name,
     )
+    parser.add_argument(
+        "--input",
+        type=Path,
+        default=None,
+        help=(
+            "Read this raw CSV instead of the dataset's committed one. The "
+            "contract - schema, cleaning and validation - is unchanged; only "
+            "the file it is applied to differs."
+        ),
+    )
+    parser.add_argument(
+        "--output-directory",
+        type=Path,
+        default=None,
+        help=(
+            "Write the processed CSV, JSON and validation report here "
+            "instead of data/processed/, keeping a demonstration run out of "
+            "the committed dataset."
+        ),
+    )
     args = parser.parse_args()
 
     profile = PROFILES[args.dataset]
+
+    if args.input is not None:
+        profile = replace(profile, input_file=args.input)
+
+    if args.output_directory is not None:
+        args.output_directory.mkdir(parents=True, exist_ok=True)
+        profile = replace(
+            profile,
+            output_csv=args.output_directory / profile.output_csv.name,
+            output_json=args.output_directory / profile.output_json.name,
+            validation_report=(
+                args.output_directory / profile.validation_report.name
+            ),
+        )
 
     products = load_data(profile)
 

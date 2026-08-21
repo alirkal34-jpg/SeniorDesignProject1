@@ -20,7 +20,7 @@ MULTICATEGORY_QUALITY
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 import pandas as pd
@@ -562,6 +562,23 @@ def main() -> None:
         default=DEFAULT_TAXONOMY_FILE,
     )
     parser.add_argument(
+        "--input",
+        type=Path,
+        default=None,
+        help=(
+            "Check this processed file instead of the dataset's committed "
+            "one."
+        ),
+    )
+    parser.add_argument(
+        "--categories",
+        default="",
+        help=(
+            "Comma-separated category groups the run was meant to cover, "
+            "instead of all ten."
+        ),
+    )
+    parser.add_argument(
         "--min-per-category",
         type=int,
         default=None,
@@ -574,12 +591,37 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.dataset == "multicategory":
+        groups = load_category_groups(args.taxonomy)
+        wanted = [
+            value.strip() for value in args.categories.split(",") if value.strip()
+        ]
+
+        if wanted:
+            # A short collection run covers a few groups on purpose. Checking
+            # it against all ten would report ten failures for a decision that
+            # was made deliberately, so the gate is told which groups the run
+            # was supposed to cover.
+            known = {group.category_group for group in groups}
+            unknown = [name for name in wanted if name not in known]
+
+            if unknown:
+                print(f"[ERROR] Unknown category group(s): {', '.join(unknown)}")
+                raise SystemExit(1)
+
+            selected = set(wanted)
+            groups = [
+                group for group in groups if group.category_group in selected
+            ]
+
         profile = build_multicategory_quality_profile(
-            taxonomy_file=args.taxonomy,
+            groups=groups,
             minimum_per_category=args.min_per_category,
         )
     else:
         profile = SMARTPHONE_QUALITY
+
+    if args.input is not None:
+        profile = replace(profile, processed_file=args.input)
 
     processed_df = load_processed_data(
         profile.processed_file

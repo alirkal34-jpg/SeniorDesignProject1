@@ -29,7 +29,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter, sleep
-from typing import Any, Protocol
+from typing import Any, Protocol, Sequence
 from urllib.parse import quote_plus, urljoin
 
 from category_taxonomy import (
@@ -1209,6 +1209,35 @@ def rederive_attributes(dataset_path: Path) -> tuple[int, int]:
     return len(rows), changed
 
 
+def select_category_groups(
+    groups: list[CategoryGroup],
+    wanted: Sequence[str],
+) -> list[CategoryGroup]:
+    """Narrow the taxonomy to the named groups, in taxonomy order.
+
+    An unknown name is refused rather than ignored: silently collecting the
+    groups that matched would produce a dataset covering fewer categories
+    than the run was asked for, and nothing downstream would say so.
+    """
+
+    if not wanted:
+        return groups
+
+    known = {group.category_group for group in groups}
+    unknown = [name for name in wanted if name not in known]
+
+    if unknown:
+        raise ScraperError(
+            "Unknown category group(s): "
+            + ", ".join(unknown)
+            + ". Known: "
+            + ", ".join(sorted(known))
+        )
+
+    selected = set(wanted)
+    return [group for group in groups if group.category_group in selected]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
@@ -1269,6 +1298,16 @@ def main() -> None:
         ),
     )
     parser.add_argument("--taxonomy", type=Path, default=DEFAULT_TAXONOMY_FILE)
+    parser.add_argument(
+        "--categories",
+        default="",
+        help=(
+            "Comma-separated category groups to collect, instead of all ten. "
+            "A listing site rate-limits a long session, so a short "
+            "demonstration run is better off covering a few groups fully "
+            "than all ten partially."
+        ),
+    )
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT_PATH)
     parser.add_argument(
         "--limit-per-category",
@@ -1306,7 +1345,15 @@ def main() -> None:
         return
 
     started_at = perf_counter()
-    groups = load_category_groups(args.taxonomy)
+
+    try:
+        groups = select_category_groups(
+            load_category_groups(args.taxonomy),
+            [value.strip() for value in args.categories.split(",") if value.strip()],
+        )
+    except ScraperError as error:
+        print(f"[ERROR] {error}")
+        raise SystemExit(1) from error
     provider = make_provider(
         args.provider,
         site=args.site,
