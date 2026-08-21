@@ -257,3 +257,87 @@ class SubsetReadTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class NarrowedGridTests(unittest.TestCase):
+    """Locking the short-run grid, which a live demo covers in part.
+
+    A run over three of the twenty products has to be freezable without
+    turning the hole check off, and without letting a product the labels do
+    not cover into the manifest.
+    """
+
+    def setUp(self) -> None:
+        self._temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self._temporary.cleanup)
+        self.directory = Path(self._temporary.name)
+
+        self.subset = self.directory / "subset.csv"
+        self.subset.write_text(
+            "product_id\nELK001\nPET001\nSPM001\nKMH001\n", encoding="utf-8"
+        )
+
+        self.results = self.directory / "results"
+        for product_id in ("ELK001", "PET001", "SPM001"):
+            for method in (
+                "selenium_rule_based",
+                "selenium_nano_llm",
+                "tavily_llm",
+                "agentic_search",
+            ):
+                self.write_result(product_id, method)
+
+    def write_result(self, product_id: str, method: str) -> None:
+        directory = self.results / method
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory / f"{product_id}_{method}_live.json").write_text(
+            json.dumps(
+                {
+                    "product_id": product_id,
+                    "keyword": f"{product_id} fiyat",
+                    "method": method,
+                    "execution_mode": "live",
+                    "provider": "test",
+                    "model": "test-model",
+                    "prompt_version": "test-v1",
+                    "runtime_seconds": 1.0,
+                    "estimated_cost_usd": 0.0,
+                    "results": [
+                        {
+                            "domain": "example.com",
+                            "url": "https://example.com/urun",
+                            "title": "Urun",
+                            "snippet": "Fiyat",
+                            "predicted_relevant": True,
+                            "relevance_score": 1.0,
+                        }
+                    ],
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+    def build(self, **kwargs):
+        return build_manifest(
+            results_directory=self.results, subset_path=self.subset, **kwargs
+        )
+
+    def test_the_named_products_freeze_on_their_own(self) -> None:
+        manifest = self.build(product_ids=["ELK001", "PET001", "SPM001"])
+        self.assertEqual(len(manifest["selected_result_files"]), 12)
+
+    def test_the_full_subset_still_reports_the_hole(self) -> None:
+        # KMH001 was never run, so the unnarrowed grid must still refuse.
+        with self.assertRaises(ManifestError):
+            self.build()
+
+    def test_a_hole_inside_the_named_products_is_still_refused(self) -> None:
+        for path in (self.results / "tavily_llm").glob("PET001_*"):
+            path.unlink()
+        with self.assertRaises(ManifestError):
+            self.build(product_ids=["ELK001", "PET001", "SPM001"])
+
+    def test_a_product_outside_the_subset_is_refused(self) -> None:
+        with self.assertRaises(ManifestError):
+            self.build(product_ids=["ELK001", "ELK002"])

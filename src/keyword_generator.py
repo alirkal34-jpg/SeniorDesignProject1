@@ -12,7 +12,7 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from time import perf_counter, sleep
-from typing import Any, Iterable, Protocol
+from typing import Any, Iterable, Protocol, Sequence
 from urllib import error, request
 
 
@@ -137,7 +137,32 @@ def parse_attributes(raw_attributes: Any) -> dict[str, Any]:
     return {}
 
 
-def select_products(products: Iterable[Product], limit: int = 3) -> list[Product]:
+def select_products(
+    products: Iterable[Product],
+    limit: int = 3,
+    product_ids: Sequence[str] | None = None,
+) -> list[Product]:
+    """Take the first ``limit`` products, or the named ones in their order.
+
+    ``limit`` alone always yields the head of the file, and the head of this
+    dataset is one category. Naming the products is how a small run can cover
+    several categories, which is the whole point of the ten-category revision.
+    An unknown ID is refused rather than skipped: quietly returning fewer
+    products would understate what a run was asked to cover.
+    """
+
+    if product_ids:
+        by_id = {product.product_id: product for product in products}
+        missing = [wanted for wanted in product_ids if wanted not in by_id]
+
+        if missing:
+            raise KeywordGenerationError(
+                "These product IDs are not in the input file: "
+                + ", ".join(missing)
+            )
+
+        return [by_id[wanted] for wanted in product_ids]
+
     selected = []
     for product in products:
         selected.append(product)
@@ -518,9 +543,12 @@ def generate_keywords(
     output_path: Path = DEFAULT_OUTPUT_PATH,
     limit: int = 3,
     provider: str = "openrouter",
+    product_ids: Sequence[str] | None = None,
 ) -> list[KeywordItem]:
     started_at = perf_counter()
-    products = select_products(load_products(input_path), limit=limit)
+    products = select_products(
+        load_products(input_path), limit=limit, product_ids=product_ids
+    )
     client = make_client(provider)
     total_cost_usd = 0.0
     if provider == "openrouter":
@@ -565,16 +593,34 @@ def main() -> None:
     parser.add_argument("--input", type=Path, default=DEFAULT_INPUT_PATH)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT_PATH)
     parser.add_argument("--limit", type=int, default=3)
+    parser.add_argument(
+        "--ids",
+        default="",
+        help=(
+            "Comma-separated product IDs to use, in this order, instead of "
+            "the first --limit products."
+        ),
+    )
     parser.add_argument("--provider", choices=["openrouter", "fake"], default="openrouter")
     args = parser.parse_args()
 
     started_at = perf_counter()
-    keywords = generate_keywords(
-        input_path=args.input,
-        output_path=args.output,
-        limit=args.limit,
-        provider=args.provider,
-    )
+
+    try:
+        keywords = generate_keywords(
+            input_path=args.input,
+            output_path=args.output,
+            limit=args.limit,
+            provider=args.provider,
+            product_ids=[
+                value.strip() for value in args.ids.split(",") if value.strip()
+            ],
+        )
+    except KeywordGenerationError as error:
+        # A mistyped --ids is an ordinary operator error, not a crash worth a
+        # traceback in front of an audience.
+        print(f"[ERROR] {error}")
+        raise SystemExit(1) from error
     print(json.dumps([item.to_dict() for item in keywords], ensure_ascii=False, indent=2))
     elapsed = perf_counter() - started_at
     print(f"runtime_seconds={elapsed:.2f}")

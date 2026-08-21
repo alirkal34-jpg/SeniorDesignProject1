@@ -11,7 +11,7 @@ import csv
 import hashlib
 import json
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Callable, Sequence
 
 from result_storage import create_unique_result_path
 
@@ -44,6 +44,7 @@ def load_evaluation_keywords(
     subset_file: Path = DEFAULT_SUBSET_FILE,
     keywords_file: Path = DEFAULT_KEYWORDS_FILE,
     limit: int | None = None,
+    product_ids: Sequence[str] | None = None,
 ) -> list[dict[str, str]]:
     with subset_file.open(encoding="utf-8-sig", newline="") as handle:
         subset_ids = [
@@ -51,7 +52,22 @@ def load_evaluation_keywords(
             for row in csv.DictReader(handle)
             if row.get("product_id", "").strip()
         ]
-    if limit is not None:
+
+    # A limit always takes the head of the subset, and the head of this subset
+    # is two phones. Naming the products is how a short run can cover several
+    # categories. An ID outside the subset is refused: the labeled URLs only
+    # cover the subset, so a run on any other product could not be scored.
+    if product_ids:
+        outside = [wanted for wanted in product_ids if wanted not in set(subset_ids)]
+
+        if outside:
+            raise ValueError(
+                "These product IDs are not in the evaluation subset: "
+                + ", ".join(outside)
+            )
+
+        subset_ids = list(product_ids)
+    elif limit is not None:
         subset_ids = subset_ids[:limit]
 
     keyword_records = load_keywords(keywords_file)
@@ -196,13 +212,17 @@ def run_evaluation_batch(
     allow_live_batch: bool = False,
     results_directory: Path | None = None,
     skip_existing: bool = False,
+    product_ids: Sequence[str] | None = None,
 ) -> dict[str, Any]:
     if execution_mode not in {"fake", "live"}:
         raise ValueError("execution_mode must be 'fake' or 'live'.")
     unknown_methods = set(methods) - set(METHODS)
     if unknown_methods:
         raise ValueError(f"Unsupported methods: {sorted(unknown_methods)}")
-    if execution_mode == "live" and limit > 3 and not allow_live_batch:
+    # Naming products must not become a way around the live-batch cap, so the
+    # guard counts whatever the run will actually cover.
+    requested_count = len(product_ids) if product_ids else limit
+    if execution_mode == "live" and requested_count > 3 and not allow_live_batch:
         raise ValueError(
             "Live batches are limited to three products. "
             "Use explicit opt-in only after smoke tests succeed."
@@ -212,6 +232,7 @@ def run_evaluation_batch(
         subset_file=subset_file,
         keywords_file=keywords_file,
         limit=limit,
+        product_ids=product_ids,
     )
     outputs: list[dict[str, Any]] = []
     errors: list[dict[str, str]] = []
@@ -288,6 +309,14 @@ def main() -> None:
     parser.add_argument("--methods", nargs="+", choices=METHODS, default=list(METHODS))
     parser.add_argument("--execution-mode", choices=["fake", "live"], default="fake")
     parser.add_argument("--limit", type=int, default=2)
+    parser.add_argument(
+        "--ids",
+        default="",
+        help=(
+            "Comma-separated product IDs from the subset to run, in this "
+            "order, instead of the first --limit products."
+        ),
+    )
     parser.add_argument("--max-results", type=int, default=5)
     parser.add_argument("--save", action="store_true")
     parser.add_argument("--allow-live-batch", action="store_true")
@@ -315,18 +344,28 @@ def main() -> None:
     if args.skip_existing and args.results_directory is None:
         parser.error("--skip-existing requires --results-directory.")
 
-    summary = run_evaluation_batch(
-        subset_file=args.subset,
-        keywords_file=args.keywords,
-        methods=tuple(args.methods),
-        execution_mode=args.execution_mode,
-        limit=args.limit,
-        max_results=args.max_results,
-        save=args.save,
-        allow_live_batch=args.allow_live_batch,
-        results_directory=args.results_directory,
-        skip_existing=args.skip_existing,
-    )
+    try:
+        summary = run_evaluation_batch(
+            subset_file=args.subset,
+            keywords_file=args.keywords,
+            methods=tuple(args.methods),
+            execution_mode=args.execution_mode,
+            limit=args.limit,
+            max_results=args.max_results,
+            save=args.save,
+            allow_live_batch=args.allow_live_batch,
+            results_directory=args.results_directory,
+            skip_existing=args.skip_existing,
+            product_ids=[
+                value.strip() for value in args.ids.split(",") if value.strip()
+            ],
+        )
+    except ValueError as error:
+        # A mistyped --ids is an ordinary operator error, not a crash worth a
+        # traceback in front of an audience.
+        print(f"[ERROR] {error}")
+        raise SystemExit(1) from error
+
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     if summary["failed_count"]:
         raise SystemExit(1)

@@ -23,7 +23,7 @@ import json
 import re
 from collections import defaultdict
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 
 try:
@@ -191,12 +191,34 @@ def build_manifest(
     subset_path: Path = DEFAULT_SUBSET_PATH,
     ground_truth_path: Path = DEFAULT_GROUND_TRUTH_PATH,
     report_scope: str = DEFAULT_REPORT_SCOPE,
+    product_ids: Sequence[str] | None = None,
 ) -> dict[str, Any]:
     """Build the manifest structure ``final_metrics.py`` consumes."""
 
     selected = select_latest_result_files(results_directory)
-    product_ids = read_subset_product_ids(subset_path)
-    check_full_coverage(selected, product_ids)
+    expected_ids = read_subset_product_ids(subset_path)
+
+    # A short run covers part of the subset on purpose. Narrowing what the
+    # grid must contain keeps the hole check meaningful for that run instead
+    # of turning it off, and the named products still have to be in the
+    # subset, because only subset URLs carry human labels.
+    if product_ids:
+        outside = [wanted for wanted in product_ids if wanted not in set(expected_ids)]
+
+        if outside:
+            raise ManifestError(
+                "These product IDs are not in the evaluation subset: "
+                + ", ".join(outside)
+            )
+
+        expected_ids = list(product_ids)
+        selected = {
+            key: path
+            for key, path in selected.items()
+            if key[0] in set(expected_ids)
+        }
+
+    check_full_coverage(selected, expected_ids)
 
     return {
         "report_scope": report_scope,
@@ -246,6 +268,14 @@ def main() -> None:
         default=DEFAULT_REPORT_SCOPE,
     )
     parser.add_argument(
+        "--ids",
+        default="",
+        help=(
+            "Comma-separated product IDs the grid must contain, instead of "
+            "the whole evaluation subset. Use it for a short run."
+        ),
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         default=DEFAULT_OUTPUT_PATH,
@@ -258,6 +288,9 @@ def main() -> None:
             subset_path=args.evaluation_subset,
             ground_truth_path=args.ground_truth,
             report_scope=args.report_scope,
+            product_ids=[
+                value.strip() for value in args.ids.split(",") if value.strip()
+            ],
         )
     except ManifestError as error:
         print(f"[ERROR] {error}")

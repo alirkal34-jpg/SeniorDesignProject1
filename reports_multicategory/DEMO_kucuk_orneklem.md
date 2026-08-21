@@ -30,29 +30,15 @@ $env:AGENTIC_PLANNER_MODEL = "google/gemma-4-26b-a4b-it"
 Ücretsiz katmandaki ortak Google havuzu tıkanabiliyor; bu iki satır ücretli uç
 noktaya geçirir. Terminali kapatırsan tekrar gir.
 
-Üç ürünlük örneklemi hazırla:
+Başka hazırlık yok. Her adım doğrudan deponun kendi dosyalarını okur; ara
+dosya kesilmez, kopya çıkarılmaz.
 
-```powershell
-.\.venv\Scripts\python.exe src\evaluation\make_demo_sample.py --ids ELK001,PET001,SPM001
-```
-
-**Bu komut ne yapıyor.** Hattın hiçbir adımını çalıştırmaz; yalnızca sonraki
-adımlara **girdi** olacak iki küçük dosya keser:
-
-| Okuduğu (mevcut, değişmez) | Yazdığı (yeni, `tmp/` altında) | Hangi adım kullanacak |
-|---|---|---|
-| `data/processed/processed_products_multicategory.json` — 489 işlenmiş ürün | `tmp/demo/products_small.json` — 3 ürün | Adım 3, anahtar kelime üretimi |
-| `data/evaluation/evaluation_subset_multicategory.csv` — 20 ürünlük değerlendirme alt kümesi | `tmp/demo/subset_small.csv` — 3 satır | Adım 4, dört yöntemle arama |
-
-Ham CSV'ye (`data/raw/...`) dokunmaz. Kayıtları olduğu gibi kopyalar, hiçbir
-alan üretmez, istenen kimlik dosyada yoksa hata verip durur.
-
-**Neden gerekiyor.** `keyword_generator.py` ve `run_evaluation_batch.py`
-yalnızca `--limit N` kabul ediyor, yani **ilk N kaydı** alıyorlar. İşlenmiş
-dosyanın ilk üçü ELK001, ELK002, ELK003 — üç iPhone. Üç ayrı kategoriden ürün
-göstermek istediğimiz için girdiyi önceden kesiyoruz.
-
-Bu hazırlık sunum sırasında değil, önceden bir kez çalıştırılır.
+Üç ürün her komutta `--ids ELK001,PET001,SPM001` ile ismen seçilir.
+`--limit N` seçeneği dosyanın **ilk N kaydını** alır ve bu veri kümesinin ilk
+üçü ELK001, ELK002, ELK003 — üçü de iPhone. Kimlikleri saymak, üç ayrı
+kategoriyi tek koşumda göstermenin yolu. Dosyada olmayan ya da etiketli alt
+küme dışında kalan bir kimlik verilirse komut sessizce atlamaz, hata verip
+durur.
 
 ---
 
@@ -154,13 +140,13 @@ Bu adım raporun **Tablo 3a** bulgusunu canlı tekrar eder.
 Önce deterministik şablon (API kullanmaz):
 
 ```powershell
-.\.venv\Scripts\python.exe src\keyword_generator.py --input tmp\demo\products_small.json --output tmp\demo\keywords_fake.json --limit 3 --provider fake
+.\.venv\Scripts\python.exe src\keyword_generator.py --input data\processed\processed_products_multicategory.json --ids ELK001,PET001,SPM001 --output tmp\demo\keywords_fake.json --provider fake
 ```
 
 Sonra canlı dil modeli (aynı üç ürün, tek istek):
 
 ```powershell
-.\.venv\Scripts\python.exe src\keyword_generator.py --input tmp\demo\products_small.json --output tmp\demo\keywords_live.json --limit 3 --provider openrouter
+.\.venv\Scripts\python.exe src\keyword_generator.py --input data\processed\processed_products_multicategory.json --ids ELK001,PET001,SPM001 --output tmp\demo\keywords_live.json --provider openrouter
 ```
 
 İkisini yan yana göster:
@@ -202,7 +188,7 @@ Maliyet ve model bilgisi de dosyada:
 Tek komut; ekranda Chrome açılıp Bing'de arama yapıyor.
 
 ```powershell
-.\.venv\Scripts\python.exe src\run_evaluation_batch.py --subset tmp\demo\subset_small.csv --keywords tmp\demo\keywords_fake.json --execution-mode live --limit 3 --max-results 5 --save --results-directory tmp\demo\results --skip-existing
+.\.venv\Scripts\python.exe src\run_evaluation_batch.py --subset data\evaluation\evaluation_subset_multicategory.csv --keywords tmp\demo\keywords_fake.json --ids ELK001,PET001,SPM001 --execution-mode live --max-results 5 --save --results-directory tmp\demo\results --skip-existing
 ```
 
 **Ölçülen:** 12 koşum (3 ürün × 4 yöntem), **113 saniye**, `failed_count: 0`.
@@ -243,7 +229,7 @@ koşulda üretildiğini dosyadan okuyabiliyor."
 ## 5. Etiketleme — model tahminleri gizlenerek
 
 ```powershell
-.\.venv\Scripts\python.exe src\evaluation\export_label_workbook.py tmp\demo\results --subset tmp\demo\subset_small.csv --output tmp\demo\label_workbook_small.xlsx
+.\.venv\Scripts\python.exe src\evaluation\export_label_workbook.py tmp\demo\results --output tmp\demo\label_workbook_small.xlsx
 ```
 
 Üretilen Excel'i PyCharm yerine Excel'de aç.
@@ -266,7 +252,7 @@ değil — aynı URL'yi dört yöntem de bulmuş olabilir ve etiket hepsinde ayn
 ## 6. Ölçüm — küçük örneklem neden rapora giremiyor
 
 ```powershell
-.\.venv\Scripts\python.exe src\evaluation\build_manifest.py --results-directory tmp\demo\results --evaluation-subset tmp\demo\subset_small.csv --output tmp\demo\manifest_small.json
+.\.venv\Scripts\python.exe src\evaluation\build_manifest.py --results-directory tmp\demo\results --ids ELK001,PET001,SPM001 --output tmp\demo\manifest_small.json
 ```
 
 **Ölçülen:** `Result files: 12 / Methods: 4`.

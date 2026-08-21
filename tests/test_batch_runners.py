@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 import tempfile
 import unittest
@@ -21,7 +22,11 @@ import run_agentic_search as agentic_runner
 import run_selenium_nano_llm as nano_runner
 import run_selenium_rule_based as rule_runner
 import run_tavily_llm as tavily_runner
-from run_evaluation_batch import METHODS, run_evaluation_batch
+from run_evaluation_batch import (
+    METHODS,
+    load_evaluation_keywords,
+    run_evaluation_batch,
+)
 from run_rule_based_batch import run_rule_based_batch
 from run_selenium_nano_llm import run_selenium_nano_llm
 
@@ -283,3 +288,71 @@ class BatchRunnerTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EvaluationSubsetSelectionByIdTests(unittest.TestCase):
+    """Locking selection by name in the batch runner.
+
+    The labeled URLs only cover the twenty-product subset, so a run on any
+    other product would produce results no human label can score. Naming
+    products must therefore stay inside the subset, and must not become a
+    way around the three-product live cap.
+    """
+
+    def setUp(self) -> None:
+        self._temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self._temporary.cleanup)
+        directory = Path(self._temporary.name)
+
+        self.subset = directory / "subset.csv"
+        self.subset.write_text(
+            "product_id\nELK001\nPET001\nSPM001\nKMH001\n",
+            encoding="utf-8",
+        )
+
+        self.keywords = directory / "keywords.json"
+        self.keywords.write_text(
+            json.dumps(
+                [
+                    {"product_id": "ELK001", "keyword": "iPhone 17 256 GB fiyat"},
+                    {"product_id": "PET001", "keyword": "Pro Plan 10 kg fiyat"},
+                    {"product_id": "SPM001", "keyword": "Eti Burcak 114 gr fiyat"},
+                    {"product_id": "KMH001", "keyword": "Puzzle 2000 parca fiyat"},
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+    def load(self, **kwargs):
+        return load_evaluation_keywords(
+            subset_file=self.subset, keywords_file=self.keywords, **kwargs
+        )
+
+    def test_named_products_come_back_in_the_requested_order(self) -> None:
+        records = self.load(product_ids=["SPM001", "ELK001"])
+        self.assertEqual(
+            [record["product_id"] for record in records], ["SPM001", "ELK001"]
+        )
+
+    def test_names_override_the_limit(self) -> None:
+        records = self.load(limit=1, product_ids=["ELK001", "PET001", "SPM001"])
+        self.assertEqual(len(records), 3)
+
+    def test_a_product_outside_the_subset_is_refused(self) -> None:
+        with self.assertRaises(ValueError):
+            self.load(product_ids=["ELK001", "ELK002"])
+
+    def test_without_names_the_limit_still_takes_the_head(self) -> None:
+        records = self.load(limit=2)
+        self.assertEqual(
+            [record["product_id"] for record in records], ["ELK001", "PET001"]
+        )
+
+    def test_naming_four_products_does_not_bypass_the_live_cap(self) -> None:
+        with self.assertRaises(ValueError):
+            run_evaluation_batch(
+                subset_file=self.subset,
+                keywords_file=self.keywords,
+                execution_mode="live",
+                product_ids=["ELK001", "PET001", "SPM001", "KMH001"],
+            )

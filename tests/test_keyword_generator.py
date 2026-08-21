@@ -19,7 +19,9 @@ import langgraph_flow as langgraph_module
 from keyword_generator import (
     DEFAULT_MODEL,
     FakeKeywordClient,
+    KeywordGenerationError,
     OpenRouterKeywordClient,
+    Product,
     generate_keywords,
     load_products,
     select_products,
@@ -516,3 +518,42 @@ class KeywordGeneratorTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SelectProductsByIdTests(unittest.TestCase):
+    """Locking selection by name, which a small multi-category run needs.
+
+    ``--limit`` alone takes the head of the file, and the head of the
+    ten-category dataset is three phones. A run meant to show that the
+    pipeline handles a phone, a cat food and a biscuit has to name them.
+    """
+
+    PRODUCTS = [
+        Product(product_id="ELK001", product_name="iPhone", brand="Apple", category="Telefon"),
+        Product(product_id="PET001", product_name="Pro Plan", brand="Pro Plan", category="Mama"),
+        Product(product_id="SPM001", product_name="Eti Burcak", brand="Eti", category="Biskuvi"),
+    ]
+
+    def test_named_products_come_back_in_the_requested_order(self) -> None:
+        selected = select_products(self.PRODUCTS, product_ids=["SPM001", "ELK001"])
+        self.assertEqual(
+            [product.product_id for product in selected], ["SPM001", "ELK001"]
+        )
+
+    def test_names_override_the_limit(self) -> None:
+        selected = select_products(
+            self.PRODUCTS, limit=1, product_ids=["ELK001", "PET001"]
+        )
+        self.assertEqual(len(selected), 2)
+
+    def test_an_unknown_id_is_refused(self) -> None:
+        # Returning only the ones that matched would let a run claim it
+        # covered three categories while covering two.
+        with self.assertRaises(KeywordGenerationError):
+            select_products(self.PRODUCTS, product_ids=["ELK001", "NOPE"])
+
+    def test_without_names_the_limit_still_takes_the_head(self) -> None:
+        selected = select_products(self.PRODUCTS, limit=2)
+        self.assertEqual(
+            [product.product_id for product in selected], ["ELK001", "PET001"]
+        )
