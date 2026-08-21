@@ -439,9 +439,11 @@ Donanım: ekibin kişisel bilgisayarları. Ek sunucu, GPU veya bulut kaynağı k
 
 Bu bölümde, projenin dayandığı problem tanımı ve ilgili literatür sunulmakta, ardından geliştirilen çözüm yöntemi ayrıntılı anlatılır.
 
-**Problem tanımı.** Bir ürün kaydı $p$ ve bu kayıttan üretilen bir işlemsel sorgu $q(p)$ verildiğinde, bir arama yöntemi $M$ bir sonuç kümesi $R_M(q) = \{r_1, \dots, r_k\}$ döndürür ve her sonuç için ikili bir uygunluk tahmini $\hat{y}_M(r_i) \in \{0,1\}$ üretir. İnsan değerlendirici ise aynı sonuç için gerçek etiketi $y(r_i) \in \{0,1\}$ verir. Problem, farklı $M$ yöntemleri için $\hat{y}_M$ ile $y$ arasındaki uyumu aynı $p$, aynı $q(p)$ ve aynı $y$ üzerinde ölçmek ve karşılaştırmaktır.
+**Problem tanımı.** Süreç bir ürün kaydıyla başlar. Bu kayıttan işlemsel niyetli bir anahtar kelime üretilir. Anahtar kelime bir arama yöntemine verilir; yöntem en fazla beş sonuç döndürür ve her sonuç için "uygun" veya "uygun değil" der. Aynı sonuç için insan değerlendirici de bir karar verir; bu karar gerçek etiket sayılır.
 
-Burada kritik nokta, $y$ etiketinin sonucun bir özelliği olması, yöntemin özelliği olmamasıdır. Bir URL birden fazla yöntem tarafından döndürülebilir; bu durumda aynı etiket tüm yöntemler için geçerlidir. Bu tasarım kararı, yöntemlerin farklı etiket kümeleri üzerinde ölçülmesini ve dolayısıyla karşılaştırmanın anlamsızlaşmasını engeller.
+Problem şudur: dört yöntemin verdiği kararlar ile insanın verdiği kararlar ne kadar örtüşüyor? Bu ölçüm dört yöntem için de aynı ürünler, aynı anahtar kelimeler ve aynı insan etiketleri üzerinde yapılır. Böylece yöntemler arasındaki fark yöntemin kendisinden gelir, ölçüldükleri veriden değil.
+
+Burada kritik bir nokta var: insan etiketi **sonucun** özelliğidir, yöntemin değil. Bir URL'yi birden fazla yöntem döndürebilir. O URL için verilen tek etiket, onu döndüren bütün yöntemler için geçerlidir. Bu tasarım kararı, yöntemlerin farklı etiket kümeleri üzerinde ölçülmesini ve dolayısıyla karşılaştırmanın anlamsızlaşmasını engeller.
 
 ## 3.1. Literature Survey
 
