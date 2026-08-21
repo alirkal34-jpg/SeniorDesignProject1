@@ -2,7 +2,7 @@
   "report_scope": "latest live result per method for each product in the 20-product multi-category evaluation subset",
   "evaluation_subset_file": "data/evaluation/evaluation_subset_multicategory.csv",
   "ground_truth_file": "data/labels/multicategory_ground_truth.csv",
-  "ground_truth_record_count": 194,
+  "ground_truth_record_count": 193,
   "product_count": 20,
   "method_count": 4,
   "experiment_count": 80,

@@ -23,7 +23,7 @@ AUGUST, 2026
 
 Bu projede, yapılandırılmış ürün verisinden işlemsel (transactional) niyet taşıyan arama sorguları üretilmekte ve bu sorgularla elde edilen web arama sonuçlarının e-ticaret uygunluğu dört farklı yöntemle değerlendirilir. Karşılaştırılan yöntemler şunlardır: Selenium tabanlı toplama ile kural tabanlı alan adı puanlaması, Selenium tabanlı toplama ile küçük ölçekli dil modeli (NanoLLM) değerlendirmesi, Tavily arama API'si ile NanoLLM değerlendirmesi ve planlama–arama–değerlendirme döngüsü kuran etmen tabanlı (agentic) arama. Dört yöntemin tamamı LangGraph üzerinde tek bir yönlendirilmiş çevrimsiz çizge ile orkestre edilmiş, böylece her ürün için aynı anahtar kelimenin dört yönteme değişmeden verilmesi garanti altına alınmıştır.
 
-Sistem, Akakçe üzerinden toplanan 10 kategori grubuna ait 489 gerçek ürün üzerinde kurulmuştur. Değerlendirme, her kategoriden iki farklı markaya ait ikişer ürün seçilerek oluşturulan 20 ürünlük bir alt kümede yürütülmüştür: 20 ürün × 4 yöntem = 80 canlı çalıştırma, 399 arama sonucu ve 46 farklı alan adı. Sonuçların uygunluğu, yöntem tahminleri gizlenmiş bir çalışma kitabı üzerinden elle etiketlenmiş; 194 benzersiz URL için insan etiketi elde edilmiş ve bu etiketler 399 sonucun tamamını kapsamıştır (kapsam oranı %100).
+Sistem, Akakçe üzerinden toplanan 10 kategori grubuna ait 489 gerçek ürün üzerinde kurulmuştur. Değerlendirme, her kategoriden iki farklı markaya ait ikişer ürün seçilerek oluşturulan 20 ürünlük bir alt kümede yürütülmüştür: 20 ürün × 4 yöntem = 80 canlı çalıştırma, 399 arama sonucu ve 46 farklı alan adı. Sonuçların uygunluğu, yöntem tahminleri gizlenmiş bir çalışma kitabı üzerinden elle etiketlenmiş; 193 benzersiz URL için insan etiketi elde edilmiş ve bu etiketler 399 sonucun tamamını kapsamıştır (kapsam oranı %100).
 
 Ölçülen genel doğruluk %76,19'dur. İlk ölçümde asıl bulgu doğruluk sıralamasında değil sınıflandırma davranışındaydı: Selenium + NanoLLM 100 sonucun 100'üne "uygun" demiş, özgüllüğü 0,000 ve dengeli doğruluğu 0,500 çıkmıştır; Agentic Search 99'una "uygun" demiştir. Yürütülen hata analizi bu davranışın nedenini ortaya koymuştur: değerlendirici modele verilen istem ile insan etiketleme kuralı arasında bir tanım uyuşmazlığı vardır — istem kategori sayfalarını uygun sayarken kural saymaz. İstem kuralla hizalanıp aynı sonuçlar yeniden yargılandığında, hiçbir arama tekrarlanmadan ve etiketler değişmeden, Selenium + NanoLLM'in özgüllüğü 0,000'den 0,846'ya, genel doğruluk %76,19'dan %82,46'ya çıkmıştır. Dil modeli kullanmayan kural tabanlı yöntem kontrol grubu olarak hiç değişmemiştir. Kategori kırılımında telefon kategorisi dört yöntem ortalamasında %100 doğrulukla en kolay kategori çıkmış, diğer dokuz grup %73,52 ortalamada kalmıştır.
 
@@ -44,7 +44,7 @@ E-ticaret arama motorlarında bir sorgunun döndürdüğü sayfaların gerçekte
 
 Projenin veri katmanı, Akakçe üzerinden toplanan 10 kategori grubuna ait 489 üründen oluşur; kategori taksonomisi tek bir başvuru dosyasında tanımlanmış ve veri doğrulama bu taksonomiden türetilmiştir. Değerlendirme katmanı, dört yöntemi LangGraph çizgesi üzerinde sırayla çalıştırmakta, her yöntemin çıktısını ortak bir JSON şemasına yazmakta ve bu çıktıları insan etiketleriyle eşleştirerek doğruluk, kesinlik, duyarlılık, özgüllük ve dengeli doğruluk hesaplar.
 
-20 ürünlük değerlendirme alt kümesinde 80 canlı çalıştırma hatasız tamamlanmış, 399 sonuç üretilmiş ve bu sonuçların tamamı 194 benzersiz URL üzerinden elle etiketlenmiştir. Genel doğruluk %76,19 ölçülmüştür. Yöntemlerin üçünün doğruluğu, "her sonuca uygun de" biçimindeki önemsiz sınıflandırıcının doğruluğunu geçememiş veya çok az geçmiştir; bu nedenle raporda doğruluğun yanına özgüllük ve dengeli doğruluk da konulmuştur. Bu davranışın kaynağı hata analiziyle izole edilmiştir: değerlendirici istemi ile etiketleme kuralı aynı ölçütü farklı tanımlamaktaydı. İstem hizalandığında özgüllük 0,000'den 0,846'ya, genel doğruluk %82,46'ya yükselmiş, kontrol grubu olan kural tabanlı yöntem ise hiç değişmemiştir. Danışman geri bildiriminde dile getirilen "tek kategori yeterli değil" eleştirisi ölçümle doğrulanmıştır: telefon kategorisi dört yöntem ortalamasında %100, diğer dokuz kategori %73,52 doğruluk vermiştir.
+20 ürünlük değerlendirme alt kümesinde 80 canlı çalıştırma hatasız tamamlanmış, 399 sonuç üretilmiş ve bu sonuçların tamamı 193 benzersiz URL üzerinden elle etiketlenmiştir. Genel doğruluk %76,19 ölçülmüştür. Yöntemlerin üçünün doğruluğu, "her sonuca uygun de" biçimindeki önemsiz sınıflandırıcının doğruluğunu geçememiş veya çok az geçmiştir; bu nedenle raporda doğruluğun yanına özgüllük ve dengeli doğruluk da konulmuştur. Bu davranışın kaynağı hata analiziyle izole edilmiştir: değerlendirici istemi ile etiketleme kuralı aynı ölçütü farklı tanımlamaktaydı. İstem hizalandığında özgüllük 0,000'den 0,846'ya, genel doğruluk %82,46'ya yükselmiş, kontrol grubu olan kural tabanlı yöntem ise hiç değişmemiştir. Danışman geri bildiriminde dile getirilen "tek kategori yeterli değil" eleştirisi ölçümle doğrulanmıştır: telefon kategorisi dört yöntem ortalamasında %100, diğer dokuz kategori %73,52 doğruluk vermiştir.
 
 **Anahtar Kelimeler:** e-ticaret arama uygunluğu, işlemsel sorgu üretimi, dil modeliyle değerlendirme, istem-ölçüt hizalaması, etmen tabanlı arama, LangGraph, insan uygunluk yargıları, dengeli doğruluk
 
@@ -177,7 +177,7 @@ Uygunluk değerlendirmesi problemi, bilgi erişimi alanında farklı dönemlerde
 
 | Yıl | Yöntem ailesi | Değerlendirme verisi | Bu projedeki karşılığı |
 |---|---|---|---|
-| 2000 | İnsan uygunluk yargıları (Cranfield / TREC) [2] | TREC ad hoc koleksiyonları | 194 benzersiz URL için elle üretilen temel doğruluk (ground truth) |
+| 2000 | İnsan uygunluk yargıları (Cranfield / TREC) [2] | TREC ad hoc koleksiyonları | 193 benzersiz URL için elle üretilen temel doğruluk (ground truth) |
 | 2002 | Sorgu niyeti sınıflandırması [1] | AltaVista sorgu kayıtları ve kullanıcı anketi | İşlemsel niyetli anahtar kelime üretimi ve işlemsel amaç ölçütü |
 | 2023 | Etmen tabanlı akıl yürütme ve eylem döngüsü [7] | HotpotQA, FEVER, ALFWorld, WebShop | Agentic Search yöntemi (plan → search → evaluate → aggregate) |
 | 2023–2025 | Dil modeliyle uygunluk yargısı [3], [4], [5], [6] | Ürün arama ve web arama koleksiyonları | Selenium + NanoLLM ve Tavily + NanoLLM yöntemleri |
@@ -204,7 +204,7 @@ Sunucu tarafı enerji tüketimi veya karbon eşdeğeri ölçümü yapılmamışt
 
 ### 1.2.4. Societal Impacts of the solution
 
-Toplumsal etki, tüketicinin arama sonucundan gerçekten ürüne ulaşabilmesiyle ilgilidir. Bu projede uygunluk ölçütü, sayfanın hem sorguda adı geçen ürünün kendisi (belirtilen varyant dâhil) olmasını hem de işlemsel amaç taşımasını gerektirir. Ölçümler, etiketlenmiş 194 URL'nin 54'ünün (%27,8) bu ölçütü karşılamadığını gösterir; yani kullanıcı, döndürülen sonuçların yaklaşık dörtte birinde aradığı ürünün satın alınabilir sayfasına ulaşamaz. Bu oranın kategoriye göre ciddi biçimde değiştiği de ölçülmüştür: uygun sonuç payı telefon ve kitap/müzik/hobi kategorilerinde %95,00 iken, spor/outdoor kategorisinde %56,41'e düşer.
+Toplumsal etki, tüketicinin arama sonucundan gerçekten ürüne ulaşabilmesiyle ilgilidir. Bu projede uygunluk ölçütü, sayfanın hem sorguda adı geçen ürünün kendisi (belirtilen varyant dâhil) olmasını hem de işlemsel amaç taşımasını gerektirir. Ölçümler, etiketlenmiş 193 URL'nin 53'ünün (%27,5) bu ölçütü karşılamadığını gösterir; yani kullanıcı, döndürülen sonuçların yaklaşık dörtte birinde aradığı ürünün satın alınabilir sayfasına ulaşamaz. Bu oranın kategoriye göre ciddi biçimde değiştiği de ölçülmüştür: uygun sonuç payı telefon ve kitap/müzik/hobi kategorilerinde %95,00 iken, spor/outdoor kategorisinde %56,41'e düşer.
 
 Otomatik değerlendiricilerin toplumsal riski de bu projede somutlaşmıştır. Hiçbir sonucu elemeyen bir değerlendirici, doğruluk metriğinde iyi görünmesine rağmen kullanıcıyı ilgisiz sayfalardan korumaz. Bu nedenle raporda, otomatik değerlendiricilerin yalnızca doğrulukla değil, reddetme kabiliyetiyle birlikte raporlanması gerektiği savunulur.
 
@@ -387,7 +387,7 @@ Uygunluk değerlendirmesi problemi için değerlendirilen alternatif yaklaşıml
 | Kural tabanlı alan adı puanlaması | Deterministik, çok hızlı, açıklanabilir | Tabloda olmayan alan adlarını kör noktaya sokar | Kullanıldı (temel çizgi) |
 | Küçük ölçekli dil modeli (NanoLLM) | Sayfa başlığı ve özetini yorumlayabilir; ücretsiz katman | Kararsız; aşırı hoşgörülü olabilir | Kullanıldı |
 | Etmen tabanlı akıl yürütme (ReAct benzeri) [7] | Sorguyu planlayıp birden fazla arama yapabilir | En yüksek gecikme; hata yayılımı | Kullanıldı |
-| Denetimli sınıflandırıcı eğitimi | Veriye özel yüksek başarım | Yeterli etiketli veri yok (194 etiket) | Kullanılmadı |
+| Denetimli sınıflandırıcı eğitimi | Veriye özel yüksek başarım | Yeterli etiketli veri yok (193 etiket) | Kullanılmadı |
 | Büyük ticari dil modeli | Literatürde insan seviyesine yakın sonuç [5] | Maliyet ve kota | Kullanılmadı |
 
 **Alt problem 3: Temel doğruluğun üretilmesi.** Literatürde uygunluk yargılarının tamamen dil modeline bırakılması tartışmalıdır [3]. Bu projede, karşılaştırılan yöntemlerin kendisi dil modeli tabanlı olduğu için temel doğruluğun dil modeliyle üretilmesi döngüsel bir yanlılık yaratacaktı. Bu nedenle etiketler tamamen insan tarafından, yöntem tahminleri gizlenmiş bir çalışma kitabı üzerinden üretilmiştir.
@@ -644,7 +644,7 @@ Diyagram üç katmanı yukarıdan aşağıya gösterir. **Veri katmanında** kat
 │  multicategory_label_adjudications.csv ──▶ import_label_workbook.py      │
 │              (5 hakem kararı)                      │                     │
 │                                                    ▼                     │
-│                               multicategory_ground_truth.csv (194)       │
+│                               multicategory_ground_truth.csv (193)       │
 │                                                    │                     │
 │  build_manifest.py ──▶ final_evaluation_manifest_multicategory.json      │
 │                                (80 dosya donduruldu)                     │
@@ -752,7 +752,7 @@ Bu alt çizgede dört düğüm vardır: `plan` → `search` → `evaluate` → `
 
 **Şekil 6.** Etiketleme ve ölçüm dizisi (sequence) diyagramı.
 
-Diyagram altı katılımcı arasındaki mesaj sırasını gösterir. Araştırmacı dışa aktarım aracını çağırır; araç, model tahminleri gizlenmiş bir Excel dosyası üretir. Değerlendirici 194 URL'yi elle etiketler. Araştırmacı içe aktarım aracını çağırır; araç, doldurulmuş kitabı ve hakem dosyasını okuyarak 194 kayıtlık temel doğruluğu yazar. Sonra manifest üreteci 80 sonuç dosyasını dondurur ve ürün/yöntem ızgarasında delik olmadığını denetler. Son olarak metrik araçları genel ve kategori bazlı raporları üretir.
+Diyagram altı katılımcı arasındaki mesaj sırasını gösterir. Araştırmacı dışa aktarım aracını çağırır; araç, model tahminleri gizlenmiş bir Excel dosyası üretir. Değerlendirici 193 URL'yi elle etiketler. Araştırmacı içe aktarım aracını çağırır; araç, doldurulmuş kitabı ve hakem dosyasını okuyarak 193 kayıtlık temel doğruluğu yazar. Sonra manifest üreteci 80 sonuç dosyasını dondurur ve ürün/yöntem ızgarasında delik olmadığını denetler. Son olarak metrik araçları genel ve kategori bazlı raporları üretir.
 
 ```
 Araştırmacı   export_label   Değerlendirici   import_label   build_manifest   metrics
@@ -762,13 +762,13 @@ Araştırmacı   export_label   Değerlendirici   import_label   build_manifest 
      │               │ (tahminler │                │              │             │
      │               │  gizli)    │                │              │             │
      │               │            │──etiketle──────│              │             │
-     │               │            │  (194 URL)     │              │             │
+     │               │            │  (193 URL)     │              │             │
      │───────────────────────────────içe aktar────▶│              │             │
      │                             │               │              │             │
      │                        hakem dosyası───────▶│              │             │
      │                        (5 belirsiz satır)   │              │             │
      │                                             │─ground truth│             │
-     │                                             │  (194 kayıt) │             │
+     │                                             │  (193 kayıt) │             │
      │──manifest üret──────────────────────────────────────────▶ │             │
      │                                             │  (80 dosya,  │             │
      │                                             │   ızgara     │             │
@@ -887,11 +887,11 @@ Bu bölümdeki tüm değerler, `reports_multicategory/multicategory_evaluation_m
 | Toplam arama sonucu | 399 |
 | Benzersiz URL | 195 |
 | Benzersiz alan adı | 46 |
-| Elle etiketlenen benzersiz URL | 194 |
+| Elle etiketlenen benzersiz URL | 193 |
 | Etiket kapsamı | %100 (399/399) |
-| Uygun etiket / uygunsuz etiket | 140 / 54 |
+| Uygun etiket / uygunsuz etiket | 140 / 53 |
 | Hakem kararıyla çözülen satır | 5 |
-| Tekilleştirme ile birleştirilen satır | 1 |
+| Tekilleştirme ile birleştirilen satır | 2 |
 
 Etiketleme iki oturumda yürütülmüştür: birinci oturumda 134 satır, ikinci oturumda 61 satır. Her oturumu bir ekip üyesi tamamlamıştır. İkinci çalışma kitabı, birincisinde etiketlenen URL'leri tasarım gereği dışlar; bu nedenle iki değerlendiricinin etiket kümeleri kesişmemekte ve aralarındaki anlaşma ölçülemez (bkz. Ölçüm sınırlılıkları).
 
@@ -976,12 +976,12 @@ Bu uyuşmazlık nedeniyle mevcut sayılar tek başına iki olasılığı ayırt 
 
 **Deney tasarımı.** Sorunun cevabı kontrollü bir yeniden değerlendirmeyle aranmıştır. Etiketleme kuralının birebir karşılığı olan yeni bir istem (`relevance-v2-aligned`) yazılmış ve depoda saklı sonuçlar bu istemle yeniden yargılanmıştır. Tasarımın dört kısıtı vardır:
 
-1. **Yeni arama yapılmamıştır.** Kayıtlı başlık, özet ve URL'ler kullanılmıştır; dolayısıyla 194 insan etiketinin tamamı geçerliliğini korur. Doğrulanmıştır: 80 dosyanın 80'inde sonuç içeriği birebir aynıdır.
+1. **Yeni arama yapılmamıştır.** Kayıtlı başlık, özet ve URL'ler kullanılmıştır; dolayısıyla 193 insan etiketinin tamamı geçerliliğini korur. Doğrulanmıştır: 80 dosyanın 80'inde sonuç içeriği birebir aynıdır.
 2. **Kural tabanlı yöntem kontrol grubudur.** LLM kullanmadığı için istemden etkilenmez; 20 dosyası bit düzeyinde değiştirilmeden taşınmıştır.
 3. **İstem bir kez yazılıp bir kez çalıştırılmıştır.** Sonuca bakıp istemi iyileştirmek, istemi test kümesine uydurmak (overfitting) olurdu ve karşılaştırmayı geçersiz kılardı.
 4. **Model, sıcaklık ve şema değişmemiştir.** Tek değişken istemdir.
 
-**Tablo 12.** İstem hizalamasının etkisi (aynı 399 sonuç, aynı 194 etiket).
+**Tablo 12.** İstem hizalamasının etkisi (aynı 399 sonuç, aynı 193 etiket).
 
 | Yöntem | Doğruluk | Özgüllük | Dengeli doğruluk | "Uygun" deme oranı |
 |---|---|---|---|---|

@@ -136,7 +136,7 @@ def main() -> int:
     labels = list(csv.DictReader(GROUND_TRUTH.open(encoding="utf-8")))
 
     print("=== 1. TEMEL DOGRULUK ===")
-    checker.check("etiket sayisi 194", len(labels) == 194, str(len(labels)))
+    checker.check("etiket sayisi 193", len(labels) == 193, str(len(labels)))
     keys = {(r["product_id"], r["url"].rstrip("/").lower()) for r in labels}
     checker.check("tekrar eden URL yok", len(keys) == len(labels))
     values = {r["human_relevant"] for r in labels}
@@ -144,7 +144,7 @@ def main() -> int:
         "etiketler yalnizca true/false", values <= {"true", "false"}, str(values)
     )
     relevant = sum(1 for r in labels if r["human_relevant"] == "true")
-    checker.check("140 uygun / 54 uygunsuz", relevant == 140, f"{relevant} uygun")
+    checker.check("140 uygun / 53 uygunsuz", relevant == 140, f"{relevant} uygun")
     adjudicated = sum(1 for r in labels if "[adjudicated:" in r["notes"])
     checker.check("5 hakem karari izlenebilir", adjudicated == 5, str(adjudicated))
 

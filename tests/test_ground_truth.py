@@ -17,6 +17,7 @@ from evaluation.ground_truth import (
     build_ground_truth_lookup,
     find_human_label,
     load_ground_truth,
+    normalize_url,
 )
 
 
@@ -142,3 +143,46 @@ class GroundTruthTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class UrlNormalizationTests(unittest.TestCase):
+    """One page must reduce to one key, however a search engine spelled it."""
+
+    def test_percent_encoding_does_not_split_one_page(self) -> None:
+        # Two engines returned the same filtered category page, one with the
+        # colon escaped. Undecoded they count as two pages, the reviewer is
+        # asked twice, and the two answers can disagree unnoticed.
+        escaped = (
+            "https://www.hepsiburada.com/molfix/bebek-bezi-c-60001048"
+            "?filtreler=beden%3A6"
+        )
+        plain = (
+            "https://www.hepsiburada.com/molfix/bebek-bezi-c-60001048"
+            "?filtreler=beden:6"
+        )
+
+        self.assertEqual(normalize_url(escaped), normalize_url(plain))
+
+    def test_trailing_slash_does_not_split_one_page(self) -> None:
+        self.assertEqual(
+            normalize_url("https://www.tefal.com.tr/ingenio-2100129672/"),
+            normalize_url("https://www.tefal.com.tr/ingenio-2100129672"),
+        )
+
+    def test_host_casing_does_not_split_one_page(self) -> None:
+        self.assertEqual(
+            normalize_url("https://WWW.Trendyol.com/eti-p-1"),
+            normalize_url("https://www.trendyol.com/eti-p-1"),
+        )
+
+    def test_a_different_query_is_a_different_page(self) -> None:
+        # Marketplaces carry the variant filter in the query, so folding it
+        # away would merge two genuinely different listings.
+        self.assertNotEqual(
+            normalize_url("https://www.hepsiburada.com/molfix?beden=6"),
+            normalize_url("https://www.hepsiburada.com/molfix?beden=5"),
+        )
+
+    def test_a_non_http_url_is_refused(self) -> None:
+        with self.assertRaises(GroundTruthError):
+            normalize_url("ftp://example.com/a")

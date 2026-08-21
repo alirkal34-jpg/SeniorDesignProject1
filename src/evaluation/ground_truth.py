@@ -7,7 +7,7 @@ import csv
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import unquote, urlsplit, urlunsplit
 
 
 try:
@@ -67,7 +67,19 @@ def normalize_text(value: str) -> str:
 
 
 def normalize_url(value: str) -> str:
-    """Normalize a URL without changing its query parameters."""
+    """Reduce the spellings of one page to a single key.
+
+    Query parameters are kept, because marketplaces carry the variant filter
+    there and two results that differ in the query are genuinely different
+    listings. What is folded away are the spellings that cannot distinguish a
+    page: the scheme and host casing, a trailing slash, and percent-encoding.
+
+    The encoding matters in practice. One search engine returned a filtered
+    category page as ``?filtreler=beden%3A6`` and another returned the same
+    page as ``?filtreler=beden:6``. Without decoding they count as two pages,
+    the reviewer is asked about the same URL twice, and the two answers can
+    disagree without anything noticing.
+    """
 
     raw_url = value.strip()
     parsed = urlsplit(raw_url)
@@ -79,13 +91,15 @@ def normalize_url(value: str) -> str:
 
     normalized_path = parsed.path.rstrip("/") or "/"
 
-    return urlunsplit(
-        (
-            parsed.scheme.lower(),
-            parsed.netloc.lower(),
-            normalized_path,
-            parsed.query,
-            "",
+    return unquote(
+        urlunsplit(
+            (
+                parsed.scheme.lower(),
+                parsed.netloc.lower(),
+                normalized_path,
+                parsed.query,
+                "",
+            )
         )
     )
 
