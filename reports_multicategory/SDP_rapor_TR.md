@@ -349,7 +349,7 @@ Projenin başarı ölçütleri ve gerçekleşme durumu aşağıdadır. Her ölç
 | B4 | İnsan etiket kapsamı | ≥ %90 | %100 (399/399) | Karşılandı |
 | B5 | Ortak şema doğrulaması | Tüm çıktılar geçerli | 80 dosyanın tamamı geçerli | Karşılandı |
 | B6 | Önceki deneyin korunması | Bire bir yeniden üretim | %68,84 değişmeden yeniden üretiliyor | Karşılandı |
-| B7 | Otomatik test paketi | Tümü geçmeli | 371 test, 1 atlandı, 0 hata | Karşılandı |
+| B7 | Otomatik test paketi | Tümü geçmeli | 381 test, 1 atlandı, 0 hata | Karşılandı |
 | B8 | En az bir yöntemin önemsiz sınıflandırıcıyı anlamlı biçimde geçmesi | ≥ +5 puan | Tavily + NanoLLM: +10,0 puan | Karşılandı |
 
 B2 ölçütünün kısmen karşılanmasının nedeni ölçülmüş bir olgudur: `saat_moda_taki_ayakkabi` kategorisinde gerçek ilan başlıkları yapılandırılmış teknik özellik yayınlamadığı için hedef ürün sayısına ulaşılamamış ve kategori 39 üründe kalmıştır.
@@ -838,7 +838,7 @@ En büyük modüller: `product_scraper.py` (1.396), `langgraph_flow.py` (1.131),
 2. **Birim testleri:** yeni bileşenlerin sözleşmelerini sabitler.
 3. **Gerileme testleri:** bulunan her hata için bir tane yazılır.
 
-**Test paketinin ölçülen durumu.** Test paketi 23 dosya ve 7.100'ü aşkın satırdan oluşur. Çalıştırma sonucu: **371 test, 1 atlandı, 0 hata, 0 başarısızlık**; toplam çalışma süresi yaklaşık 1,2 saniyedir. Test paketi ağ erişimi veya API anahtarı gerektirmez; dış servisler sahte (fake) uygulamalarla değiştirilmiştir. Bu, testlerin kota tüketmeden ve internet bağlantısı olmadan çalışabilmesini sağlar.
+**Test paketinin ölçülen durumu.** Test paketi 24 dosya ve 7.300'ü aşkın satırdan oluşur. Çalıştırma sonucu: **381 test, 1 atlandı, 0 hata, 0 başarısızlık**; toplam çalışma süresi yaklaşık 1,2 saniyedir. Test paketi ağ erişimi veya API anahtarı gerektirmez; dış servisler sahte (fake) uygulamalarla değiştirilmiştir. Bu, testlerin kota tüketmeden ve internet bağlantısı olmadan çalışabilmesini sağlar.
 
 **Karakterizasyon testleri.** Kategori genişletmesine başlamadan önce üç sözleşme testi dosyası yazıldı. Bu dosyalar mevcut telefon hattının davranışını kaydeder:
 
@@ -1135,7 +1135,7 @@ Proje iki kişilik bir ekiple yürütülmüştür: Ali Rubar Kal ve Atahan Bulut
   --output reports_multicategory\prompt_v2_category_metrics.json `
   --markdown reports_multicategory\prompt_v2_category_metrics.md
 
-# 6. Test paketini çalıştır (371 test)
+# 6. Test paketini çalıştır (381 test)
 .\.venv\Scripts\python.exe -m unittest discover -s tests -p "test*.py"
 
 # 7. Rapordaki sayilarin dosyalarla tutarliligini denetle

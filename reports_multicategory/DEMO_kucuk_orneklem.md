@@ -33,25 +33,41 @@ noktaya geçirir. Terminali kapatırsan tekrar gir.
 Üç ürünlük örneklemi hazırla:
 
 ```powershell
-.\.venv\Scripts\python.exe -c "import csv,json;from pathlib import Path;S=['ELK001','PET001','SPM001'];o=Path('tmp/demo');o.mkdir(parents=True,exist_ok=True);p=[x for x in json.loads(Path('data/processed/processed_products_multicategory.json').read_text(encoding='utf-8')) if x['product_id'] in S];p.sort(key=lambda x:S.index(x['product_id']));(o/'products_small.json').write_text(json.dumps(p,ensure_ascii=False,indent=2),encoding='utf-8');r=[x for x in csv.DictReader(open('data/evaluation/evaluation_subset_multicategory.csv',encoding='utf-8-sig')) if x['product_id'] in S];r.sort(key=lambda x:S.index(x['product_id']));w=csv.DictWriter(open(o/'subset_small.csv','w',encoding='utf-8',newline=''),fieldnames=list(r[0]));w.writeheader();w.writerows(r);print('ornek hazir')"
+.\.venv\Scripts\python.exe src\evaluation\make_demo_sample.py --ids ELK001,PET001,SPM001
 ```
 
-Bu tek satırlık hazırlık sunumda çalıştırılmaz; önceden bir kez çalışır ve
-`tmp/demo/products_small.json` ile `tmp/demo/subset_small.csv` dosyalarını
-üretir.
+**Bu komut ne yapıyor.** Hattın hiçbir adımını çalıştırmaz; yalnızca sonraki
+adımlara **girdi** olacak iki küçük dosya keser:
+
+| Okuduğu (mevcut, değişmez) | Yazdığı (yeni, `tmp/` altında) | Hangi adım kullanacak |
+|---|---|---|
+| `data/processed/processed_products_multicategory.json` — 489 işlenmiş ürün | `tmp/demo/products_small.json` — 3 ürün | Adım 3, anahtar kelime üretimi |
+| `data/evaluation/evaluation_subset_multicategory.csv` — 20 ürünlük değerlendirme alt kümesi | `tmp/demo/subset_small.csv` — 3 satır | Adım 4, dört yöntemle arama |
+
+Ham CSV'ye (`data/raw/...`) dokunmaz. Kayıtları olduğu gibi kopyalar, hiçbir
+alan üretmez, istenen kimlik dosyada yoksa hata verip durur.
+
+**Neden gerekiyor.** `keyword_generator.py` ve `run_evaluation_batch.py`
+yalnızca `--limit N` kabul ediyor, yani **ilk N kaydı** alıyorlar. İşlenmiş
+dosyanın ilk üçü ELK001, ELK002, ELK003 — üç iPhone. Üç ayrı kategoriden ürün
+göstermek istediğimiz için girdiyi önceden kesiyoruz.
+
+Bu hazırlık sunum sırasında değil, önceden bir kez çalıştırılır.
 
 ---
 
 ## 1. Ham veri — nereden geldi
 
-Veri üretilmedi, Akakçe'den kazındı. Önce bunun kanıtını göster:
+Bu adımda **hiçbir işlem çalışmaz**. İki mevcut dosya ekrana basılır; amaç,
+verinin nereden geldiğini iddia etmek yerine göstermektir.
 
 ```powershell
 .\.venv\Scripts\python.exe src\evaluation\show.py data\raw\candidate_products_multicategory.metadata.json
 ```
 
 **Ne görünecek:** `"acquisition_mode": "scraped"`, kaynak `akakce`, toplama
-tarihi, kategori başına ürün sayısı.
+tarihi, kategori başına ürün sayısı. Bu dosyayı kazıyıcı 18.08.2026'da yazdı;
+komut onu yalnızca okuyor.
 
 ```powershell
 .\.venv\Scripts\python.exe src\evaluation\show.py data\raw\candidate_products_multicategory.csv --limit 2 --fields product_id,product_name,brand,category_group,source_url
@@ -93,10 +109,12 @@ bir sonuç: ticari siteler otomatik toplamayı fiilen engelliyor."
 
 **Ne görünecek:** `489 valid, 0 invalid`.
 
-Üretilen dosyayı göster — üç farklı kategoriden üç ürün:
+Şimdi bu komutun **az önce yazdığı** dosyayı aç. 489 kaydın tamamı ekrana
+sığmayacağı için üç kategoriden üçünü seçiyoruz — gösterilen, hattın gerçekten
+ürettiği dosyanın kendisi, kopyası değil:
 
 ```powershell
-.\.venv\Scripts\python.exe src\evaluation\show.py tmp\demo\products_small.json --limit 3 --fields product_id,product_name,category_group,attributes
+.\.venv\Scripts\python.exe src\evaluation\show.py data\processed\processed_products_multicategory.json --ids ELK001,PET001,SPM001 --fields product_id,product_name,category_group,attributes
 ```
 
 **Ölçülen çıktı:**
@@ -341,7 +359,7 @@ git status
 | # | Adım | Komut çıktısı | Gösterilecek dosya |
 |---|---|---|---|
 | 1 | Ham veri | — | `data/raw/candidate_products_multicategory.metadata.json` |
-| 2 | Veri işleme | 489 valid, 0 invalid | `tmp/demo/products_small.json` |
+| 2 | Veri işleme | 489 valid, 0 invalid | `data/processed/processed_products_multicategory.json` |
 | 3 | Anahtar kelime | 2 dosya | `tmp/demo/keywords_fake.json` + `keywords_live.json` |
 | 4 | URL toplama | 12 koşum, 113 s | `tmp/demo/results/<yontem>/` |
 | 5 | Etiketleme | 193 etiket | `data/labels/multicategory_ground_truth.csv` |
