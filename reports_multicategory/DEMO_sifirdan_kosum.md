@@ -8,6 +8,9 @@ yapar. Her adım yeni bir dosya yazar; her adımdan sonra o dosya açılır.
 Bütün çıktı `tmp/canli/` altına gider. `data/`, `results/` ve `reports/`
 dizinlerine dokunulmaz.
 
+**Ölçülen toplam süre:** kazıma 31 s + işleme/kapı/anahtar kelime ~2 s +
+dört yöntem 12,7 dk (ya da üç ürünle 113 s). **Ölçülen maliyet:** 0,00615 USD.
+
 **Neden 3 kategori × 5 ürün.** Kazıma süresi ve model maliyeti kategori
 sayısıyla artıyor, ve listeleme sitesi uzun oturumları hız sınırına takıyor.
 On kategoriyi eksik toplamaktansa üç kategoriyi tam toplamak hem hızlı hem
@@ -198,9 +201,25 @@ Sonra dört yöntemi çalıştır:
 `--skip-existing` sayesinde koşum bölünebilir; yarıda kalırsa aynı komut
 kaldığı yerden devam eder, biten işe kota harcamaz.
 
-**Süre kısıtlıysa:** `--limit 3` ile üç ürün koş (yaklaşık 2 dakika),
-`--allow-live-batch` gerekmez. Canlı toplu koşum üç ürünle sınırlı; daha
-fazlası açık onay istiyor.
+**Ölçülen (15 ürün × 4 yöntem = 60 koşum, 0 hata):**
+
+| Yöntem | Koşum | Ortalama süre | Toplam |
+|---|---:|---:|---:|
+| selenium_rule_based | 15 | 5,5 s | 82 s |
+| tavily_llm | 15 | 9,4 s | 141 s |
+| selenium_nano_llm | 15 | 11,4 s | 170 s |
+| agentic_search | 15 | 24,4 s | 366 s |
+| **Toplam** | **60** | | **12,7 dakika** |
+
+296 sonuç, 60/60 dosya şema doğrulamasından geçti, toplam maliyet
+**0,00615 USD**. Üç koşum beşten az sonuç döndürdü — arama o kadarını
+bulmuş; hat bunu hata saymıyor, dosyaya kaç sonuç geldiyse onu yazıyor.
+
+**Süre kısıtlıysa** — 12,7 dakika sunumda uzun. `--limit 3` ile üç ürün koş:
+ölçülen **113 saniye**, `--allow-live-batch` gerekmez. Canlı toplu koşum üç
+ürünle sınırlı; daha fazlası açık onay istiyor. 15 ürünü sunumdan önce koşup
+`--skip-existing` ile ekranda saniyeler içinde tekrarlatmak da bir seçenek:
+biten iş atlanır, dosyalar zaten yerindedir.
 
 Üretilen dosyaları yöntem yöntem aç:
 
@@ -229,6 +248,36 @@ grubu olabiliyor.
 ```powershell
 .\.venv\Scripts\python.exe src\evaluation\result_validator.py tmp\canli\results
 ```
+
+**Ölçülen:** `Total files: 60 / Valid files: 60 / Invalid files: 0`.
+
+### Bu koşumun kendi bulgusu
+
+Yöntemlerin kaç sonuca "uygun" dediğini say:
+
+```powershell
+.\.venv\Scripts\python.exe -c "import json,glob,collections;s=collections.defaultdict(lambda:[0,0]);[ (s[d['method']].__setitem__(1,s[d['method']][1]+len(d['results'])), s[d['method']].__setitem__(0,s[d['method']][0]+sum(1 for r in d['results'] if r['predicted_relevant']))) for d in (json.load(open(f,encoding='utf-8')) for f in glob.glob('tmp/canli/results/*/*.json'))];[print('%-22s %3d/%3d  %%%.1f'%(m,v[0],v[1],100*v[0]/v[1])) for m,v in sorted(s.items())]"
+```
+
+**Ölçülen çıktı:**
+
+```
+agentic_search          74/ 74  %100.0
+selenium_nano_llm       75/ 75  %100.0
+selenium_rule_based     69/ 72  %95.8
+tavily_llm              70/ 75  %93.3
+```
+
+**Anlatım:** "Bu, raporun **Bulgu 2**'sinin daha önce hiç görülmemiş, beş dakika
+önce toplanmış veride kendiliğinden tekrarlanması. İki dil modeli tabanlı
+yöntem sonuçların **%100'üne** uygun dedi — yani hiçbir sonucu reddetmediler.
+Bu ilk bakışta 'model bu işi yapamıyor' gibi okunur. Ama biz bunun sebebini
+izole ettik: değerlendirici modele sorulan soru, insan etiketleyiciye verilen
+kuralla aynı değildi. İstem kategori sayfasını uygun sayıyordu, kural
+saymıyordu. İstemi kuralla hizalayınca özgüllük 0,000'den 0,846'ya çıktı ve
+kontrol grubu hiç değişmedi."
+
+Bu, demoyu raporun ana bulgusuna bağlayan köprü: taze veri, aynı davranış.
 
 ---
 
