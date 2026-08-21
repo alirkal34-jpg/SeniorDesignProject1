@@ -11,7 +11,7 @@ The first evaluation of this project covered smartphones only. The advisor asked
 - Maximum search results: 5 per product and method.
 - Experiments: 80 live method/product runs, no failures.
 - Evaluated results: 399.
-- Human-labeled URLs: 194.
+- Human-labeled URLs: 193.
 - Label coverage of the evaluated results: 100.00%.
 - Relevance rule: the page must be the product named in the keyword, including the stated variant, and must have transactional purpose. Out of stock is still relevant; a different variant, an accessory, a category page, news, or a review is not.
 

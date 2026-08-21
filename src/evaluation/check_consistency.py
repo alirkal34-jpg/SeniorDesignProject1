@@ -17,14 +17,19 @@ import csv
 import hashlib
 import json
 import sys
+import unittest
 from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from evaluation.category_metrics import build_category_report  # noqa: E402
+from evaluation.category_metrics import (  # noqa: E402
+    build_category_report,
+    render_markdown,
+)
 from evaluation.final_metrics import build_final_metrics_report  # noqa: E402
+from evaluation.multicategory_report import render_report  # noqa: E402
 from evaluation.ground_truth import (  # noqa: E402
     build_ground_truth_lookup,
     find_human_label,
@@ -83,6 +88,10 @@ class Checker:
         print(f"  [{mark}] {name}" + (f"  -> {detail}" if detail else ""))
         if not ok:
             self.failures.append(name)
+
+
+def load_json(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def load_results(root: Path) -> dict[tuple[str, str], dict]:
@@ -289,6 +298,55 @@ def main() -> int:
             f"{label}: kategori metrikleri yeniden uretiliyor",
             rebuilt_categories == stored_categories,
         )
+
+    print()
+    print("=== 9. URETILEN MARKDOWN RAPORLAR GUNCEL MI ===")
+    # These files are generated but committed, so the thesis can quote a
+    # stable text. Checking a generated file against the metrics it was
+    # generated from only means something if it is re-rendered: a stale file
+    # agrees with itself. One slipped through a whole commit this way.
+    rendered = {
+        REPORTS / "multicategory_evaluation_report.md": lambda: render_report(
+            load_json(REPORTS / "multicategory_evaluation_metrics.json"),
+            load_json(REPORTS / "multicategory_category_metrics.json"),
+            load_json(FROZEN_PHONE),
+        ),
+        REPORTS / "multicategory_category_metrics.md": lambda: render_markdown(
+            load_json(REPORTS / "multicategory_category_metrics.json")
+        ),
+        REPORTS / "prompt_v2_category_metrics.md": lambda: render_markdown(
+            load_json(REPORTS / "prompt_v2_category_metrics.json")
+        ),
+    }
+    for target, render in rendered.items():
+        checker.check(
+            f"{target.name}: metriklerden yeniden uretiliyor",
+            render() == target.read_text(encoding="utf-8"),
+        )
+
+    print()
+    print("=== 10. RAPORDAKI TEST SAYISI GERCEK MI ===")
+    # The report quotes a measured test count. Discovery counts the same
+    # tests the suite would run without running them, so this stays cheap.
+    # The suite is normally started from the project root, and one test module
+    # imports demo_dashboard from there. Without the root on the path that
+    # module fails to import and discovery quietly counts four tests fewer.
+    if str(PROJECT_ROOT) not in sys.path:
+        sys.path.insert(0, str(PROJECT_ROOT))
+    loader = unittest.TestLoader()
+    discovered = loader.discover(
+        str(PROJECT_ROOT / "tests"), pattern="test*.py"
+    ).countTestCases()
+    checker.check(
+        "her test modulu yuklenebiliyor",
+        not loader.errors,
+        "; ".join(error.splitlines()[0] for error in loader.errors),
+    )
+    checker.check(
+        f"raporda geciyor: {discovered} test",
+        f"{discovered} test" in report,
+        f"paket {discovered} test iceriyor",
+    )
 
     print()
     if checker.failures:

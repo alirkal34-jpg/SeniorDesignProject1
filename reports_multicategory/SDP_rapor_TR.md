@@ -349,7 +349,7 @@ Projenin başarı ölçütleri ve gerçekleşme durumu aşağıdadır. Her ölç
 | B4 | İnsan etiket kapsamı | ≥ %90 | %100 (399/399) | Karşılandı |
 | B5 | Ortak şema doğrulaması | Tüm çıktılar geçerli | 80 dosyanın tamamı geçerli | Karşılandı |
 | B6 | Önceki deneyin korunması | Bire bir yeniden üretim | %68,84 değişmeden yeniden üretiliyor | Karşılandı |
-| B7 | Otomatik test paketi | Tümü geçmeli | 354 test, 1 atlandı, 0 hata | Karşılandı |
+| B7 | Otomatik test paketi | Tümü geçmeli | 362 test, 1 atlandı, 0 hata | Karşılandı |
 | B8 | En az bir yöntemin önemsiz sınıflandırıcıyı anlamlı biçimde geçmesi | ≥ +5 puan | Tavily + NanoLLM: +10,0 puan | Karşılandı |
 
 B2 ölçütünün kısmen karşılanmasının nedeni ölçülmüş bir olgudur: `saat_moda_taki_ayakkabi` kategorisinde gerçek ilan başlıkları yapılandırılmış teknik özellik yayınlamadığı için hedef ürün sayısına ulaşılamamış ve kategori 39 üründe kalmıştır.
@@ -838,7 +838,7 @@ En büyük modüller: `product_scraper.py` (1.396), `langgraph_flow.py` (1.131),
 2. **Birim testleri:** yeni bileşenlerin sözleşmelerini sabitler.
 3. **Gerileme testleri:** bulunan her hata için bir tane yazılır.
 
-**Test paketinin ölçülen durumu.** Test paketi 21 dosya ve 7.400'ü aşkın satırdan oluşur. Çalıştırma sonucu: **354 test, 1 atlandı, 0 hata, 0 başarısızlık**; toplam çalışma süresi yaklaşık 1,2 saniyedir. Test paketi ağ erişimi veya API anahtarı gerektirmez; dış servisler sahte (fake) uygulamalarla değiştirilmiştir. Bu, testlerin kota tüketmeden ve internet bağlantısı olmadan çalışabilmesini sağlar.
+**Test paketinin ölçülen durumu.** Test paketi 22 dosya ve 7.000'i aşkın satırdan oluşur. Çalıştırma sonucu: **362 test, 1 atlandı, 0 hata, 0 başarısızlık**; toplam çalışma süresi yaklaşık 1,2 saniyedir. Test paketi ağ erişimi veya API anahtarı gerektirmez; dış servisler sahte (fake) uygulamalarla değiştirilmiştir. Bu, testlerin kota tüketmeden ve internet bağlantısı olmadan çalışabilmesini sağlar.
 
 **Karakterizasyon testleri.** Kategori genişletmesine başlamadan önce üç sözleşme testi dosyası yazıldı. Bu dosyalar mevcut telefon hattının davranışını kaydeder:
 
@@ -848,14 +848,16 @@ En büyük modüller: `product_scraper.py` (1.396), `langgraph_flow.py` (1.131),
 
 Bu testler sayesinde genişletmeden sonra telefon deneyinin %68,84 doğruluğunun bozulmadığı doğrulanabilir.
 
-**Testle yakalanan hatalar.** Geliştirme sırasında dört gerçek hata bulunmuş ve her biri için kilit testi eklenmiştir:
+**Testle yakalanan hatalar.** Geliştirme sırasında altı gerçek hata bulunmuş ve her biri için kilit testi eklenmiştir:
 
 1. **URL tekilleştirme uyuşmazlığı.** Dışa aktarım modülü ham URL üzerinden, metrik modülü ise normalize URL üzerinden tekilleştirme yapmaktaydı. Sondaki eğik çizgi farkı, aynı sayfanın değerlendiriciye iki kez gitmesine ve iki etiketin metrik katmanında çakışmasına yol açtı. Düzeltme: her iki taraf ortak normalizasyon fonksiyonunu kullanacak biçimde değiştirildi; uyumlu tekrarlar tek kayda indiriliyor, çelişkili tekrarlar içe aktarımı durduruyor. Bu davranış beş ayrı testle sabitlendi.
 2. **Etiketsiz yöntemin rapordan düşmesi.** Kategori bazlı metrik modülünde, sonuçlarının hiçbiri etiketlenmemiş bir yöntem rapordan tamamen kayboluyordu; bu, dört yöntemli bir karşılaştırmanın sessizce üç yöntemli hale gelmesi anlamına gelirdi. Düzeltme: böyle bir yöntem, puanlanamadığı açıkça belirtilerek raporda tutulur.
 3. **Sınırsız geri çekilme (backoff) süresi.** OpenRouter istemcisi, hız sınırı yanıtındaki `Retry-After` başlığını üst sınır olmaksızın uyguluyordu. Günlük kotası dolan bir hesapta bu başlık gece yarısını işaret edebildiği için toplu çalıştırma tek bir üründe saatlerce askıda kalıyordu; ölçülen iki vakada 29 dakika ve bir saatten fazla. Düzeltme: bekleme 60 saniyeyle sınırlandırıldı. Gerekçe ölçülebilir: günlük limit zaten anahtarı kenara ayırıp rotasyonla çözülüyor, dakikalık limit ise saniyeler içinde açılıyor, dolayısıyla uzun bekleme hiçbir şey kazandırmadan işi durduruyor. Beş test bu davranışı sabitledi.
 4. **Göreli manifest yolunun kabul edilmemesi.** Kategori raporu, manifest yolu komut satırından göreli verildiğinde çöküyordu; yalnızca mutlak varsayılan yol denenmiş olduğu için hata görünmemişti. Düzeltme: yol önce çözümleniyor.
+5. **Yüzde kodlamalı URL'lerin ayrı sayfa sayılması.** URL normalizasyonu `%3A` gibi yüzde kodlamalarını çözmediği için aynı sayfanın iki yazımı iki ayrı URL gibi görünüyordu. Hatayı, etiketleme çalışma kitabında aynı sayfayı iki kez gören değerlendirici fark etti. Düzeltme sonrası benzersiz URL sayısı 194'ten 193'e indi; hiçbir metrik değişmedi, çünkü iki yazım da aynı etiketi taşıyordu.
+6. **Üretilen raporun elde kalması.** `reports_multicategory/` altındaki Markdown raporlar üretilir ama depoya işlenir. Yüzde kodlama düzeltmesinden sonra tüm JSON metrik dosyaları yeniden hesaplandı, ancak İngilizce karşılaştırma raporu 194 değerinde kaldı ve bir commit boyunca tüm denetimlerden geçti: tutarlılık denetleyicisi Türkçe raporu ve JSON dosyalarını okuyor, üretilen İngilizce raporu okumuyordu. Düzeltme: her Markdown rapor, işlenmiş metriklerden yeniden üretilip bayt bayt karşılaştırılıyor.
 
-Dördünün ortak yanı, hiçbirinin yanlış sonuç üretmemesi, hepsinin **sessiz veri kaybına veya işin durmasına** yol açmasıdır. Bu, ölçüm altyapısının kendisinin de en az ölçülen sistem kadar test edilmesi gerektiğini gösterir.
+Altısının ortak yanı, hiçbirinin yanlış sonuç üretmemesi, hepsinin **sessiz veri kaybına veya işin durmasına** yol açmasıdır. Bu, ölçüm altyapısının kendisinin de en az ölçülen sistem kadar test edilmesi gerektiğini gösterir.
 
 **Test kapsamı örnekleri.** Etiketleme döngüsü için yazılan testler şu davranışları sabitler:
 
@@ -1124,18 +1126,20 @@ Proje iki kişilik bir ekiple yürütülmüştür: Ali Rubar Kal ve Atahan Bulut
 .\.venv\Scripts\python.exe src\evaluation\multicategory_report.py
 
 # 5b. Hata analizi: ayni sonuclari hizalanmis istemle yeniden yargila (Bolum 6.1)
-.\.venv\Scripts\python.exe src\evaluation
-erun_with_aligned_prompt.py
-.\.venv\Scripts\python.exe src\evaluationuild_manifest.py `
+.\.venv\Scripts\python.exe src\evaluation\rerun_with_aligned_prompt.py
+.\.venv\Scripts\python.exe src\evaluation\build_manifest.py `
   --results-directory results_multicategory_prompt_v2 `
-  --output data\evaluationinal_evaluation_manifest_prompt_v2.json
+  --output data\evaluation\final_evaluation_manifest_prompt_v2.json
 .\.venv\Scripts\python.exe src\evaluation\category_metrics.py `
-  --manifest data\evaluationinal_evaluation_manifest_prompt_v2.json `
+  --manifest data\evaluation\final_evaluation_manifest_prompt_v2.json `
   --output reports_multicategory\prompt_v2_category_metrics.json `
   --markdown reports_multicategory\prompt_v2_category_metrics.md
 
-# 6. Test paketini çalıştır (354 test)
+# 6. Test paketini çalıştır (362 test)
 .\.venv\Scripts\python.exe -m unittest discover -s tests -p "test*.py"
+
+# 7. Rapordaki sayilarin dosyalarla tutarliligini denetle
+.\.venv\Scripts\python.exe src\evaluation\check_consistency.py
 ```
 
 **Dondurulmuş telefon deneyinin yeniden üretilmesi.**
