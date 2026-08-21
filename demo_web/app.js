@@ -20,12 +20,15 @@ const elements = {
 };
 
 const SAFE_SEQUENCE = [
+  "taxonomy",
   "process-data",
   "quality-check",
-  "fixed-keywords",
-  "preview-keywords",
-  "validate-results",
-  "langgraph-demo",
+  "keywords",
+  "pipeline-offline",
+  "ground-truth",
+  "manifest-metrics",
+  "report",
+  "consistency",
   "tests",
 ];
 

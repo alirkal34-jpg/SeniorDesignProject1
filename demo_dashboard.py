@@ -44,117 +44,146 @@ class Step:
     prerequisites: tuple[str, ...] = ()
     live: bool = False
     optional: bool = False
+    # Extra environment for this step only. Values are set for the child
+    # process and never returned to the browser.
+    environment: tuple[tuple[str, str], ...] = ()
 
 
-TEST_MODULES = (
-    "tests.test_dataset_sources",
-    "tests.test_demo_dashboard",
-    "tests.test_evaluation_subset",
-    "tests.test_ground_truth",
-    "tests.test_keyword_generator",
-    "tests.test_metrics",
-    "tests.test_result_validator",
-    "tests.test_rule_based_evaluator",
-    "tests.test_selenium_collector",
-    "tests.test_batch_runners",
+# New runs are written here, never into results/ or reports/, which hold the
+# frozen smartphone baseline the report still reproduces.
+DEMO_RUN_DIRECTORY = "tmp/demo_sunum"
+
+# The shared free pool behind the ":free" model suffix throttles without
+# warning and takes three of the four methods down with it. Dropping the
+# suffix reaches the commercial endpoint, measured at 0.0004 USD per product.
+PAID_ENDPOINT = (
+    ("NANO_LLM_MODEL", "google/gemma-4-26b-a4b-it"),
+    ("AGENTIC_PLANNER_MODEL", "google/gemma-4-26b-a4b-it"),
 )
 
 
 STEPS: tuple[Step, ...] = (
     Step(
-        id="process-data",
+        id="taxonomy",
         number="01",
-        group="Data foundation",
-        title="Process the 100-product dataset",
+        group="Dataset",
+        title="Inspect the ten-category taxonomy",
         description=(
-            "Loads the raw CSV, validates its schema, cleans values and writes "
-            "row-level validation outputs."
+            "Prints the ten category groups, their ID ranges and the "
+            "attributes each group must supply. One reference table drives "
+            "every module, so resizing a category needs no code change."
         ),
-        commands=(("src/data_processor.py",),),
+        commands=(("src/category_taxonomy.py",),),
         artifacts=(
-            "data/processed/processed_products.csv",
-            "data/processed/processed_products.json",
-            "data/processed/validation_issues.csv",
+            "data/reference/product_categories.csv",
+            "data/reference/trusted_ecommerce_domains.csv",
         ),
-        prerequisites=("data/raw/candidate_smartphone_products_100.csv",),
+        prerequisites=("data/reference/product_categories.csv",),
+    ),
+    Step(
+        id="process-data",
+        number="02",
+        group="Dataset",
+        title="Process the 489 scraped products",
+        description=(
+            "Validates the schema, cleans values and writes row-level "
+            "validation output for the ten-category dataset collected from "
+            "Akakce."
+        ),
+        commands=(("src/data_processor.py", "--dataset", "multicategory"),),
+        artifacts=(
+            "data/processed/processed_products_multicategory.csv",
+            "data/processed/processed_products_multicategory.json",
+            "data/processed/validation_issues_multicategory.csv",
+        ),
+        prerequisites=("data/raw/candidate_products_multicategory.csv",),
     ),
     Step(
         id="quality-check",
-        number="02",
-        group="Data foundation",
-        title="Run dataset quality checks",
-        description=(
-            "Checks 100 unique IDs, duplicate variants and HTTPS source URLs "
-            "across the complete dataset."
-        ),
-        commands=(("src/quality_check.py",),),
-        prerequisites=("data/processed/processed_products.csv",),
-    ),
-    Step(
-        id="fixed-keywords",
         number="03",
-        group="Keyword layer",
-        title="Create the fixed keyword list",
+        group="Dataset",
+        title="Run the dataset quality gate",
         description=(
-            "Builds 100 deterministic keywords so every evaluation method "
-            "receives exactly the same experiment input."
-        ),
-        commands=(("src/keyword_generator.py", "--provider", "fake", "--limit", "100"),),
-        artifacts=(
-            "data/processed/generated_keywords.json",
-            "data/processed/generated_keywords.metadata.json",
-        ),
-        prerequisites=("data/processed/processed_products.json",),
-    ),
-    Step(
-        id="preview-keywords",
-        number="04",
-        group="Keyword layer",
-        title="Validate and preview keywords",
-        description=(
-            "Validates product IDs, required fields and duplicates, then "
-            "prints three representative keyword records."
-        ),
-        commands=(("src/keyword_loader.py", "--limit", "3"),),
-        artifacts=("data/processed/generated_keywords.json",),
-        prerequisites=("data/processed/generated_keywords.json",),
-    ),
-    Step(
-        id="live-keyword-smoke",
-        number="05",
-        group="Keyword layer",
-        title="OpenRouter keyword smoke test",
-        description=(
-            "Calls the configured live model for three products and saves the "
-            "output separately without changing the fixed 100-keyword file."
+            "Checks unique IDs, duplicate variants, HTTPS source URLs and "
+            "per-category counts. The gate runs at the floor the source could "
+            "fill; the report still lists every group against the taxonomy "
+            "target, so the fashion group's 39 of 50 stays visible."
         ),
         commands=(
             (
-                "src/keyword_generator.py",
-                "--provider",
-                "openrouter",
-                "--limit",
-                "3",
-                "--output",
-                "tmp/generated_keywords.live_smoke.json",
+                "src/quality_check.py",
+                "--dataset",
+                "multicategory",
+                "--min-per-category",
+                "39",
             ),
         ),
         artifacts=(
-            "tmp/generated_keywords.live_smoke.json",
-            "tmp/generated_keywords.live_smoke.metadata.json",
+            "data/raw/candidate_products_multicategory.metadata.json",
+            "data/processed/processed_products_multicategory.csv",
         ),
-        prerequisites=("data/processed/processed_products.json",),
-        live=True,
-        optional=True,
+        prerequisites=("data/processed/processed_products_multicategory.csv",),
+    ),
+    Step(
+        id="keywords",
+        number="04",
+        group="Shared experiment input",
+        title="Show the fixed keyword list and the labeled subset",
+        description=(
+            "Every method receives the same keyword for the same product. "
+            "The keyword is built from the product's variant_label, so it "
+            "works for a book and a detergent as well as a phone."
+        ),
+        commands=(
+            (
+                "src/keyword_loader.py",
+                "--input",
+                "data/processed/generated_keywords_multicategory.json",
+                "--limit",
+                "5",
+            ),
+        ),
+        artifacts=(
+            "data/processed/generated_keywords_multicategory.json",
+            "data/processed/generated_keywords_multicategory.metadata.json",
+            "data/evaluation/evaluation_subset_multicategory.csv",
+        ),
+        prerequisites=(
+            "data/processed/generated_keywords_multicategory.json",
+        ),
+    ),
+    Step(
+        id="pipeline-offline",
+        number="05",
+        group="Four-method comparison",
+        title="Run the four-method graph without the network",
+        description=(
+            "The compiled LangGraph comparison flow with deterministic "
+            "providers. No API key, no network. The printed "
+            "all_methods_used_same_keyword field is what makes the "
+            "comparison fair."
+        ),
+        commands=(
+            (
+                "src/langgraph_flow.py",
+                "--flow",
+                "comparison",
+                "--execution-mode",
+                "fake",
+            ),
+        ),
+        prerequisites=("src/langgraph_flow.py",),
     ),
     Step(
         id="live-four-methods",
         number="06",
-        group="Four-method evaluation",
-        title="Run the complete Task 1 LangGraph live",
+        group="Four-method comparison",
+        title="Run one product live through all four methods",
         description=(
-            "Loads P001, generates a real OpenRouter keyword, runs all four "
-            "live methods, ranks their results and saves the workflow evidence."
+            "Loads ELK001, generates a real keyword, runs Selenium with Bing "
+            "and Tavily, evaluates with the NanoLLM, ranks every method and "
+            "saves the evidence. Chrome opens on screen. Measured at 34 "
+            "seconds and 0.0004 USD."
         ),
         commands=(
             (
@@ -162,7 +191,9 @@ STEPS: tuple[Step, ...] = (
                 "--flow",
                 "end-to-end",
                 "--product-id",
-                "P001",
+                "ELK001",
+                "--products",
+                "data/processed/processed_products_multicategory.json",
                 "--keyword-provider",
                 "openrouter",
                 "--execution-mode",
@@ -170,91 +201,196 @@ STEPS: tuple[Step, ...] = (
                 "--max-results",
                 "5",
                 "--save",
+                "--workflow-output-directory",
+                DEMO_RUN_DIRECTORY,
             ),
         ),
         artifacts=(
-            "reports/langgraph_runs/*.json",
-            "reports/langgraph_runs/method_results/selenium_rule_based/*.json",
-            "reports/langgraph_runs/method_results/selenium_nano_llm/*.json",
-            "reports/langgraph_runs/method_results/tavily_llm/*.json",
-            "reports/langgraph_runs/method_results/agentic_search/*.json",
+            f"{DEMO_RUN_DIRECTORY}/*.json",
+            f"{DEMO_RUN_DIRECTORY}/method_results/selenium_rule_based/*.json",
+            f"{DEMO_RUN_DIRECTORY}/method_results/selenium_nano_llm/*.json",
+            f"{DEMO_RUN_DIRECTORY}/method_results/tavily_llm/*.json",
+            f"{DEMO_RUN_DIRECTORY}/method_results/agentic_search/*.json",
         ),
         prerequisites=(
-            "data/evaluation/evaluation_subset.csv",
-            "data/processed/generated_keywords.json",
+            "data/processed/processed_products_multicategory.json",
+            "data/evaluation/evaluation_subset_multicategory.csv",
         ),
         live=True,
-        optional=True,
+        environment=PAID_ENDPOINT,
     ),
     Step(
         id="validate-results",
         number="07",
-        group="Validation & orchestration",
-        title="Validate the LangGraph method JSON",
+        group="Four-method comparison",
+        title="Validate the four result files against the shared schema",
         description=(
-            "Checks shared fields, method names, live providers, result limits, "
-            "runtime, cost and relevance-score ranges."
+            "Checks the shared fields, the method names, the live provider "
+            "declaration, the result limit, runtime, cost and the "
+            "relevance-score range."
         ),
         commands=(
             (
                 "src/evaluation/result_validator.py",
-                "reports/langgraph_runs/method_results",
+                f"{DEMO_RUN_DIRECTORY}/method_results",
             ),
         ),
         artifacts=(
-            "reports/langgraph_runs/method_results/selenium_rule_based/*.json",
-            "reports/langgraph_runs/method_results/selenium_nano_llm/*.json",
-            "reports/langgraph_runs/method_results/tavily_llm/*.json",
-            "reports/langgraph_runs/method_results/agentic_search/*.json",
+            f"{DEMO_RUN_DIRECTORY}/method_results/selenium_rule_based/*.json",
+            f"{DEMO_RUN_DIRECTORY}/method_results/selenium_nano_llm/*.json",
+            f"{DEMO_RUN_DIRECTORY}/method_results/tavily_llm/*.json",
+            f"{DEMO_RUN_DIRECTORY}/method_results/agentic_search/*.json",
         ),
-        prerequisites=("reports/langgraph_runs/method_results",),
+        prerequisites=(f"{DEMO_RUN_DIRECTORY}/method_results",),
     ),
     Step(
-        id="langgraph-demo",
+        id="ground-truth",
         number="08",
-        group="Validation & orchestration",
-        title="Verify the LangGraph flow offline",
+        group="Human labels",
+        title="Rebuild the ground truth from the two review workbooks",
         description=(
-            "Repeats the graph structure with deterministic providers for "
-            "testing; this is not presented as measured live evidence."
+            "Reads both filled workbooks plus the adjudication file and "
+            "writes 193 human labels. An ambiguous answer never becomes a "
+            "label, and an adjudication record cannot overwrite what the "
+            "reviewer actually answered."
         ),
         commands=(
             (
-                "src/langgraph_flow.py",
-                "--flow",
-                "end-to-end",
-                "--product-id",
-                "P001",
-                "--keyword-provider",
-                "fake",
-                "--execution-mode",
-                "fake",
-                "--max-results",
-                "5",
+                "src/evaluation/import_label_workbook.py",
+                "--workbook",
+                "data/labels/label_review_session1.xlsx",
+                "data/labels/label_review_session2.xlsx",
+                "--adjudication",
+                "data/labels/multicategory_label_adjudications.csv",
+                "--output",
+                "data/labels/multicategory_ground_truth.csv",
             ),
         ),
-        prerequisites=("data/processed/processed_products.json",),
+        artifacts=(
+            "data/labels/multicategory_ground_truth.csv",
+            "data/labels/multicategory_label_adjudications.csv",
+        ),
+        prerequisites=(
+            "data/labels/label_review_session1.xlsx",
+            "data/labels/label_review_session2.xlsx",
+        ),
+    ),
+    Step(
+        id="manifest-metrics",
+        number="09",
+        group="Measurement",
+        title="Freeze the 80 result files and score them",
+        description=(
+            "The manifest picks the latest live run for every product and "
+            "method and refuses a hole in the grid. The metrics are then "
+            "computed from the manifest, never read back from a stored file."
+        ),
+        commands=(
+            ("src/evaluation/build_manifest.py",),
+            (
+                "src/evaluation/final_metrics.py",
+                "--manifest",
+                "data/evaluation/final_evaluation_manifest_multicategory.json",
+                "--output",
+                "reports_multicategory/multicategory_evaluation_metrics.json",
+            ),
+            ("src/evaluation/category_metrics.py",),
+        ),
+        artifacts=(
+            "data/evaluation/final_evaluation_manifest_multicategory.json",
+            "reports_multicategory/multicategory_evaluation_metrics.json",
+            "reports_multicategory/multicategory_category_metrics.json",
+            "reports_multicategory/multicategory_category_metrics.md",
+        ),
+        prerequisites=(
+            "data/labels/multicategory_ground_truth.csv",
+            "results_multicategory",
+        ),
+    ),
+    Step(
+        id="report",
+        number="10",
+        group="Measurement",
+        title="Render the comparison report",
+        description=(
+            "Turns both metrics files into the Markdown the thesis quotes. "
+            "It refuses to render on partial label coverage, and it compares "
+            "every method against the trivial always-relevant classifier."
+        ),
+        commands=(("src/evaluation/multicategory_report.py",),),
+        artifacts=(
+            "reports_multicategory/multicategory_evaluation_report.md",
+            "reports_multicategory/multicategory_evaluation_metrics.json",
+        ),
+        prerequisites=(
+            "reports_multicategory/multicategory_evaluation_metrics.json",
+            "reports_multicategory/multicategory_category_metrics.json",
+        ),
+    ),
+    Step(
+        id="aligned-prompt",
+        number="11",
+        group="Error analysis",
+        title="Re-judge the same results with the label-aligned prompt",
+        description=(
+            "The evaluator prompt counted a category page as relevant; the "
+            "rule handed to the reviewers did not. This re-runs only the "
+            "evaluator over the stored results, so no new search happens and "
+            "every human label stays valid. Already-written products are "
+            "skipped, so a completed run costs nothing."
+        ),
+        commands=(("src/evaluation/rerun_with_aligned_prompt.py",),),
+        artifacts=(
+            "reports_multicategory/prompt_v2_category_metrics.md",
+            "reports_multicategory/prompt_v2_evaluation_metrics.json",
+            "reports_multicategory/prompt_v2_category_metrics.json",
+        ),
+        prerequisites=(
+            "data/evaluation/final_evaluation_manifest_multicategory.json",
+        ),
+        live=True,
+        environment=PAID_ENDPOINT,
+    ),
+    Step(
+        id="consistency",
+        number="12",
+        group="Error analysis",
+        title="Audit every number in the chain",
+        description=(
+            "Walks the whole chain in one command: ground truth, result "
+            "files, label coverage, metric consistency, the unchanged "
+            "control group, every figure quoted in the report, the frozen "
+            "phone experiment, and whether each report re-renders unchanged."
+        ),
+        commands=(("src/evaluation/check_consistency.py",),),
+        artifacts=(
+            "reports_multicategory/multicategory_category_metrics.md",
+            "reports_multicategory/prompt_v2_category_metrics.md",
+        ),
+        prerequisites=("data/labels/multicategory_ground_truth.csv",),
     ),
     Step(
         id="tests",
-        number="09",
-        group="Validation & orchestration",
-        title="Run the clean-demo test suite",
+        number="13",
+        group="Error analysis",
+        title="Run the whole test suite",
         description=(
-            "Runs the unit and integration tests that do not depend on the "
-            "historical frozen evaluation files."
+            "Every test runs without network access or an API key; external "
+            "services are replaced by deterministic fakes. Four real bugs "
+            "were caught this way and each one has a locking test."
         ),
-        commands=(("-m", "unittest", *TEST_MODULES, "-v"),),
+        commands=(("-m", "unittest", "discover", "-s", "tests", "-p", "test*.py"),),
         prerequisites=("tests",),
     ),
     Step(
-        id="final-report",
-        number="10",
-        group="Frozen evaluation",
-        title="Recalculate the final comparison",
+        id="frozen-phone",
+        number="14",
+        group="Frozen baseline",
+        title="Reproduce the earlier smartphone experiment",
         description=(
-            "Uses the frozen 10-product manifest and human ground truth to "
-            "rebuild the 40-run metrics and readable report."
+            "The first experiment covered smartphones only. It is still "
+            "reproducible byte for byte after the ten-category revision, "
+            "which is what makes the two comparable as separate results."
         ),
         commands=(
             ("src/evaluation/final_metrics.py",),
@@ -271,6 +407,8 @@ STEPS: tuple[Step, ...] = (
         optional=True,
     ),
 )
+
+
 STEP_BY_ID = {step.id: step for step in STEPS}
 
 
@@ -322,7 +460,11 @@ def _count_json_records(path: Path) -> int | None:
 
 
 def build_dashboard_snapshot() -> dict[str, Any]:
-    metrics_path = PROJECT_ROOT / "reports" / "final_evaluation_metrics.json"
+    metrics_path = (
+        PROJECT_ROOT
+        / "reports_multicategory"
+        / "multicategory_evaluation_metrics.json"
+    )
     metrics: dict[str, Any] = {}
     if metrics_path.is_file():
         try:
@@ -331,13 +473,19 @@ def build_dashboard_snapshot() -> dict[str, Any]:
             metrics = {}
 
     raw_count = _count_csv_rows(
-        PROJECT_ROOT / "data" / "raw" / "candidate_smartphone_products_100.csv"
+        PROJECT_ROOT / "data" / "raw" / "candidate_products_multicategory.csv"
     )
     keyword_count = _count_json_records(
-        PROJECT_ROOT / "data" / "processed" / "generated_keywords.json"
+        PROJECT_ROOT
+        / "data"
+        / "processed"
+        / "generated_keywords_multicategory.json"
     )
     subset_count = _count_csv_rows(
-        PROJECT_ROOT / "data" / "evaluation" / "evaluation_subset.csv"
+        PROJECT_ROOT
+        / "data"
+        / "evaluation"
+        / "evaluation_subset_multicategory.csv"
     )
 
     steps = []
@@ -450,6 +598,7 @@ class JobManager:
                 self._append_log(job_id, f"$ {_display_command(arguments)}\n\n")
                 environment = os.environ.copy()
                 environment["PYTHONUTF8"] = "1"
+                environment.update(dict(step.environment))
                 process = subprocess.Popen(
                     [sys.executable, *arguments],
                     cwd=PROJECT_ROOT,
