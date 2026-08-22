@@ -162,8 +162,9 @@ Girdi: **2. adımın yazdığı** `tmp/canli/processed_products_multicategory.js
 kuruluyor, o yüzden telefonda da mamada da bisküvide de çalışıyor. Metadata
 dosyası hangi üretecin kullanıldığını kaydediyor."
 
-Aynı 15 ürünü canlı dil modeliyle de üretip yan yana koy — bu, raporun
-**Tablo 3a** bulgusunu canlı tekrar eder:
+İlk 5 ürünü bir de canlı dil modeliyle üretip yan yana koy — bu, raporun
+**Tablo 3a** bulgusunu canlı tekrar eder. 5 ürün 2 istek eder, yaklaşık 8
+saniye:
 
 ```powershell
 .\.venv\Scripts\python.exe src\keyword_generator.py --input tmp\canli\processed_products_multicategory.json --limit 5 --output tmp\canli\keywords_live.json --provider openrouter
@@ -217,7 +218,9 @@ sırasında değil, öncesinde koşulur. Aynı komutu sonra tekrar verirsen
 `--skip-existing` biteni atlar ve ekranda saniyeler içinde döner:
 
 ```powershell
-.\.venv\Scripts\python.exe srcun_evaluation_batch.py --subset tmp\canli\processed_products_multicategory.json --keywords tmp\canli\keywords.json --execution-mode live --limit 15 --allow-live-batch --max-results 5 --save --results-directory tmp\canliesults --skip-existing
+.\.venv\Scripts\python.exe src
+un_evaluation_batch.py --subset tmp\canli\processed_products_multicategory.json --keywords tmp\canli\keywords.json --execution-mode live --limit 15 --allow-live-batch --max-results 5 --save --results-directory tmp\canli
+esults --skip-existing
 ```
 
 Üretilen dosyaları yöntem yöntem aç:
