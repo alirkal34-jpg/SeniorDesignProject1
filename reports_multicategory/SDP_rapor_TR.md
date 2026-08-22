@@ -586,8 +586,9 @@ Sistem üç katmandan oluşur.
 
 Diyagram üç katmanı yukarıdan aşağıya gösterir. **Veri katmanında** kategori taksonomisi kazıyıcıyı yönlendirir; kazıyıcı Akakçe'den 489 ürün toplar; veri işleme ve kalite kontrolü bu ürünleri temizler; anahtar kelime üreteci her ürün için bir sorgu yazar. **Değerlendirme katmanında** toplu koşum sürücüsü dört yöntemi aynı anahtar kelimeyle çalıştırır; raporda kullanılan 80 koşum bu yoldan üretilmiştir. Aynı dört yöntem, LangGraph çizgesi üzerinden de çalıştırılabilir (Şekil 1). Her yöntemin kendi arama kaynağı ve kendi karar vericisi vardır, ama hepsi çıktısını ortak JSON şemasına yazar ve doğrulamadan geçer. **Ölçüm katmanında** benzersiz URL'ler Excel'e aktarılır, elle etiketlenir, hakem dosyasıyla birlikte temel doğruluğa dönüşür; manifest hangi sonuç dosyalarının rapora gireceğini dondurur; metrikler ve rapor bu dondurulmuş kümeden üretilir.
 
-> Çizim: `reports_multicategory/figures/sekil5_sistem_mimarisi.svg`
-> (üreteci: `reports_multicategory/figures/make_sekil5.py`)
+> Çizim (İngilizce, rapora girecek olan): `reports_multicategory/figures/figure5_system_architecture_EN.svg`
+> Türkçe sürüm: `reports_multicategory/figures/sekil5_sistem_mimarisi_TR.svg`
+> Üreteci: `reports_multicategory/figures/make_figure5.py`
 
 Mimarinin iki tasarım ilkesi vardır. Birincisi, **ortak şema**: dört yöntem birbirinden tamamen bağımsız çalışsa da hepsi aynı JSON şemasına yazmak zorundadır; bu, metrik katmanının yöntemden habersiz kalmasını sağlar. İkincisi, **dondurulmuş manifest**: bir rapor, hangi sonuç dosyalarından hesaplandığını açıkça listeleyen bir manifest üzerinden üretilir; hattın yeniden çalıştırılması yeni dosyalar üretse bile rapor hesaplandığı koşuma bağlı kalır.
 
