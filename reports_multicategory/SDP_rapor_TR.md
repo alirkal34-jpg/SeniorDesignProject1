@@ -682,29 +682,9 @@ Bu alt çizgede dört düğüm vardır: `plan` → `search` → `evaluate` → `
 
 Diyagram altı katılımcı arasındaki mesaj sırasını gösterir. Araştırmacı dışa aktarım aracını çağırır; araç, model tahminleri gizlenmiş bir Excel dosyası üretir. Değerlendirici 193 URL'yi elle etiketler. Araştırmacı içe aktarım aracını çağırır; araç, doldurulmuş kitabı ve hakem dosyasını okuyarak 193 kayıtlık temel doğruluğu yazar. Sonra manifest üreteci 80 sonuç dosyasını dondurur ve ürün/yöntem ızgarasında delik olmadığını denetler. Son olarak metrik araçları genel ve kategori bazlı raporları üretir.
 
-```
-Araştırmacı   export_label   Değerlendirici   import_label   build_manifest   metrics
-     │         _workbook          │            _workbook          │             │
-     │──dışa aktar──▶│            │                │              │             │
-     │               │─xlsx üret─▶│                │              │             │
-     │               │ (tahminler │                │              │             │
-     │               │  gizli)    │                │              │             │
-     │               │            │──etiketle──────│              │             │
-     │               │            │  (193 URL)     │              │             │
-     │───────────────────────────────içe aktar────▶│              │             │
-     │                             │               │              │             │
-     │                        hakem dosyası───────▶│              │             │
-     │                        (5 belirsiz satır)   │              │             │
-     │                                             │─ground truth│             │
-     │                                             │  (193 kayıt) │             │
-     │──manifest üret──────────────────────────────────────────▶ │             │
-     │                                             │  (80 dosya,  │             │
-     │                                             │   ızgara     │             │
-     │                                             │   denetimi)  │             │
-     │──metrik hesapla──────────────────────────────────────────────────────▶ │
-     │                                                            │  genel +    │
-     │◀──────────────────────────────────────────── rapor ────────│  kategori   │
-```
+> Çizim (İngilizce, rapora girecek olan): `reports_multicategory/figures/figure6_labeling_sequence_EN.svg`
+> Türkçe sürüm: `reports_multicategory/figures/sekil6_etiketleme_dizisi_TR.svg`
+> Üreteci: `reports_multicategory/figures/make_figure6.py`
 
 ---
 
