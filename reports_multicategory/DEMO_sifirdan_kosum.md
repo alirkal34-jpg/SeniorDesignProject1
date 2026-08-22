@@ -166,7 +166,7 @@ Aynı 15 ürünü canlı dil modeliyle de üretip yan yana koy — bu, raporun
 **Tablo 3a** bulgusunu canlı tekrar eder:
 
 ```powershell
-.\.venv\Scripts\python.exe src\keyword_generator.py --input tmp\canli\processed_products_multicategory.json --limit 15 --output tmp\canli\keywords_live.json --provider openrouter
+.\.venv\Scripts\python.exe src\keyword_generator.py --input tmp\canli\processed_products_multicategory.json --limit 5 --output tmp\canli\keywords_live.json --provider openrouter
 ```
 
 ```powershell
@@ -188,14 +188,14 @@ kelimeler. Ara dönüşüm yok; `--subset` hangi ürünlerin koşulacağını s�
 dosyayı alıyor ve bu dosya CSV de olabilir JSON da.
 
 ```powershell
-.\.venv\Scripts\python.exe src\run_evaluation_batch.py --subset tmp\canli\processed_products_multicategory.json --keywords tmp\canli\keywords.json --execution-mode live --limit 15 --allow-live-batch --max-results 5 --save --results-directory tmp\canli\results --skip-existing
+.\.venv\Scripts\python.exe src\run_evaluation_batch.py --subset tmp\canli\processed_products_multicategory.json --keywords tmp\canli\keywords.json --execution-mode live --limit 3 --max-results 5 --save --results-directory tmp\canli\results --skip-existing
 ```
 
 **Ekranda ne olur:** Chrome tekrar tekrar açılıp Bing'de arama yapıyor.
 `--skip-existing` sayesinde koşum bölünebilir; yarıda kalırsa aynı komut
 kaldığı yerden devam eder, biten işe kota harcamaz.
 
-**Ölçülen (15 ürün × 4 yöntem = 60 koşum, 0 hata):**
+**Ölçülen (15 ürünün tamamı koşulduğunda: 60 koşum, 0 hata):**
 
 | Yöntem | Koşum | Ortalama süre | Toplam |
 |---|---:|---:|---:|
@@ -209,11 +209,16 @@ kaldığı yerden devam eder, biten işe kota harcamaz.
 **0,00615 USD**. Üç koşum beşten az sonuç döndürdü — arama o kadarını
 bulmuş; hat bunu hata saymıyor, dosyaya kaç sonuç geldiyse onu yazıyor.
 
-**Süre kısıtlıysa** — 12,7 dakika sunumda uzun. `--limit 3` ile üç ürün koş:
-ölçülen **113 saniye**, `--allow-live-batch` gerekmez. Canlı toplu koşum üç
-ürünle sınırlı; daha fazlası açık onay istiyor. 15 ürünü sunumdan önce koşup
-`--skip-existing` ile ekranda saniyeler içinde tekrarlatmak da bir seçenek:
-biten iş atlanır, dosyalar zaten yerindedir.
+Yukarıdaki komut üç ürün koşar: ölçülen **113 saniye**, 12 dosya. Canlı toplu
+koşum üç ürüne kadar serbesttir, o yüzden onay bayrağı gerekmez.
+
+**Vaktin varsa 15 ürünün tamamı** — ölçülen 12,7 dakika, bu yüzden sunum
+sırasında değil, öncesinde koşulur. Aynı komutu sonra tekrar verirsen
+`--skip-existing` biteni atlar ve ekranda saniyeler içinde döner:
+
+```powershell
+.\.venv\Scripts\python.exe srcun_evaluation_batch.py --subset tmp\canli\processed_products_multicategory.json --keywords tmp\canli\keywords.json --execution-mode live --limit 15 --allow-live-batch --max-results 5 --save --results-directory tmp\canliesults --skip-existing
+```
 
 Üretilen dosyaları yöntem yöntem aç:
 
