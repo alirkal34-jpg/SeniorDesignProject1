@@ -356,3 +356,72 @@ class EvaluationSubsetSelectionByIdTests(unittest.TestCase):
                 execution_mode="live",
                 product_ids=["ELK001", "PET001", "SPM001", "KMH001"],
             )
+
+
+class SubsetFileFormatTests(unittest.TestCase):
+    """Locking that a run can be pointed at either file that names products.
+
+    The curated evaluation subset is a CSV; the processor writes JSON. Both
+    already state which products exist, so requiring one to be converted into
+    the other adds a hand-written step between two pipeline stages, and a
+    hand-written step is where a demonstration stops matching the pipeline.
+    """
+
+    IDS = ["ELK001", "PET001", "SPM001"]
+
+    def setUp(self) -> None:
+        self._temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self._temporary.cleanup)
+        self.directory = Path(self._temporary.name)
+
+        self.csv_subset = self.directory / "subset.csv"
+        self.csv_subset.write_text(
+            "product_id\n" + "\n".join(self.IDS) + "\n", encoding="utf-8"
+        )
+
+        self.json_subset = self.directory / "products.json"
+        self.json_subset.write_text(
+            json.dumps(
+                [
+                    {"product_id": product_id, "product_name": f"Urun {product_id}"}
+                    for product_id in self.IDS
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        self.keywords = self.directory / "keywords.json"
+        self.keywords.write_text(
+            json.dumps(
+                [
+                    {"product_id": product_id, "keyword": f"{product_id} fiyat"}
+                    for product_id in self.IDS
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+    def test_json_and_csv_name_the_same_products(self) -> None:
+        from_csv = load_evaluation_keywords(
+            subset_file=self.csv_subset, keywords_file=self.keywords
+        )
+        from_json = load_evaluation_keywords(
+            subset_file=self.json_subset, keywords_file=self.keywords
+        )
+        self.assertEqual(from_csv, from_json)
+
+    def test_json_keeps_the_file_order(self) -> None:
+        records = load_evaluation_keywords(
+            subset_file=self.json_subset, keywords_file=self.keywords, limit=2
+        )
+        self.assertEqual(
+            [record["product_id"] for record in records], ["ELK001", "PET001"]
+        )
+
+    def test_a_json_file_that_is_not_a_product_list_is_refused(self) -> None:
+        broken = self.directory / "broken.json"
+        broken.write_text(json.dumps({"product_id": "ELK001"}), encoding="utf-8")
+        with self.assertRaises(ValueError):
+            load_evaluation_keywords(
+                subset_file=broken, keywords_file=self.keywords
+            )

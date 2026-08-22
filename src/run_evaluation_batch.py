@@ -40,18 +40,42 @@ METHODS = (
 )
 
 
+def read_product_ids(path: Path) -> list[str]:
+    """Read the product IDs a run should cover, from CSV or JSON.
+
+    The only thing this file decides is which products to run. The curated
+    evaluation subset is a CSV; the processor writes JSON. Accepting both
+    means a run can be pointed straight at whichever file already names the
+    products, instead of converting one into the other first.
+    """
+
+    if path.suffix.lower() == ".json":
+        records = json.loads(path.read_text(encoding="utf-8"))
+
+        if not isinstance(records, list):
+            raise ValueError(f"Expected a list of products in {path}")
+
+        return [
+            str(record["product_id"]).strip()
+            for record in records
+            if str(record.get("product_id", "")).strip()
+        ]
+
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        return [
+            row["product_id"].strip()
+            for row in csv.DictReader(handle)
+            if row.get("product_id", "").strip()
+        ]
+
+
 def load_evaluation_keywords(
     subset_file: Path = DEFAULT_SUBSET_FILE,
     keywords_file: Path = DEFAULT_KEYWORDS_FILE,
     limit: int | None = None,
     product_ids: Sequence[str] | None = None,
 ) -> list[dict[str, str]]:
-    with subset_file.open(encoding="utf-8-sig", newline="") as handle:
-        subset_ids = [
-            row["product_id"].strip()
-            for row in csv.DictReader(handle)
-            if row.get("product_id", "").strip()
-        ]
+    subset_ids = read_product_ids(subset_file)
 
     # A limit always takes the head of the subset, and the head of this subset
     # is two phones. Naming the products is how a short run can cover several

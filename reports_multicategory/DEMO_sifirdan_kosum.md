@@ -183,18 +183,12 @@ korunum %100'e karşı %92,2."
 
 ## 5. Dört yöntem — URL toplama ve uygunluk yargısı
 
-Girdi: **4. adımın yazdığı** `tmp/canli/keywords.json`
-
-Önce ürün listesini yöntemlere verilecek biçime çevir:
-
-```powershell
-.\.venv\Scripts\python.exe -c "import csv,json;p=json.load(open('tmp/canli/processed_products_multicategory.json',encoding='utf-8'));f=['product_id','product_name','brand','category','category_group'];w=csv.DictWriter(open('tmp/canli/subset.csv','w',encoding='utf-8',newline=''),fieldnames=f);w.writeheader();[w.writerow({k:r[k] for k in f}) for r in p];print(len(p),'satir')"
-```
-
-Sonra dört yöntemi çalıştır:
+Girdi: **2. adımın yazdığı** ürün listesi ve **4. adımın yazdığı** anahtar
+kelimeler. Ara dönüşüm yok; `--subset` hangi ürünlerin koşulacağını söyleyen
+dosyayı alıyor ve bu dosya CSV de olabilir JSON da.
 
 ```powershell
-.\.venv\Scripts\python.exe src\run_evaluation_batch.py --subset tmp\canli\subset.csv --keywords tmp\canli\keywords.json --execution-mode live --limit 15 --allow-live-batch --max-results 5 --save --results-directory tmp\canli\results --skip-existing
+.\.venv\Scripts\python.exe src\run_evaluation_batch.py --subset tmp\canli\processed_products_multicategory.json --keywords tmp\canli\keywords.json --execution-mode live --limit 15 --allow-live-batch --max-results 5 --save --results-directory tmp\canli\results --skip-existing
 ```
 
 **Ekranda ne olur:** Chrome tekrar tekrar açılıp Bing'de arama yapıyor.
@@ -286,7 +280,7 @@ Bu, demoyu raporun ana bulgusuna bağlayan köprü: taze veri, aynı davranış.
 Sıradaki adım insan etiketlemesi. Çalışma kitabını üretebiliriz:
 
 ```powershell
-.\.venv\Scripts\python.exe src\evaluation\export_label_workbook.py tmp\canli\results --subset tmp\canli\subset.csv --output tmp\canli\label_workbook.xlsx
+.\.venv\Scripts\python.exe src\evaluation\export_label_workbook.py tmp\canli\results --subset tmp\canli\processed_products_multicategory.json --output tmp\canli\label_workbook.xlsx
 ```
 
 Excel'de aç ve göster.
@@ -326,5 +320,5 @@ git status
 | 2 | `data_processor.py` | 1'in çıktısı | `processed_products_multicategory.csv` / `.json` / `validation_issues_*.csv` |
 | 3 | `quality_check.py` | 2'nin çıktısı | — (rapor, ekrana) |
 | 4 | `keyword_generator.py` | 2'nin çıktısı | `keywords.json` + `keywords.metadata.json` |
-| 5 | `run_evaluation_batch.py` | 4'ün çıktısı | `results/<yontem>/*.json` |
+| 5 | `run_evaluation_batch.py` | 2'nin ve 4'ün çıktısı | `results/<yontem>/*.json` |
 | 6 | `export_label_workbook.py` | 5'in çıktısı | `label_workbook.xlsx` |

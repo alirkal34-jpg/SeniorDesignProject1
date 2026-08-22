@@ -87,16 +87,31 @@ def load_category_groups_by_product(
     if subset_file is None or not subset_file.exists():
         return {}
 
-    with subset_file.open(
-        mode="r",
-        encoding="utf-8-sig",
-        newline="",
-    ) as stream:
-        return {
-            row["product_id"].strip(): (row.get("category_group") or "").strip()
-            for row in csv.DictReader(stream)
-            if row.get("product_id", "").strip()
-        }
+    # The curated subset is a CSV; the processor writes JSON. Both already
+    # carry product_id and category_group, so a review workbook can be built
+    # from whichever file the run in question produced.
+    if subset_file.suffix.lower() == ".json":
+        records = json.loads(subset_file.read_text(encoding="utf-8"))
+
+        if not isinstance(records, list):
+            raise GroundTruthError(
+                f"Expected a list of products in {subset_file}"
+            )
+
+        rows: list[dict] = records
+    else:
+        with subset_file.open(
+            mode="r",
+            encoding="utf-8-sig",
+            newline="",
+        ) as stream:
+            rows = list(csv.DictReader(stream))
+
+    return {
+        str(row["product_id"]).strip(): str(row.get("category_group") or "").strip()
+        for row in rows
+        if str(row.get("product_id", "")).strip()
+    }
 
 
 def review_url_key(url: str) -> str:
