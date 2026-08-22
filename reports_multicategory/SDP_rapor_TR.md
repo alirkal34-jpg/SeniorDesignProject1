@@ -584,83 +584,10 @@ Sistem üç katmandan oluşur.
 
 **Şekil 5.** Veri akışı ve bileşen diyagramı.
 
-Diyagram üç katmanı yukarıdan aşağıya gösterir. **Veri katmanında** kategori taksonomisi kazıyıcıyı yönlendirir; kazıyıcı Akakçe'den 489 ürün toplar; veri işleme ve kalite kontrolü bu ürünleri temizler; anahtar kelime üreteci her ürün için bir sorgu yazar. **Değerlendirme katmanında** LangGraph çizgesi dört yöntemi sırayla çalıştırır. Her yöntemin kendi arama kaynağı ve kendi karar vericisi vardır, ama hepsi çıktısını ortak JSON şemasına yazar ve doğrulamadan geçer. **Ölçüm katmanında** benzersiz URL'ler Excel'e aktarılır, elle etiketlenir, hakem dosyasıyla birlikte temel doğruluğa dönüşür; manifest hangi sonuç dosyalarının rapora gireceğini dondurur; metrikler ve rapor bu dondurulmuş kümeden üretilir.
+Diyagram üç katmanı yukarıdan aşağıya gösterir. **Veri katmanında** kategori taksonomisi kazıyıcıyı yönlendirir; kazıyıcı Akakçe'den 489 ürün toplar; veri işleme ve kalite kontrolü bu ürünleri temizler; anahtar kelime üreteci her ürün için bir sorgu yazar. **Değerlendirme katmanında** toplu koşum sürücüsü dört yöntemi aynı anahtar kelimeyle çalıştırır; raporda kullanılan 80 koşum bu yoldan üretilmiştir. Aynı dört yöntem, LangGraph çizgesi üzerinden de çalıştırılabilir (Şekil 1). Her yöntemin kendi arama kaynağı ve kendi karar vericisi vardır, ama hepsi çıktısını ortak JSON şemasına yazar ve doğrulamadan geçer. **Ölçüm katmanında** benzersiz URL'ler Excel'e aktarılır, elle etiketlenir, hakem dosyasıyla birlikte temel doğruluğa dönüşür; manifest hangi sonuç dosyalarının rapora gireceğini dondurur; metrikler ve rapor bu dondurulmuş kümeden üretilir.
 
-```
-┌───────────────────────────── VERİ KATMANI ──────────────────────────────┐
-│                                                                          │
-│  product_categories.csv ──▶ category_taxonomy.py                         │
-│         (10 kategori)              │                                     │
-│                                    ▼                                     │
-│  Akakçe ──▶ product_scraper.py ──▶ candidate_products_multicategory.csv  │
-│  (489 ürün)     (BS4 + Selenium)        + .metadata.json (scraped)       │
-│                                    │                                     │
-│  product_catalog.py ──────────────▶ .synthetic.csv (çevrimdışı yedek)    │
-│                                    │                                     │
-│                                    ▼                                     │
-│                          data_processor.py + quality_check.py            │
-│                          (profil tabanlı temizleme ve doğrulama)         │
-│                                    │                                     │
-│                                    ▼                                     │
-│                    processed_products_multicategory.json (489)           │
-│                                    │                                     │
-│                                    ▼                                     │
-│                          keyword_generator.py                            │
-│                                    │                                     │
-│                                    ▼                                     │
-│                  generated_keywords_multicategory.json (489)             │
-└──────────────────────────────────┬───────────────────────────────────────┘
-                                   │
-┌──────────────────────── DEĞERLENDİRME KATMANI ──────────────────────────┐
-│                                   ▼                                      │
-│                            langgraph_flow.py                             │
-│                    (uçtan uca çizge — bkz. Şekil 1)                      │
-│         ┌──────────┬──────────────┼──────────────┬──────────┐            │
-│         ▼          ▼              ▼              ▼          │            │
-│  selenium_    selenium_      tavily_llm    agentic_search    │            │
-│  rule_based   nano_llm                                       │            │
-│      │            │              │              │            │            │
-│  rule_based_  nano_llm_     tavily_client  agentic_search    │            │
-│  evaluator    evaluator          .py           .py           │            │
-│      │            │              │              │            │            │
-│  trusted_     OpenRouter     Tavily API    OpenRouter        │            │
-│  domains.csv  (NanoLLM)                    (planlayıcı)      │            │
-│      └────────────┴──────────────┴──────────────┘            │            │
-│                          │                                   │            │
-│                          ▼                                   │            │
-│              results_multicategory/<yöntem>/*.json (80)      │            │
-│                          │                                   │            │
-│                          ▼                                   │            │
-│                   result_validator.py (ortak şema)           │            │
-└──────────────────────────┬───────────────────────────────────────────────┘
-                           │
-┌──────────────────── ÖLÇÜM VE RAPORLAMA KATMANI ─────────────────────────┐
-│                          ▼                                               │
-│  export_label_workbook.py ──▶ label_review_session1.xlsx (134 URL)       │
-│     (tahminler gizli)     ──▶ label_review_session2.xlsx (61 URL)        │
-│                                        │                                 │
-│                                   [İnsan etiketleme]                     │
-│                                        ▼                                 │
-│  multicategory_label_adjudications.csv ──▶ import_label_workbook.py      │
-│              (5 hakem kararı)                      │                     │
-│                                                    ▼                     │
-│                               multicategory_ground_truth.csv (193)       │
-│                                                    │                     │
-│  build_manifest.py ──▶ final_evaluation_manifest_multicategory.json      │
-│                                (80 dosya donduruldu)                     │
-│                                                    │                     │
-│                          ┌─────────────────────────┴──────────┐          │
-│                          ▼                                    ▼          │
-│                  final_metrics.py                    category_metrics.py │
-│                          │                                    │          │
-│                          └─────────────┬──────────────────────┘          │
-│                                        ▼                                 │
-│                            multicategory_report.py                       │
-│                                        │                                 │
-│                                        ▼                                 │
-│                     multicategory_evaluation_report.md                   │
-└──────────────────────────────────────────────────────────────────────────┘
-```
+> Çizim: `reports_multicategory/figures/sekil5_sistem_mimarisi.svg`
+> (üreteci: `reports_multicategory/figures/make_sekil5.py`)
 
 Mimarinin iki tasarım ilkesi vardır. Birincisi, **ortak şema**: dört yöntem birbirinden tamamen bağımsız çalışsa da hepsi aynı JSON şemasına yazmak zorundadır; bu, metrik katmanının yöntemden habersiz kalmasını sağlar. İkincisi, **dondurulmuş manifest**: bir rapor, hangi sonuç dosyalarından hesaplandığını açıkça listeleyen bir manifest üzerinden üretilir; hattın yeniden çalıştırılması yeni dosyalar üretse bile rapor hesaplandığı koşuma bağlı kalır.
 
