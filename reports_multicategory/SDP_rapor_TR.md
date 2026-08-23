@@ -257,16 +257,16 @@ Fikri mülkiyet açısından, toplanan veri özgün ifade değil olgusal ürün 
 
 | No | Görev | Sorumlu | H1 | H2 | H3 | H4 | H5 | H6 | H7 |
 |---|---|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| 1 | Problem tanımı ve araştırma sorusu | Öğrenci 1, Öğrenci 2 | ■ | | | | | | |
-| 2 | Literatür taraması ve arama stratejisi | Öğrenci 1, Öğrenci 2 | ■ | ■ | | | | | |
-| 3 | Ürün veri kümesi, nitelik şeması ve normalizasyon | Öğrenci 1, Öğrenci 2 | | ■ | ■ | | | | |
-| 4 | Kural tabanlı değerlendirme ve kalite kapısı | Öğrenci 1 | | | ■ | ■ | | | |
-| 5 | Anahtar kelime üretimi ve uygunluk yargısı modülleri | Öğrenci 2 | | | ■ | ■ | | | |
-| 6 | Arama entegrasyonları (Selenium/Bing, Tavily, etmen) | Öğrenci 2 | | | ■ | ■ | | | |
-| 7 | LangGraph orkestrasyonu ve uçtan uca hat | Öğrenci 1, Öğrenci 2 | | | | ■ | ■ | | |
-| 8 | İlk değerlendirme ve insan etiketleme (10 ürün) | Öğrenci 1, Öğrenci 2 | | | | ■ | ■ | | |
-| 9 | On kategoriye genişletme: kazıma, koşumlar, etiketleme | Öğrenci 1, Öğrenci 2 | | | | | ■ | ■ | |
-| 10 | Hata analizi, rapor, şekiller ve sunum | Öğrenci 1, Öğrenci 2 | | | | | | ■ | ■ |
+| 1 | Problem tanımı ve araştırma sorusu | Ali Rubar Kal, Atahan Bulut | ■ | | | | | | |
+| 2 | Literatür taraması ve arama stratejisi | Ali Rubar Kal, Atahan Bulut | ■ | ■ | | | | | |
+| 3 | Ürün veri kümesi, nitelik şeması ve normalizasyon | Ali Rubar Kal, Atahan Bulut | | ■ | ■ | | | | |
+| 4 | Kural tabanlı değerlendirme ve kalite kapısı | Ali Rubar Kal | | | ■ | ■ | | | |
+| 5 | Anahtar kelime üretimi ve uygunluk yargısı modülleri | Atahan Bulut | | | ■ | ■ | | | |
+| 6 | Arama entegrasyonları (Selenium/Bing, Tavily, etmen) | Atahan Bulut | | | ■ | ■ | | | |
+| 7 | LangGraph orkestrasyonu ve uçtan uca hat | Ali Rubar Kal, Atahan Bulut | | | | ■ | ■ | | |
+| 8 | İlk değerlendirme ve insan etiketleme (10 ürün) | Ali Rubar Kal, Atahan Bulut | | | | ■ | ■ | | |
+| 9 | On kategoriye genişletme: kazıma, koşumlar, etiketleme | Ali Rubar Kal, Atahan Bulut | | | | | ■ | ■ | |
+| 10 | Hata analizi, rapor, şekiller ve sunum | Ali Rubar Kal, Atahan Bulut | | | | | | ■ | ■ |
 
 Haftaların takvim karşılıkları: H1 09.07–15.07, H2 16.07–22.07, H3 23.07–29.07, H4 30.07–05.08, H5 06.08–12.08, H6 13.08–19.08, H7 20.08–23.08.
 

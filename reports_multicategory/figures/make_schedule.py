@@ -84,9 +84,9 @@ TEXT: dict[str, dict[str, str]] = {
     "task": {"en": "Task", "tr": "Görev"},
     "owner": {"en": "Responsible", "tr": "Sorumlu"},
     "weeks": {"en": "Weeks", "tr": "Haftalar"},
-    "ali": {"en": "Student 1", "tr": "Öğrenci 1"},
-    "atahan": {"en": "Student 2", "tr": "Öğrenci 2"},
-    "both": {"en": "Student 1\nStudent 2", "tr": "Öğrenci 1\nÖğrenci 2"},
+    "ali": {"en": "Ali Rubar Kal", "tr": "Ali Rubar Kal"},
+    "atahan": {"en": "Atahan Bulut", "tr": "Atahan Bulut"},
+    "both": {"en": "Ali Rubar Kal\nAtahan Bulut", "tr": "Ali Rubar Kal\nAtahan Bulut"},
     "t1": {
         "en": "Problem definition and research question",
         "tr": "Problem tanımı ve araştırma sorusu",
