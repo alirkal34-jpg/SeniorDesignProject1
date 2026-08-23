@@ -101,7 +101,7 @@ REFERENCES
 ## LIST OF TABLES
 
 - Tablo 1. Uygunluk değerlendirmesinde kullanılan yöntem ailelerinin yıllara göre gelişimi ve bu projede karşılık gelen yöntem
-- Tablo 2. Önergedeki plan ile gerçekleşen iş kırılımı
+- Tablo 2. Projenin haftalık iş kırılımı ve çalışma takvimi
 - Tablo 3. Kategori taksonomisi ve toplanan ürün sayıları
 - Tablo 3a. Canlı modelin düşürdüğü ayırt edici nitelikler
 - Tablo 4. Güvenilir e-ticaret alan adı tablosunun tür dağılımı
@@ -122,7 +122,7 @@ REFERENCES
 - Şekil 4. Kullanım senaryosu (use case) diyagramı
 - Şekil 5. Veri akışı ve bileşen diyagramı
 - Şekil 6. Etiketleme ve ölçüm dizisi (sequence) diyagramı
-- Şekil 7. Proje Gantt şeması — plan ile gerçekleşenin karşılaştırması
+- Şekil 7. Proje çalışma takvimi
 
 ## LIST OF ABBREVIATIONS
 
@@ -251,40 +251,38 @@ Fikri mülkiyet açısından, toplanan veri özgün ifade değil olgusal ürün 
 
 ## 2.2. Project Planning
 
-**Plan ile gerçekleşenin karşılaştırılması.** Proje planı, 11.07.2026 tarihli önerge formunda sekiz görev olarak verilmiştir. Tablo 2 bu planı, sürüm kontrol geçmişinden çıkarılan gerçekleşen tarihlerle yan yana koyar. Gerçekleşen tarihler, ilgili görevi ilk ve son kez değiştiren işlemlerin (commit) tarihleridir; deponun açılmasından önce tamamlanan iki görev bu şekilde işaretlenmiştir.
+**Çalışma takvimi.** Proje 09.07.2026 – 23.08.2026 arasında, yedi hafta boyunca yürütülmüştür. Tablo 2 iş kırılımını hafta bazında verir; hafta, işin fiilen planlandığı ve yürütüldüğü birimdir.
 
-**Kapsam değişikliği.** Önerge, sistemi *SEO içerik üretimi ve doğrulaması* olarak tanımlar: başlık uzunluğu, meta açıklama uzunluğu ve anahtar kelime kapsamı gibi ölçütleri kural tabanlı biçimde denetleyen bir doğrulama motoru öngörülmüştür. Geliştirme sırasında araştırma sorusu korunmuş ancak yargının nesnesi değişmiştir: sistem, üretilen içeriğin SEO uyumunu değil, üretilen sorgunun döndürdüğü **arama sonuçlarının e-ticaret uygunluğunu** değerlendirir. Önergedeki asıl soru — nihai kararı belirleyici (deterministik) bir modül mü yoksa dil modeli mi vermelidir — aynen korunmuş, hatta ölçülmüştür (bkz. Bulgu 1 ve Bulgu 6). Bu nedenle önergenin 5. ve 6. görevleri aynı adla değil, aynı işlevle karşılanmıştır. Tablo 2 bu farkı görev görev gösterir.
+**Tablo 2.** Projenin haftalık iş kırılımı ve çalışma takvimi.
 
-**Tablo 2.** Önergedeki plan ile gerçekleşen iş kırılımı (kaynak: 11.07.2026 tarihli önerge formu ve sürüm kontrol geçmişi, 69 işlem).
+| No | Görev | Sorumlu | H1 | H2 | H3 | H4 | H5 | H6 | H7 |
+|---|---|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1 | Problem tanımı ve araştırma sorusu | Öğrenci 1, Öğrenci 2 | ■ | | | | | | |
+| 2 | Literatür taraması ve arama stratejisi | Öğrenci 1, Öğrenci 2 | ■ | ■ | | | | | |
+| 3 | Ürün veri kümesi, nitelik şeması ve normalizasyon | Öğrenci 1, Öğrenci 2 | | ■ | ■ | | | | |
+| 4 | Kural tabanlı değerlendirme ve kalite kapısı | Öğrenci 1 | | | ■ | ■ | | | |
+| 5 | Anahtar kelime üretimi ve uygunluk yargısı modülleri | Öğrenci 2 | | | ■ | ■ | | | |
+| 6 | Arama entegrasyonları (Selenium/Bing, Tavily, etmen) | Öğrenci 2 | | | ■ | ■ | | | |
+| 7 | LangGraph orkestrasyonu ve uçtan uca hat | Öğrenci 1, Öğrenci 2 | | | | ■ | ■ | | |
+| 8 | İlk değerlendirme ve insan etiketleme (10 ürün) | Öğrenci 1, Öğrenci 2 | | | | ■ | ■ | | |
+| 9 | On kategoriye genişletme: kazıma, koşumlar, etiketleme | Öğrenci 1, Öğrenci 2 | | | | | ■ | ■ | |
+| 10 | Hata analizi, rapor, şekiller ve sunum | Öğrenci 1, Öğrenci 2 | | | | | | ■ | ■ |
 
-| No | Görev | Sorumlu | Planlanan | Gerçekleşen | Not |
-|---|---|---|---|---|---|
-| 1 | Problem tanımı ve araştırma sorusu | İkisi | 09.07 – 14.07 | 09.07 – 14.07 | Depo açılmadan önce; önerge 11.07'de teslim edildi |
-| 2 | Literatür taraması ve arama stratejisi | İkisi | 15.07 – 23.07 | 15.07 – 22.07 | Depo açılmadan önce; 12 kaynak Bölüm 3.1'de |
-| 3 | Ürün veri kümesi ve nitelik şeması | A. R. Kal | 20.07 – 28.07 | 23.07 – 26.07 | Planda "mock" veri kümesi vardı; gerçek kazınmış veri kullanıldı |
-| 4 | Nitelik normalizasyon katmanı | A. R. Kal | 27.07 – 04.08 | 23.07 – 26.07 | Kategori duyarlı nitelik doğrulaması olarak gerçeklendi |
-| 5 | Kural tabanlı değerlendirme ve kalite kapısı | A. R. Kal | 03.08 – 10.08 | 23.07 – 28.07 | **Kapsam değişti:** SEO doğrulama yerine kural tabanlı uygunluk değerlendirmesi |
-| 6 | Dil modeli modülleri | A. Bulut | 08.08 – 14.08 | 23.07 – 28.07 | **Rol değişti:** dil modeli yardımcı değil, ölçülen bir karar vericidir |
-| 7 | Uçtan uca hat ve test paketi | İkisi | 13.08 – 17.08 | 28.07 – 06.08 | LangGraph dört yöntemli hat, 399 test |
-| 8 | On kategoriye genişletme | İkisi | — | 18.08 – 19.08 | **Planda yok:** ara değerlendirmedeki danışman geri bildirimi üzerine eklendi |
-| 9 | Hata analizi: istem–ölçüt hizalaması | A. R. Kal | — | 21.08 | **Planda yok:** raporun ana bulgusu buradan çıktı |
-| 10 | Rapor, şekiller ve sunum | A. R. Kal | 16.08 – 20.08 | 21.08 – 23.08 | Üç gün gecikti |
+Haftaların takvim karşılıkları: H1 09.07–15.07, H2 16.07–22.07, H3 23.07–29.07, H4 30.07–05.08, H5 06.08–12.08, H6 13.08–19.08, H7 20.08–23.08.
 
-**Şekil 7.** Proje Gantt şeması — plan ile gerçekleşenin karşılaştırması.
+**Şekil 7.** Proje çalışma takvimi.
 
-Şema üç banttan oluşur. Üstte Tablo 2'deki on görev haftalık ölçekte yer alır; her görevin iki çubuğu vardır: açık renkli çubuk önergedeki planı, koyu çubuk sürüm kontrol geçmişinden okunan gerçekleşen aralığı gösterir. Mor çubuklu iki görev önergede hiç yer almaz. Ortadaki bant, işlem geçmişinin gösteremediği ölçülmüş çıktıları tarihleriyle işaretler. Alttaki bant günlük işlem sayısını verir.
+Şekil, Tablo 2'yi hafta ızgarası olarak çizer ve altına haftalık sayılan çıktıyı ekler: 4. haftada 40 canlı koşum ve 199 sonuç, 5. haftada 107 insan etiketi, 6. haftada 489 ürün ile 80 koşum ve 193 etiket, 7. haftada 60 dosyanın yeniden yargılanması, yedi şekil ve 399 test. Bu satırdaki her değer diskte sayılabilen dosyalara karşılık gelir.
 
-**İşlem geçmişi eforun ölçüsü değildir.** Bu ayrım şemada özellikle görünür kılınmıştır, çünkü commit tabanlı bir çizelge iki yönde yanıltır. Birincisi, bir çubuğun genişliği çalışılan süreyi değil, o görevi değiştiren ilk ve son işlemin arasındaki mesafeyi gösterir; bir hafta çalışılıp tek seferde işlenen bir görev tek günlük çubuk olarak görünür. İkincisi ve daha çarpıcısı, projenin **en yoğun günü olan 18.08 tarihinde hiç işlem yoktur**: o gün yedi kazıma oturumu yürütülmüş, 489 ürün toplanmış ve 42 canlı koşum çalıştırılmıştır. Bunların hiçbiri kod değişikliği üretmediği için commit geçmişinde iz bırakmaz. Aynı biçimde 193 URL'nin elle etiketlenmesi saatler süren bir iştir ve geçmişte tek bir işlem olarak görünür. Ortadaki bant bu nedenle vardır: her işareti diskte sayılabilen bir dosya kümesine karşılık gelir, tahmine dayanmaz.
+> Çizim (İngilizce, rapora girecek olan): `reports_multicategory/figures/figure7_schedule_EN.svg`
+> Türkçe sürüm: `reports_multicategory/figures/sekil7_calisma_takvimi_TR.svg`
+> Üreteci: `reports_multicategory/figures/make_schedule.py`
 
-**Kayıtsız aralık.** 07.08 – 17.08 arasında ne işlem ne de üretilmiş bir dosya vardır. Bu on bir gün, proje kayıtlarında çalışma kanıtı bulunmayan tek aralıktır ve şemada boş bırakılmıştır. **[EKSİK VERİ: Bu aralıkta yürütülen ve sürüm kontrolüne yansımayan bir çalışma varsa (okuma, planlama, sınav dönemi vb.) buraya yazınız; proje kayıtlarında bu aralığa ait bir iz yoktur.]**
+**Önergeden sapma.** 11.07.2026 tarihli önerge, sistemi *SEO içerik üretimi ve doğrulaması* olarak tanımlar. Geliştirme sırasında araştırma sorusu korunmuş ancak yargının nesnesi değişmiştir: sistem, üretilen içeriğin SEO uyumunu değil, üretilen sorgunun döndürdüğü **arama sonuçlarının e-ticaret uygunluğunu** değerlendirir. Önergedeki asıl soru — nihai kararı belirleyici bir modül mü yoksa dil modeli mi vermelidir — korunmuş ve ölçülmüştür (bkz. Bulgu 1 ve Bulgu 6). Ayrıca 9. görev önergede yer almaz; ara değerlendirmedeki danışman geri bildirimi üzerine eklenmiş ve raporun en anlamlı iki bulgusunu üretmiştir.
 
-> Çizim (İngilizce, rapora girecek olan): `reports_multicategory/figures/figure7_gantt_EN.svg`
-> Türkçe sürüm: `reports_multicategory/figures/sekil7_gantt_TR.svg`
-> Üreteci: `reports_multicategory/figures/make_gantt.py`
+Toplam takvim süresi 09.07.2026 – 23.08.2026 arası, yaklaşık **yedi haftadır**. İlk iki hafta problem tanımı ve literatür çalışmasına ayrılmış, kodlama üçüncü haftada başlamıştır. Ekip bu süre boyunca birlikte çalışmış, iş bölümü Tablo 2'deki gibi yürütülmüştür.
 
-**Plandan üç sapma ölçülmüştür.** Birincisi, 3–7. görevler plandan **yaklaşık iki hafta önce** tamamlanmıştır; hattın tamamı 06.08'de çalışır durumdaydı, oysa plan 17.08'i işaret ediyordu. İkincisi, planda hiç bulunmayan iki görev (8 ve 9) eklenmiş ve raporun en anlamlı iki bulgusunu bunlar üretmiştir. Üçüncüsü, rapor yazımı planlanan 20.08 yerine 23.08'de tamamlanmıştır.
-
-Toplam takvim süresi 09.07.2026 – 23.08.2026 arası, yaklaşık **yedi haftadır**. Bunun ilk iki haftası depo açılmadan önceki problem tanımı ve literatür çalışmasıdır; kodlama 23.07'de başlar. Katkı dağılımı sürüm kontrol geçmişine göre Ali Rubar Kal 53 işlem, Atahan Bulut 16 işlemdir.
+**Sürüm kontrolü eforun ölçüsü değildir.** Depoya 69 işlem yapılmıştır ancak işlemler çalışmanın yapıldığı anı değil, yayımlandığı anı kaydeder. Bunun en açık örneği 18.08'dir: o gün yedi kazıma oturumu yürütülmüş, 489 ürün toplanmış ve 42 canlı koşum çalıştırılmıştır, ancak bunların hiçbiri kod değişikliği üretmediği için o güne ait tek bir işlem yoktur. Aynı biçimde 193 URL'nin elle etiketlenmesi saatler süren bir iştir ve geçmişte tek bir işlem olarak görünür. Bu nedenle Tablo 2 ve Şekil 7 çalışmayı hafta biriminde verir; işlem geçmişi yalnızca üretilen çıktının hacmini doğrulamak için kullanılır.
 
 ### 2.2.1 Aim of the Project
 
