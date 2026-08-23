@@ -101,7 +101,7 @@ REFERENCES
 ## LIST OF TABLES
 
 - Tablo 1. Uygunluk değerlendirmesinde kullanılan yöntem ailelerinin yıllara göre gelişimi ve bu projede karşılık gelen yöntem
-- Tablo 2. Projenin gerçekleşen iş kırılımı ve zaman çizelgesi
+- Tablo 2. Önergedeki plan ile gerçekleşen iş kırılımı
 - Tablo 3. Kategori taksonomisi ve toplanan ürün sayıları
 - Tablo 3a. Canlı modelin düşürdüğü ayırt edici nitelikler
 - Tablo 4. Güvenilir e-ticaret alan adı tablosunun tür dağılımı
@@ -122,6 +122,7 @@ REFERENCES
 - Şekil 4. Kullanım senaryosu (use case) diyagramı
 - Şekil 5. Veri akışı ve bileşen diyagramı
 - Şekil 6. Etiketleme ve ölçüm dizisi (sequence) diyagramı
+- Şekil 7. Proje Gantt şeması — plan ile gerçekleşenin karşılaştırması
 
 ## LIST OF ABBREVIATIONS
 
@@ -250,21 +251,36 @@ Fikri mülkiyet açısından, toplanan veri özgün ifade değil olgusal ürün 
 
 ## 2.2. Project Planning
 
-İş kırılım yapısı yedi ana görevden oluşur. Tablo 2, sürüm kontrol geçmişinden çıkarılan gerçekleşen zaman çizelgesini gösterir. Tarihler, ilgili görevin ilk ve son işlem (commit) tarihlerinden alınmıştır.
+**Plan ile gerçekleşenin karşılaştırılması.** Proje planı, 11.07.2026 tarihli önerge formunda sekiz görev olarak verilmiştir. Tablo 2 bu planı, sürüm kontrol geçmişinden çıkarılan gerçekleşen tarihlerle yan yana koyar. Gerçekleşen tarihler, ilgili görevi ilk ve son kez değiştiren işlemlerin (commit) tarihleridir; deponun açılmasından önce tamamlanan iki görev bu şekilde işaretlenmiştir.
 
-**Tablo 2.** Projenin gerçekleşen iş kırılımı ve zaman çizelgesi (kaynak: sürüm kontrol geçmişi, 42 işlem).
+**Kapsam değişikliği.** Önerge, sistemi *SEO içerik üretimi ve doğrulaması* olarak tanımlar: başlık uzunluğu, meta açıklama uzunluğu ve anahtar kelime kapsamı gibi ölçütleri kural tabanlı biçimde denetleyen bir doğrulama motoru öngörülmüştür. Geliştirme sırasında araştırma sorusu korunmuş ancak yargının nesnesi değişmiştir: sistem, üretilen içeriğin SEO uyumunu değil, üretilen sorgunun döndürdüğü **arama sonuçlarının e-ticaret uygunluğunu** değerlendirir. Önergedeki asıl soru — nihai kararı belirleyici (deterministik) bir modül mü yoksa dil modeli mi vermelidir — aynen korunmuş, hatta ölçülmüştür (bkz. Bulgu 1 ve Bulgu 6). Bu nedenle önergenin 5. ve 6. görevleri aynı adla değil, aynı işlevle karşılanmıştır. Tablo 2 bu farkı görev görev gösterir.
 
-| No | Görev | Sorumlu | Başlangıç | Bitiş |
-|---|---|---|---|---|
-| 1 | Veri işleme temeli ve depo kurulumu | Ali Rubar Kal, Atahan Bulut | 23.07.2026 | 23.07.2026 |
-| 2 | Selenium tabanlı toplama ve kural tabanlı değerlendirme | Ali Rubar Kal | 23.07.2026 | 24.07.2026 |
-| 3 | Yapılandırılmış anahtar kelime üreteci ve LLM entegrasyonu | Atahan Bulut | 23.07.2026 | 28.07.2026 |
-| 4 | Metrik ve temel doğruluk araçları | Ali Rubar Kal | 25.07.2026 | 25.07.2026 |
-| 5 | Tavily ve etmen tabanlı arama hatları | Atahan Bulut | 26.07.2026 | 28.07.2026 |
-| 6 | LangGraph orkestrasyonu ve dört yöntemli canlı değerlendirme | Ali Rubar Kal, Atahan Bulut | 28.07.2026 | 06.08.2026 |
-| 7 | On kategoriye genişletme, etiketleme ve kategori bazlı raporlama | Ali Rubar Kal, Atahan Bulut | 18.08.2026 | 19.08.2026 |
+**Tablo 2.** Önergedeki plan ile gerçekleşen iş kırılımı (kaynak: 11.07.2026 tarihli önerge formu ve sürüm kontrol geçmişi, 69 işlem).
 
-Toplam takvim süresi 23.07.2026 – 19.08.2026 arası, yaklaşık dört haftadır. Katkı dağılımı sürüm kontrol geçmişine göre Ali Rubar Kal 26 işlem, Atahan Bulut 16 işlemdir.
+| No | Görev | Sorumlu | Planlanan | Gerçekleşen | Not |
+|---|---|---|---|---|---|
+| 1 | Problem tanımı ve araştırma sorusu | İkisi | 09.07 – 14.07 | 09.07 – 14.07 | Depo açılmadan önce; önerge 11.07'de teslim edildi |
+| 2 | Literatür taraması ve arama stratejisi | İkisi | 15.07 – 23.07 | 15.07 – 22.07 | Depo açılmadan önce; 12 kaynak Bölüm 3.1'de |
+| 3 | Ürün veri kümesi ve nitelik şeması | A. R. Kal | 20.07 – 28.07 | 23.07 – 26.07 | Planda "mock" veri kümesi vardı; gerçek kazınmış veri kullanıldı |
+| 4 | Nitelik normalizasyon katmanı | A. R. Kal | 27.07 – 04.08 | 23.07 – 26.07 | Kategori duyarlı nitelik doğrulaması olarak gerçeklendi |
+| 5 | Kural tabanlı değerlendirme ve kalite kapısı | A. R. Kal | 03.08 – 10.08 | 23.07 – 28.07 | **Kapsam değişti:** SEO doğrulama yerine kural tabanlı uygunluk değerlendirmesi |
+| 6 | Dil modeli modülleri | A. Bulut | 08.08 – 14.08 | 23.07 – 28.07 | **Rol değişti:** dil modeli yardımcı değil, ölçülen bir karar vericidir |
+| 7 | Uçtan uca hat ve test paketi | İkisi | 13.08 – 17.08 | 28.07 – 06.08 | LangGraph dört yöntemli hat, 399 test |
+| 8 | On kategoriye genişletme | İkisi | — | 18.08 – 19.08 | **Planda yok:** ara değerlendirmedeki danışman geri bildirimi üzerine eklendi |
+| 9 | Hata analizi: istem–ölçüt hizalaması | A. R. Kal | — | 21.08 | **Planda yok:** raporun ana bulgusu buradan çıktı |
+| 10 | Rapor, şekiller ve sunum | A. R. Kal | 16.08 – 20.08 | 21.08 – 23.08 | Üç gün gecikti |
+
+**Şekil 7.** Proje Gantt şeması — plan ile gerçekleşenin karşılaştırması.
+
+Şema, Tablo 2'deki on görevi haftalık ölçekte gösterir. Her görevin iki çubuğu vardır: üstteki açık renkli çubuk önergedeki planı, alttaki koyu çubuk sürüm kontrol geçmişinden okunan gerçekleşen aralığı gösterir. Mor çubuklu iki görev önergede hiç yer almaz.
+
+> Çizim (İngilizce, rapora girecek olan): `reports_multicategory/figures/figure7_gantt_EN.svg`
+> Türkçe sürüm: `reports_multicategory/figures/sekil7_gantt_TR.svg`
+> Üreteci: `reports_multicategory/figures/make_gantt.py`
+
+**Plandan üç sapma ölçülmüştür.** Birincisi, 3–7. görevler plandan **yaklaşık iki hafta önce** tamamlanmıştır; hattın tamamı 06.08'de çalışır durumdaydı, oysa plan 17.08'i işaret ediyordu. İkincisi, planda hiç bulunmayan iki görev (8 ve 9) eklenmiş ve raporun en anlamlı iki bulgusunu bunlar üretmiştir. Üçüncüsü, rapor yazımı planlanan 20.08 yerine 23.08'de tamamlanmıştır.
+
+Toplam takvim süresi 09.07.2026 – 23.08.2026 arası, yaklaşık **yedi haftadır**. Bunun ilk iki haftası depo açılmadan önceki problem tanımı ve literatür çalışmasıdır; kodlama 23.07'de başlar. Katkı dağılımı sürüm kontrol geçmişine göre Ali Rubar Kal 53 işlem, Atahan Bulut 16 işlemdir.
 
 ### 2.2.1 Aim of the Project
 
@@ -324,9 +340,9 @@ B2 ölçütünün kısmen karşılanmasının nedeni ölçülmüş bir olgudur: 
 
 ### 2.2.5 Project Time and Resource Estimation
 
-**Takvim süresi.** Sürüm kontrol geçmişine göre projenin ilk işlemi 23.07.2026, son işlemi 19.08.2026 tarihlidir; toplam takvim süresi yaklaşık 4 haftadır (yaklaşık 0,93 ay).
+**Takvim süresi.** Proje 09.07.2026'da problem tanımıyla başlamış, 23.08.2026'da rapor ve şekillerin tamamlanmasıyla bitmiştir; toplam takvim süresi yaklaşık **yedi haftadır** (yaklaşık 1,55 ay). Sürüm kontrol geçmişindeki ilk işlem 23.07.2026, son işlem 23.08.2026 tarihlidir; ilk iki hafta depo açılmadan önceki problem tanımı ve literatür çalışmasına aittir.
 
-**Efor tahmini.** Proje kayıtlarında saat bazında zaman çizelgesi tutulmamıştır. Efor, dolaylı göstergelerden tahmin edilebilir: iki kişilik ekip, 42 işlem, 11.415 satır kaynak kodu ve 6.729 satır test kodu üretmiştir. Bu göstergelerden yola çıkarak yaklaşık 2 × 0,93 ≈ **1,86 kişi-ay** üst sınır tahmini yapılabilir; ancak bu tahmin, ekibin bu süre boyunca tam zamanlı çalıştığı varsayımına dayanır ve doğrulanmamıştır.
+**Efor tahmini.** Proje kayıtlarında saat bazında zaman çizelgesi tutulmamıştır. Efor, dolaylı göstergelerden tahmin edilebilir: iki kişilik ekip, 69 işlem, 12.632 satır kaynak kodu ve 7.662 satır test kodu üretmiştir. Bu göstergelerden yola çıkarak yaklaşık 2 × 1,55 ≈ **3,10 kişi-ay** üst sınır tahmini yapılabilir; ancak bu tahmin, ekibin bu süre boyunca tam zamanlı çalıştığı varsayımına dayanır ve doğrulanmamıştır.
 
 **[EKSİK VERİ: Lütfen gerçek çalışma saati kaydınız varsa (haftalık saat × hafta × kişi) buraya giriniz; proje kayıtlarında saat bazlı efor verisi yoktur.]**
 
@@ -686,11 +702,11 @@ Böylece bir denetçi bu satırları dışlayıp metrikleri yeniden hesaplayabil
 
 | Katman | Dosya sayısı | Satır sayısı |
 |---|---|---|
-| Kaynak kodu (`src/`) | 32 | 11.415 |
-| Test kodu (`tests/`) | 19 | 6.729 |
-| **Toplam** | **51** | **18.144** |
+| Kaynak kodu (`src/`) | 35 | 12.632 |
+| Test kodu (`tests/`) | 24 | 7.662 |
+| **Toplam** | **59** | **20.294** |
 
-En büyük modüller: `product_scraper.py` (1.396), `langgraph_flow.py` (1.131), `data_processor.py` (745), `quality_check.py` (598), `keyword_generator.py` (566), `import_label_workbook.py` (513), `multicategory_report.py` (481), `category_metrics.py` (451), `selenium_collector.py` (404), `export_label_workbook.py` (403).
+En büyük modüller: `product_scraper.py` (1.443), `langgraph_flow.py` (1.131), `data_processor.py` (779), `quality_check.py` (640), `keyword_generator.py` (630), `import_label_workbook.py` (513), `multicategory_report.py` (481), `category_metrics.py` (464), `export_label_workbook.py` (418), `selenium_collector.py` (404).
 
 **Uygulama ayrıntıları.**
 
