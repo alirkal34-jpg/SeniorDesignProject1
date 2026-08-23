@@ -288,43 +288,11 @@ Kapsam dışında bırakılanlar: sıralama (ranking) kalitesi metrikleri (nDCG 
 
 **Şekil 4.** Kullanım senaryosu (use case) diyagramı.
 
-Diyagramda üç aktör ve sekiz kullanım senaryosu vardır. **Araştırmacı** altı senaryoyu başlatır: veri toplama, veri temizleme, anahtar kelime üretme, dört yöntemi çalıştırma, etiketleme kitabı üretme ve metrik hesaplama. **Değerlendirici** yalnızca bir senaryoda yer alır: URL'leri elle etiketleme. **Danışman** ise yalnızca metrik ve rapor çıktısını görür. Sistemin dışında dört servis bulunur: Akakçe (veri kaynağı), Tavily (arama API'si), OpenRouter (dil modeli) ve Bing (Selenium ile arama). Diyagramdaki iki ilişki önemlidir: etiketleme kitabı üretilirken model tahminleri gizlenir (`«include»`), ve değerlendiricinin belirsiz bıraktığı satır hakem adımına taşınır (`«extend»`).
+Diyagramda üç aktör ve sekiz kullanım senaryosu vardır. **Araştırmacı** yedi senaryoyu başlatır: veri toplama, veri temizleme, anahtar kelime üretme, dört yöntemi çalıştırma, etiketleme kitabı üretme, temel doğruluk üretme ve metrik hesaplama. **Değerlendirici** yalnızca bir senaryoda yer alır: URL'leri elle etiketleme. **Danışman** ise yalnızca metrik ve rapor çıktısını görür. Sistemin dışında dört servis bulunur: Akakçe (veri kaynağı), Tavily (arama API'si), OpenRouter (dil modeli) ve Bing (Selenium ile arama). Diyagramdaki iki ilişki önemlidir: etiketleme kitabı üretilirken model tahminleri gizlenir (`«include»`), ve değerlendiricinin belirsiz bıraktığı satır hakem adımına taşınır (`«extend»`).
 
-```
-                          ┌──────────────────────────────────────────────┐
-                          │        Uygunluk Değerlendirme Sistemi        │
-                          │                                              │
-   ┌──────────┐           │   ( UC1: Ürün verisi topla )                 │
-   │          │──────────▶│                                              │
-   │Araştırmacı│──────────▶│   ( UC2: Veriyi temizle ve doğrula )         │
-   │(Öğrenci) │──────────▶│                                              │
-   │          │──────────▶│   ( UC3: Anahtar kelime üret )               │
-   └──────────┘           │              │                               │
-        │                 │              │ «include»                     │
-        │                 │              ▼                               │
-        │────────────────▶│   ( UC4: Dört yöntemi çalıştır )             │
-        │                 │       │        │        │        │           │
-        │                 │       ▼        ▼        ▼        ▼           │
-        │                 │  «extend» Kural  NanoLLM  Tavily  Agentic     │
-        │                 │                                              │
-        │────────────────▶│   ( UC5: Etiketleme kitabı üret )            │
-        │                 │              │                               │
-        │                 │              │ «include» tahminleri gizle     │
-        │                 │              ▼                               │
-   ┌──────────┐           │   ( UC6: URL'leri elle etiketle )            │
-   │Değerlendi│──────────▶│              │                               │
-   │rici      │           │              │ «extend» belirsiz satırı       │
-   │(İnsan)   │           │              ▼            hakeme taşı         │
-   └──────────┘           │   ( UC7: Temel doğruluk üret )               │
-                          │              │                               │
-        ┌──────────┐      │              ▼                               │
-        │ Danışman │─────▶│   ( UC8: Metrik ve rapor üret )              │
-        └──────────┘      │                                              │
-                          └──────────────────────────────────────────────┘
-
-   Dış aktörler: Akakçe (veri kaynağı), Tavily API (arama),
-                 OpenRouter API (dil modeli), Bing/Google (Selenium araması)
-```
+> Çizim (İngilizce, rapora girecek olan): `reports_multicategory/figures/figure4_use_cases_EN.svg`
+> Türkçe sürüm: `reports_multicategory/figures/sekil4_kullanim_senaryolari_TR.svg`
+> Üreteci: `reports_multicategory/figures/make_figure4.py`
 
 **Kullanım senaryosu açıklamaları.**
 
