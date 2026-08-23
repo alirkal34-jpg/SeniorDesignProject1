@@ -18,6 +18,8 @@ Writes figure7_gantt_EN.svg and sekil7_gantt_TR.svg next to this file.
 
 from __future__ import annotations
 
+import subprocess
+from collections import Counter
 from datetime import date
 from pathlib import Path
 
@@ -128,9 +130,72 @@ TEXT: dict[str, dict[str, str]] = {
         "en": "before the repository existed",
         "tr": "depo açılmadan önce",
     },
+    "output_header": {
+        "en": "Measured output (counted artifacts, not commits)",
+        "tr": "Ölçülen çıktı (sayılmış dosyalar, işlem değil)",
+    },
+    "density_header": {"en": "Commits per day", "tr": "Günlük işlem sayısı"},
+    "ms_phase1": {
+        "en": "40 live runs, 199 results (phones)",
+        "tr": "40 canlı koşum, 199 sonuç (telefon)",
+    },
+    "ms_labels1": {"en": "107 human labels", "tr": "107 insan etiketi"},
+    "ms_scrape": {
+        "en": "7 scraping sessions, 489 products — no commit this day",
+        "tr": "7 kazıma oturumu, 489 ürün — bu gün hiç işlem yok",
+    },
+    "ms_runs": {"en": "80 live runs, 399 results", "tr": "80 canlı koşum, 399 sonuç"},
+    "ms_labels2": {
+        "en": "193 URLs labeled by hand, 2 sessions",
+        "tr": "193 URL elle etiketlendi, 2 oturum",
+    },
+    "ms_rejudge": {
+        "en": "60 files re-judged on one endpoint",
+        "tr": "60 dosya tek uç noktada yeniden yargılandı",
+    },
+    "ms_figures": {"en": "4 figures, 399 tests", "tr": "4 şekil, 399 test"},
+    "note_gap": {
+        "en": "No commit and no artifact between 07.08 and 17.08.",
+        "tr": "07.08 – 17.08 arasında ne işlem ne üretilmiş dosya var.",
+    },
 }
 
 PRE_REPO = {"t1", "t2"}
+
+# What the commit history cannot show. Each of these is a counted artifact on
+# disk, not an estimate: scraping session logs, result files, label rows in the
+# workbooks, re-judged files, and rendered figures. The heaviest single day of
+# the project, 18.08, produced no commit at all.
+MILESTONES = [
+    (date(2026, 7, 28), "ms_phase1"),
+    (date(2026, 7, 31), "ms_labels1"),
+    (date(2026, 8, 18), "ms_scrape"),
+    (date(2026, 8, 19), "ms_runs"),
+    (date(2026, 8, 19), "ms_labels2"),
+    (date(2026, 8, 21), "ms_rejudge"),
+    (date(2026, 8, 23), "ms_figures"),
+]
+
+
+def commits_per_day() -> dict[date, int]:
+    """Read the commit history so the density strip is measured, not typed."""
+
+    try:
+        output = subprocess.run(
+            ["git", "log", "--all", "--format=%ad", "--date=format:%Y-%m-%d"],
+            cwd=HERE.parents[1],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return {}
+
+    counts: Counter[date] = Counter()
+    for line in output.split():
+        year, month, day = (int(part) for part in line.split("-"))
+        counts[date(year, month, day)] += 1
+    return dict(counts)
 
 
 def day_x(value: date) -> float:
@@ -141,7 +206,10 @@ def build(language: str) -> str:
     def say(key: str) -> str:
         return TEXT[key][language]
 
-    height = HEADER_Y + len(TASKS) * ROW_HEIGHT + 74
+    rows_bottom = HEADER_Y + len(TASKS) * ROW_HEIGHT
+    output_top = rows_bottom + 34
+    density_top = output_top + 128
+    height = density_top + 96
     parts: list[str] = [
         f'<rect width="{WIDTH}" height="{height}" fill="#FFFFFF"/>',
         f'<text x="{WIDTH / 2:.0f}" y="30" text-anchor="middle" '
@@ -214,8 +282,85 @@ def build(language: str) -> str:
                 f'{say("prerepo")}</text>'
             )
 
+    # Measured output: what the commit history cannot show.
+    parts.append(
+        f'<path d="M10,{rows_bottom + 12} H{WIDTH - 10}" stroke="#DFDFDA" '
+        'stroke-width="1"/>'
+    )
+    parts.append(
+        f'<text x="16" y="{output_top + 4:.0f}" font-family="{FONT}" '
+        f'font-size="12" font-weight="600" fill="#4A4A45">'
+        f'{say("output_header")}</text>'
+    )
+    # Five of the seven milestones fall inside one week, so labelling them in
+    # place would stack the text on top of itself. They are numbered on the
+    # timeline and spelled out in a key underneath.
+    # Five milestones fall inside one week and two share a date, so a marker
+    # placed exactly on its date would sit under its neighbour. A left-to-right
+    # sweep pushes each one just far enough to clear the last.
+    marker_x: list[float] = []
+    for when, _ in MILESTONES:
+        x = day_x(when)
+        if marker_x and x - marker_x[-1] < 21:
+            x = marker_x[-1] + 21
+        marker_x.append(x)
+
+    for index, x in enumerate(marker_x):
+        anchor_x = day_x(MILESTONES[index][0])
+        parts.append(
+            f'<path d="M{anchor_x:.0f},{output_top + 12:.0f} '
+            f'L{anchor_x:.0f},{output_top + 19:.0f} '
+            f'L{x:.0f},{output_top + 24:.0f}" fill="none" '
+            'stroke="#B08A3E" stroke-width="1"/>'
+            f'<circle cx="{x:.0f}" cy="{output_top + 33:.0f}" r="8.5" '
+            'fill="#E8B84B" stroke="#B08A3E" stroke-width="1.2"/>'
+            f'<text x="{x:.0f}" y="{output_top + 37:.0f}" text-anchor="middle" '
+            f'font-family="{FONT}" font-size="10" font-weight="600" '
+            f'fill="#5C4A18">{index + 1}</text>'
+        )
+
+    for index, (when, key) in enumerate(MILESTONES):
+        column, row = divmod(index, 4)
+        x = 16 + column * 620
+        y = output_top + 62 + row * 15
+        parts.append(
+            f'<text x="{x}" y="{y:.0f}" font-family="{FONT}" font-size="10.5" '
+            f'fill="#6B5A2E">{index + 1}. {when.strftime("%d.%m")} — '
+            f'{say(key)}</text>'
+        )
+
+    # Commit density, read from the history rather than typed in.
+    counts = commits_per_day()
+    peak = max(counts.values(), default=1)
+    parts.append(
+        f'<text x="16" y="{density_top + 4:.0f}" font-family="{FONT}" '
+        f'font-size="12" font-weight="600" fill="#4A4A45">'
+        f'{say("density_header")}</text>'
+    )
+    base = density_top + 44
+    for when, count in sorted(counts.items()):
+        if not (START <= when <= END):
+            continue
+        x = day_x(when)
+        bar = count / peak * 32
+        parts.append(
+            f'<rect x="{x - 4:.0f}" y="{base - bar:.0f}" width="8" '
+            f'height="{bar:.0f}" rx="1.5" fill="#8FA9C4"/>'
+            f'<text x="{x:.0f}" y="{base - bar - 4:.0f}" text-anchor="middle" '
+            f'font-family="{FONT}" font-size="9" fill="#5A6B7C">{count}</text>'
+        )
+    parts.append(
+        f'<path d="M{CHART_X},{base} H{CHART_X + CHART_WIDTH}" '
+        'stroke="#DFDFDA" stroke-width="1"/>'
+    )
+    parts.append(
+        f'<text x="{CHART_X + CHART_WIDTH / 2:.0f}" y="{base + 20:.0f}" '
+        f'text-anchor="middle" font-family="{FONT}" font-size="10.5" '
+        f'font-style="italic" fill="#8A8A84">{say("note_gap")}</text>'
+    )
+
     # Legend.
-    legend_y = HEADER_Y + len(TASKS) * ROW_HEIGHT + 34
+    legend_y = base + 44
     for index, (colours, key) in enumerate(
         ((PLANNED, "legend_planned"), (ACTUAL, "legend_actual"),
          (UNPLANNED, "legend_unplanned"))

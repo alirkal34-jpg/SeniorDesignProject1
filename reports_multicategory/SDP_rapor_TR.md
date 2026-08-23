@@ -272,7 +272,11 @@ Fikri mülkiyet açısından, toplanan veri özgün ifade değil olgusal ürün 
 
 **Şekil 7.** Proje Gantt şeması — plan ile gerçekleşenin karşılaştırması.
 
-Şema, Tablo 2'deki on görevi haftalık ölçekte gösterir. Her görevin iki çubuğu vardır: üstteki açık renkli çubuk önergedeki planı, alttaki koyu çubuk sürüm kontrol geçmişinden okunan gerçekleşen aralığı gösterir. Mor çubuklu iki görev önergede hiç yer almaz.
+Şema üç banttan oluşur. Üstte Tablo 2'deki on görev haftalık ölçekte yer alır; her görevin iki çubuğu vardır: açık renkli çubuk önergedeki planı, koyu çubuk sürüm kontrol geçmişinden okunan gerçekleşen aralığı gösterir. Mor çubuklu iki görev önergede hiç yer almaz. Ortadaki bant, işlem geçmişinin gösteremediği ölçülmüş çıktıları tarihleriyle işaretler. Alttaki bant günlük işlem sayısını verir.
+
+**İşlem geçmişi eforun ölçüsü değildir.** Bu ayrım şemada özellikle görünür kılınmıştır, çünkü commit tabanlı bir çizelge iki yönde yanıltır. Birincisi, bir çubuğun genişliği çalışılan süreyi değil, o görevi değiştiren ilk ve son işlemin arasındaki mesafeyi gösterir; bir hafta çalışılıp tek seferde işlenen bir görev tek günlük çubuk olarak görünür. İkincisi ve daha çarpıcısı, projenin **en yoğun günü olan 18.08 tarihinde hiç işlem yoktur**: o gün yedi kazıma oturumu yürütülmüş, 489 ürün toplanmış ve 42 canlı koşum çalıştırılmıştır. Bunların hiçbiri kod değişikliği üretmediği için commit geçmişinde iz bırakmaz. Aynı biçimde 193 URL'nin elle etiketlenmesi saatler süren bir iştir ve geçmişte tek bir işlem olarak görünür. Ortadaki bant bu nedenle vardır: her işareti diskte sayılabilen bir dosya kümesine karşılık gelir, tahmine dayanmaz.
+
+**Kayıtsız aralık.** 07.08 – 17.08 arasında ne işlem ne de üretilmiş bir dosya vardır. Bu on bir gün, proje kayıtlarında çalışma kanıtı bulunmayan tek aralıktır ve şemada boş bırakılmıştır. **[EKSİK VERİ: Bu aralıkta yürütülen ve sürüm kontrolüne yansımayan bir çalışma varsa (okuma, planlama, sınav dönemi vb.) buraya yazınız; proje kayıtlarında bu aralığa ait bir iz yoktur.]**
 
 > Çizim (İngilizce, rapora girecek olan): `reports_multicategory/figures/figure7_gantt_EN.svg`
 > Türkçe sürüm: `reports_multicategory/figures/sekil7_gantt_TR.svg`
