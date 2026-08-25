@@ -101,6 +101,8 @@ def select_latest_result_files(
     for result_path in find_result_files(results_directory):
         payload = validate_result_file(result_path)
 
+        # Fake-mode test runs live in the same directories as real API/scrape
+        # runs; this is the one line that keeps them out of any report.
         if payload["execution_mode"] != "live":
             continue
 
@@ -154,7 +156,13 @@ def check_full_coverage(
     selected: dict[tuple[str, str], Path],
     product_ids: list[str],
 ) -> None:
-    """Refuse a manifest with a hole in the product-by-method grid."""
+    """Refuse a manifest with a hole in the product-by-method grid.
+
+    This is why the multi-category manifest always has exactly
+    20 products x 4 methods = 80 result files, never fewer: any single
+    missing (product, method) pair raises here instead of quietly shrinking
+    the comparison.
+    """
 
     methods = sorted({method for _, method in selected})
     missing = [

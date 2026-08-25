@@ -160,7 +160,13 @@ def read_workbook_rows(
 
 
 def parse_label(value: Any) -> bool | None:
-    """Normalize one human answer, returning None when it is unusable."""
+    """Normalize one human answer, returning None when it is unusable.
+
+    This is why a reviewer writing "true?" for an unresolved case works as
+    intended: "true?" is not in TRUE_VALUES/FALSE_VALUES, so it comes back
+    as None here -- not silently read as True -- which is what forces that
+    row into the adjudication path below instead of passing as an answer.
+    """
 
     if value is None:
         return None
@@ -309,6 +315,11 @@ def build_ground_truth_records(
         adjudication = adjudications.get(adjudication_key(product_id, url))
         adjudication_note = ""
 
+        # This is the literal enforcement of "an adjudication can never
+        # overturn a true or false the reviewer already wrote" (see module
+        # docstring): if the reviewer's own answer parsed cleanly, an
+        # adjudication entry for the same row is a hard error, not a
+        # silent override.
         if adjudication is not None and label is not None:
             used_adjudications.add(adjudication_key(product_id, url))
             problems.append(

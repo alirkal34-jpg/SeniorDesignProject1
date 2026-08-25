@@ -59,6 +59,9 @@ REVIEW_COLUMNS = (
     "human_note",
     "reviewer",
 )
+# No predicted_relevant / relevance_score column here -- this tuple is the
+# literal enforcement of the module docstring's "Predictions are not shown"
+# rule. The reviewer sees the URL and nothing about what any method guessed.
 
 RELEVANCE_RULE = (
     "A result is RELEVANT when both conditions hold:\n"

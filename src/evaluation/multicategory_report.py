@@ -292,6 +292,11 @@ def render_report(
         ]
 
         if phone_accuracies and other_accuracies:
+            # This is the code that answers the advisor's original question
+            # (was the first, phone-only evaluation representative of the
+            # other 9 categories?) by direct measurement, not by argument:
+            # average the four methods' accuracy on phones vs. everywhere
+            # else and compare.
             phone_mean = sum(phone_accuracies) / len(phone_accuracies)
             other_mean = sum(other_accuracies) / len(other_accuracies)
             lines.append("## Was the phone category representative?")

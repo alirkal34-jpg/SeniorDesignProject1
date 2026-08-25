@@ -22,6 +22,10 @@ ALLOWED_METHODS = {
     "selenium_nano_llm",
     "selenium_rule_based",
 }
+# The exact four method names this project compares. This set is also the
+# grouping key metrics.py uses to build per-method accuracy, so a fifth or
+# misspelled method name is rejected here rather than silently becoming an
+# unnoticed new group in a report.
 
 REQUIRED_PAYLOAD_FIELDS = {
     "product_id",
@@ -249,6 +253,9 @@ def validate_result_payload(
             f"{source}: 'results' must be a JSON list."
         )
 
+    # 5 is the project-wide cap on search results per product/method run
+    # (max_results throughout langgraph_flow.py and the four method
+    # modules). A file with more than 5 indicates a method ignored that cap.
     if len(results) > 5:
         raise ResultValidationError(
             f"{source}: 'results' cannot contain more than 5 items."

@@ -32,7 +32,7 @@ REQUIRED_COLUMNS = {
     "human_relevant",
     "notes",
 }
-
+# Define acceptable inputs to prevent typos in the Excel/CSV file
 TRUE_VALUES = {"1", "true", "yes", "y", "evet"}
 FALSE_VALUES = {"0", "false", "no", "n", "hayir", "hayır"}
 
@@ -106,9 +106,10 @@ def normalize_url(value: str) -> str:
 
 def parse_human_relevant(value: str, row_number: int) -> bool:
     """Parse a human label from common CSV boolean values."""
-
+    # Normalize the human input (lowercase, remove spaces)
     normalized = normalize_text(value)
 
+    # Safely convert the human's text into a Python Boolean
     if normalized in TRUE_VALUES:
         return True
 

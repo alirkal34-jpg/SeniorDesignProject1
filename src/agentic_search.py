@@ -64,6 +64,9 @@ def _validate_queries(raw_output: Any, keyword: str) -> list[str]:
         raise KeywordGenerationError(
             f"Agentic planner returned more than {MAX_AGENTIC_QUERIES} queries."
         )
+    # Guard against a planner that "improves" the query into something
+    # generic: at least one of the keyword's first two tokens (normally
+    # brand + model) must survive into the queries it plans to run.
     if not any(token.casefold() in " ".join(queries).casefold() for token in keyword.split()[:2]):
         raise KeywordGenerationError("Agentic planner queries do not preserve the product identity.")
     return queries
@@ -214,7 +217,15 @@ def make_search_client(
 
 
 class AgenticSearch:
-    """Use a planner to choose queries, then execute them with a search tool."""
+    """Use a planner to choose queries, then execute them with a search tool.
+
+    This is the plan -> search -> evaluate -> aggregate loop from the
+    project's background (Yao et al., ReAct): plan_queries() below is the
+    "plan" step, search_queries() is "search". The matching langgraph_flow.py
+    graph nodes (plan_node/search_node/evaluate_node/aggregate_node) call
+    straight into this class -- the "reasoning trace" is just this object's
+    state across those four calls, not a separate mechanism.
+    """
 
     def __init__(
         self,
@@ -254,6 +265,9 @@ class AgenticSearch:
         search_cost = 0.0
         self.search_errors = []
 
+        # One product can plan up to 3 queries; results are merged here and
+        # deduplicated by URL (seen_urls) so a product page returned by two
+        # different queries is only counted once in the final results list.
         for query in queries:
             try:
                 results = self.client.search(query)

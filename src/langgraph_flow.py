@@ -338,7 +338,14 @@ def run_langgraph_pipeline(
 def comparison_input_node(
     state: ComparisonState,
 ) -> ComparisonState:
-    """Validate the shared product/keyword input for all methods."""
+    """Validate the shared product/keyword input for all methods.
+
+    This is where "one shared LangGraph state" actually starts: product_id
+    and keyword are validated and locked into this one ComparisonState
+    object here, before any of the four method nodes run. Every node below
+    reads from this same state, so there is no code path where one method
+    could see a different keyword than the others.
+    """
 
     new_state = dict(state)
     errors = list(state.get("method_errors", []))
@@ -393,6 +400,10 @@ def _comparison_method_node(
         new_state["method_errors"] = errors
         return new_state
 
+    # Read once from the shared state and pass the exact same product_id
+    # and keyword into whichever of the four run_*() functions this node
+    # calls below -- this is the code-level guarantee that all four methods
+    # are judging the same query, not four independently-generated ones.
     product_id = state.get("product_id", "")
     keyword = state.get("keyword", "")
     max_results = state.get("max_results", 5)
@@ -522,6 +533,11 @@ def comparison_aggregate_node(
         "requested_method_count": len(ordered_methods),
         "successful_method_count": len(outputs),
         "failed_method_count": len(method_errors),
+        # Runtime self-check, not just a design intent: after all four
+        # methods have run, collapse their reported keywords into a set and
+        # confirm there is exactly one, and it is the one this run started
+        # with. If a method ever drifted, this flips to False and
+        # end_to_end_aggregate_node() below refuses to mark the run complete.
         "all_methods_used_same_keyword": (
             len(keywords) == 1
             and state.get("keyword") in keywords
@@ -568,7 +584,15 @@ def comparison_initial_state(
 
 
 def build_comparison_langgraph():
-    """Compile the six-node, four-method comparison graph."""
+    """Compile the six-node, four-method comparison graph.
+
+    The edges below chain the four method nodes one after another
+    (input -> rule_based -> nano_llm -> tavily -> agentic -> aggregation),
+    not in parallel. All four still see the same ComparisonState, so
+    correctness does not depend on the order -- it is sequential for
+    simplicity and easier-to-read logs, not because the methods depend on
+    each other's output.
+    """
 
     try:
         from langgraph.graph import END, START, StateGraph
@@ -693,7 +717,13 @@ def load_product_node(
 def generate_keyword_node(
     state: EndToEndState,
 ) -> EndToEndState:
-    """Generate one structured transactional keyword from product data."""
+    """Generate one structured transactional keyword from product data.
+
+    This runs exactly once per product, before compare_methods_node below
+    hands the result to comparison_input_node -- the single point where a
+    keyword is produced, upstream of the "same keyword to all four methods"
+    guarantee enforced further down the graph.
+    """
 
     new_state = dict(state)
     if state.get("error"):

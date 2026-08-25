@@ -164,6 +164,14 @@ class OpenRouterNanoLLMEvaluator(OpenRouterKeywordClient):
     # Which criterion the model is asked to apply. The default reproduces
     # every reported run; an experiment can swap in another builder without
     # touching the evaluation path itself.
+    #
+    # THIS is the single line behind the report's main finding: the v1->v2
+    # "aligned prompt" experiment (selenium_nano_llm specificity 0.000 ->
+    # 0.846) is rerun_with_aligned_prompt.py overriding just this class
+    # attribute to build_relevance_prompt_v2_aligned, with no other code
+    # change. That the whole result swings on one variable is the evidence
+    # that the original 0% specificity was a prompt/criterion mismatch, not
+    # a model capability limit.
     prompt_builder = staticmethod(build_relevance_prompt_v1)
     prompt_version = NANO_LLM_PROMPT_VERSION
 

@@ -51,6 +51,12 @@ def normalize_result_url(url: str) -> str:
     netloc: domain
     path: domain’den sonraki yol
     query: ? işaretinden sonraki parametreler
+
+    This matters beyond cosmetics: without unwrapping the redirect, `domain`
+    would come back as "google.com"/"bing.com" instead of the retailer's own
+    domain, which would make rule_based_evaluator.py's domain-list lookup
+    fail for every single result, and would stop the URL from matching
+    anything in the ground-truth labels.
     """
 
     parsed_url = urlparse(url)

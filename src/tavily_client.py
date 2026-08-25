@@ -72,6 +72,10 @@ class TavilySearchClient:
         raw_results = data.get("results", [])
         if not isinstance(raw_results, list):
             raise KeywordGenerationError("Tavily response results must be a list.")
+        # Unlike OpenRouter, Tavily's response has no per-call cost field, so
+        # this is a configured per-search price (TAVILY_COST_PER_SEARCH_USD),
+        # not a value read back from the API. Defaults to 0.0 if unset -- the
+        # reported cost totals include Tavily runs only if this was set.
         try:
             self.last_cost_usd = float(os.environ.get("TAVILY_COST_PER_SEARCH_USD", "0"))
         except ValueError:

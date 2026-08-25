@@ -103,7 +103,10 @@ def calculate_method_metrics(
 
                 if ground_truth_lookup is None:
                     continue
-
+                # Get the human's decision for this exact (product, keyword,
+                # domain, url) result. find_human_label tries a label
+                # specific to this "method" first, then falls back to a
+                # label shared across all four methods.
                 human_label = find_human_label(
                     lookup=ground_truth_lookup,
                     product_id=payload["product_id"],
@@ -121,19 +124,28 @@ def calculate_method_metrics(
                 predicted_relevant = result[
                     "predicted_relevant"
                 ]
-
+                # THE CORE COMPARISON: If AI matches Human, it is a correct prediction.
                 if predicted_relevant == human_label:
                     correct_count += 1
 
+                # Build the Confusion Matrix
+
+                # Both AI and Human said "Relevant"
                 if predicted_relevant and human_label:
                     true_positive_count += 1
+
+                # Both AI and Human said "Irrelevant"
                 elif (
                     not predicted_relevant
                     and not human_label
                 ):
                     true_negative_count += 1
+
+                # AI said "Relevant", but Human said "Irrelevant" (False Alarm)
                 elif predicted_relevant:
                     false_positive_count += 1
+
+                # AI said "Irrelevant", but Human said "Relevant" (Missed)
                 else:
                     false_negative_count += 1
 
@@ -148,7 +160,8 @@ def calculate_method_metrics(
             if result_count
             else 0.0
         )
-
+        # Calculate the final Accuracy percentage for the AI method
+        # Formula: (True Positives + True Negatives) / Total Labeled Results
         accuracy = (
             round(correct_count / labeled_count, 4)
             if labeled_count
@@ -221,7 +234,9 @@ def build_metrics_report(
     ground_truth_lookup: GroundTruthLookup | None = None
     ground_truth_record_count = 0
 
+    # Load the absolute Ground Truth (human labels) before the evaluation starts
     if ground_truth_path is not None:
+        # Parse the CSV and convert text values to booleans
         records = load_ground_truth(
             ground_truth_path
         )

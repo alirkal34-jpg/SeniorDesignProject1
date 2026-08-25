@@ -632,6 +632,13 @@ def validate_data(
 ) -> pd.DataFrame:
     """
     Run all row-level data-quality validation rules.
+
+    This is the "489/489 valid" DataProcessor quality gate: every check
+    below (missing values, non-HTTPS URLs, duplicates, out-of-range
+    numbers, and, for the multi-category profile, per-category attributes)
+    appends to the same validation_errors column, and
+    assign_validation_status() turns "no errors accumulated" into
+    validation_status="valid" for save_results() to act on.
     """
 
     df["validation_errors"] = ""

@@ -18,6 +18,11 @@ DOMAIN_RULES_FILE = (
 )
 
 RELEVANCE_THRESHOLD = 0.60
+# This is the ONLY one of the four methods with no LLM and no prompt. It is
+# the project's control group: because it never sees a prompt, its accuracy
+# and specificity are identical between the v1 and v2 (aligned) prompt runs
+# -- proof that the accuracy jump elsewhere came from the prompt, not from
+# random variation in that run.
 
 
 # ==================================================
@@ -151,6 +156,9 @@ def evaluate_result(
 
     domain_rule = domain_rules.get(domain)
 
+    # THE ENTIRE DECISION: a domain not on the trusted list scores 0.0 and is
+    # therefore never relevant. No keyword, title, or snippet is read at all
+    # -- this method judges the domain, not the page content.
     if domain_rule is None:
         relevance_score = 0.0
     else:
